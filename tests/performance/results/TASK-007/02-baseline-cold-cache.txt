@@ -1,0 +1,12 @@
+run=02-baseline-cold vus=10 duration=2m cache=cold k6_exit=0
+request_detail hit: "value":2086.0
+
+request_detail miss: "value":201.0
+
+request_detail error: "value":0.0
+
+reference-data hit: "value":0.0
+
+reference-data miss: "value":0.0
+
+redis request-detail keys after run: 971

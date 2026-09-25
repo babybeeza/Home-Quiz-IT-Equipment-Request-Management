@@ -1,0 +1,12 @@
+run=01-baseline-disabled vus=10 duration=2m cache=disabled k6_exit=0
+request_detail hit: n/a (cache disabled)
+
+request_detail miss: n/a (cache disabled)
+
+request_detail error: n/a (cache disabled)
+
+reference-data hit: n/a (cache disabled)
+
+reference-data miss: n/a (cache disabled)
+
+redis request-detail keys after run: 0

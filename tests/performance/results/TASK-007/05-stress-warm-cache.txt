@@ -1,0 +1,12 @@
+run=05-stress-warm vus=25 duration=2m cache=warm k6_exit=0
+request_detail hit: "value":5824.0
+
+request_detail miss: "value":200.0
+
+request_detail error: "value":0.0
+
+reference-data hit: "value":0.0
+
+reference-data miss: "value":0.0
+
+redis request-detail keys after run: 2123

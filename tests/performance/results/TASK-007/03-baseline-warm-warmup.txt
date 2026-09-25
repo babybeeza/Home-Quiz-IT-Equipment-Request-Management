@@ -1,0 +1,32 @@
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 400     126.661464/s
+    checks_succeeded...: 100.00% 400 out of 400
+    checks_failed......: 0.00%   0 out of 400
+
+    ✓ detail: correct id
+    ✓ detail: seeded version
+
+    CUSTOM
+    unexpected_errors..............: 0.00%  0 out of 200
+
+    HTTP
+    http_req_duration..............: med=10.74ms p(95)=16.88ms
+      { expected_response:true }...: med=10.74ms p(95)=16.88ms
+    http_req_failed................: 0.00%  0 out of 201
+    http_reqs......................: 201    63.647386/s
+
+    EXECUTION
+    iteration_duration.............: med=10.97ms p(95)=17.03ms
+    iterations.....................: 200    63.330732/s
+    vus............................: 1      min=1        max=1
+    vus_max........................: 1      min=1        max=1
+
+    NETWORK
+    data_received..................: 167 kB 53 kB/s
+    data_sent......................: 37 kB  12 kB/s
+
+
+
