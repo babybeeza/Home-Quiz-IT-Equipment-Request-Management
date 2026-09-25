@@ -1,7 +1,7 @@
 # Evidence: TASK-001
 
 Date / operator: 2026-09-25 / Codex implementation; approved by project owner
-Revision or working tree snapshot: initial reviewed baseline on `main`; commit recorded after this approval update
+Revision or working tree snapshot: `8c6de53` on `main`
 Environment: Windows, Docker 29.5.2 / Compose 5.1.3, host Temurin Java 25.0.3, Java 21 target, Node container 24.15.0
 Requirement IDs: REQ-08, REQ-09, REQ-13
 

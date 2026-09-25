@@ -1,6 +1,6 @@
 # Requirements baseline
 
-Source: [assignment](../../Home-Quiz-IT-Equipment-Request-Management_revise_1.html) เป็น authoritative detail; ตารางนี้เป็นดัชนีสำหรับ implement และ trace tests
+Source: [assignment](../../Home-Quiz-IT-Equipment-Request-Management_revise_1.html) เป็น authoritative detail; ตารางนี้เป็นดัชนีสำหรับ implement และ trace tests ดู facts, acceptance criteria และคำถามฉบับเต็มใน [Discover analysis](discovery.md)
 
 | ID | Requirement / acceptance criteria |
 | --- | --- |

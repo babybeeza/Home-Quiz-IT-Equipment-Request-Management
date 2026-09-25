@@ -4,8 +4,8 @@
 
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
-| Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved to proceed |
-| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved to proceed |
+| Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
+| Design | Technical owner | architecture, ADRs, contract, data/test plan | In progress |
 | Implement | Code reviewer | code diff, implementation tests and task evidence | Approved for TASK-001 |
 | Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Pending |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
@@ -19,5 +19,7 @@
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-001 evidence](../quality/evidence/TASK-001.md) | User explicitly approved TASK-001; later implementation tasks still require review |
 | Verify | Pending | QA / acceptance owner | — | — | Cannot approve before implementation review |
 | Delivery | Pending | Release owner | — | — | Cannot approve before verification |
+| Requirements | Reopened for review | Project owner (user) | 2026-09-25 | [Discover analysis](../product/discovery.md) | User explicitly selected Discover; Q-01 through Q-12 require approval before Design resumes |
+| Requirements | Approved | Project owner (user) | 2026-09-25 | [Discover analysis](../product/discovery.md) | User approved requirement baseline and proposed defaults Q-01 through Q-12 |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง

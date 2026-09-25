@@ -1,9 +1,18 @@
 # TASK-002: Contract, domain และ data baseline
 
-Status: Planned
-Owner: Unassigned (developer)
+Status: In progress — Design
+Owner: Developer
 Requirement IDs: REQ-01, REQ-02, REQ-03, REQ-06, REQ-07, REQ-09
 Dependencies: TASK-001
+
+## Human approvals
+| Gate | Approver | Decision | Date / revision |
+| --- | --- | --- | --- |
+| Requirements | Project owner | Approved | 2026-09-25 / Discover analysis Q-01 through Q-12 |
+| Design | Technical owner | In progress | ADR-002 + OpenAPI + data model |
+| Implement | Code reviewer | Pending | — |
+| Verify | QA / acceptance owner | Pending | — |
+| Delivery | Release owner | Pending | — |
 
 ## Context
 [แผนหลัก](../implementation-plan.md), [requirements](../../product/requirements.md), [assumptions](../../product/assumptions.md), [architecture](../../architecture/README.md)
