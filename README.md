@@ -56,6 +56,7 @@ docker run --rm -v "${PWD}:/workspace" -w /workspace/frontend node:24.15.0-alpin
 
 - Backend: JUnit 5 + MockK; MVC tests สำหรับ error envelope/precedence; Testcontainers PostgreSQL + Redis สำหรับ search, cache, rollback และ outage
 - Frontend: Vitest + React Testing Library เน้นพฤติกรรมที่ผู้ใช้เห็น (form, actions, list/URL state, stale response)
+- E2E / acceptance: Playwright ใน [`tests/e2e`](tests/e2e/README.md) — `bash tests/e2e/run-e2e.sh` รัน 53 จาก 55 [acceptance test cases](docs/quality/acceptance-test-cases.md) ผ่าน browser จริง
 - Performance: [k6 README](tests/performance/README.md) และผลใน [`tests/performance/results/`](tests/performance/results/)
 
 ## API
