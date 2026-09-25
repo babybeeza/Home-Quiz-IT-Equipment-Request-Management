@@ -1,0 +1,142 @@
+# TASK-005 EXPLAIN ANALYZE output — 2026-09-25, PostgreSQL 17.11 (Compose), 1,207 requests / 1,810 items after seed-search-dataset.sql
+
+== Q1 Employee default page
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=0.024..0.033 rows=10 loops=1)
+   Buffers: shared hit=6
+   ->  Index Scan using idx_equipment_requests_owner_created on equipment_requests e (actual time=0.023..0.031 rows=10 loops=1)
+         Index Cond: ((owner_id)::text = 'seed-employee-03'::text)
+         Buffers: shared hit=6
+ Planning:
+   Buffers: shared hit=278
+ Planning Time: 1.815 ms
+ Execution Time: 0.065 ms
+(9 rows)
+
+                                                    QUERY PLAN                                                     
+-------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=0.132..0.133 rows=1 loops=1)
+   ->  Bitmap Heap Scan on equipment_requests e (actual time=0.027..0.123 rows=120 loops=1)
+         Recheck Cond: ((owner_id)::text = 'seed-employee-03'::text)
+         Heap Blocks: exact=38
+         ->  Bitmap Index Scan on idx_equipment_requests_owner_created (actual time=0.017..0.018 rows=120 loops=1)
+               Index Cond: ((owner_id)::text = 'seed-employee-03'::text)
+ Planning Time: 0.064 ms
+ Execution Time: 0.177 ms
+(8 rows)
+
+== Q2 Approver status filter
+                                                           QUERY PLAN                                                            
+---------------------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=0.020..0.023 rows=10 loops=1)
+   Buffers: shared hit=4
+   ->  Index Scan using idx_equipment_requests_status_created on equipment_requests e (actual time=0.020..0.022 rows=10 loops=1)
+         Index Cond: ((status)::text = 'PENDING'::text)
+         Buffers: shared hit=4
+ Planning Time: 0.042 ms
+ Execution Time: 0.040 ms
+(7 rows)
+
+== Q3 Approver keyword
+                                                                                     QUERY PLAN                                                                                     
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=1.247..1.248 rows=10 loops=1)
+   Buffers: shared hit=45
+   ->  Sort (actual time=1.246..1.246 rows=10 loops=1)
+         Sort Key: created_at DESC, id DESC
+         Sort Method: top-N heapsort  Memory: 30kB
+         Buffers: shared hit=45
+         ->  Seq Scan on equipment_requests e (actual time=0.018..1.161 rows=172 loops=1)
+               Filter: ((lower((request_number)::text) ~~ '%monitor%'::text) OR (lower((title)::text) ~~ '%monitor%'::text) OR (lower((employee_name)::text) ~~ '%monitor%'::text))
+               Rows Removed by Filter: 1035
+               Buffers: shared hit=39
+ Planning:
+   Buffers: shared hit=27
+ Planning Time: 0.533 ms
+ Execution Time: 1.275 ms
+(14 rows)
+
+                                                                                  QUERY PLAN                                                                                  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=1.096..1.096 rows=1 loops=1)
+   ->  Seq Scan on equipment_requests e (actual time=0.014..1.087 rows=172 loops=1)
+         Filter: ((lower((request_number)::text) ~~ '%monitor%'::text) OR (lower((title)::text) ~~ '%monitor%'::text) OR (lower((employee_name)::text) ~~ '%monitor%'::text))
+         Rows Removed by Filter: 1035
+ Planning Time: 0.110 ms
+ Execution Time: 1.108 ms
+(6 rows)
+
+== Q4 keyword + status + department
+                                                                                                                     QUERY PLAN                                                                                                                      
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=0.172..0.174 rows=6 loops=1)
+   Buffers: shared hit=42
+   ->  Sort (actual time=0.172..0.172 rows=6 loops=1)
+         Sort Key: created_at DESC, id DESC
+         Sort Method: quicksort  Memory: 26kB
+         Buffers: shared hit=42
+         ->  Bitmap Heap Scan on equipment_requests e (actual time=0.045..0.163 rows=6 loops=1)
+               Recheck Cond: ((status)::text = 'PENDING'::text)
+               Filter: ((lower((department)::text) = 'software engineering'::text) AND ((lower((request_number)::text) ~~ '%monitor%'::text) OR (lower((title)::text) ~~ '%monitor%'::text) OR (lower((employee_name)::text) ~~ '%monitor%'::text)))
+               Rows Removed by Filter: 234
+               Heap Blocks: exact=38
+               Buffers: shared hit=42
+               ->  Bitmap Index Scan on idx_equipment_requests_status_created (actual time=0.027..0.028 rows=240 loops=1)
+                     Index Cond: ((status)::text = 'PENDING'::text)
+                     Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.133 ms
+ Execution Time: 0.220 ms
+(19 rows)
+
+== Q5 department only
+                                        QUERY PLAN                                        
+------------------------------------------------------------------------------------------
+ Limit (actual time=0.630..0.632 rows=10 loops=1)
+   Buffers: shared hit=39
+   ->  Sort (actual time=0.629..0.630 rows=10 loops=1)
+         Sort Key: created_at DESC, id DESC
+         Sort Method: top-N heapsort  Memory: 31kB
+         Buffers: shared hit=39
+         ->  Seq Scan on equipment_requests e (actual time=0.016..0.568 rows=200 loops=1)
+               Filter: (lower((department)::text) = 'finance'::text)
+               Rows Removed by Filter: 1007
+               Buffers: shared hit=39
+ Planning Time: 0.052 ms
+ Execution Time: 0.667 ms
+(12 rows)
+
+== Q6 page totals
+                                                                            QUERY PLAN                                                                             
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate (actual time=0.309..0.312 rows=5 loops=1)
+   Group Key: i.request_id
+   Buffers: shared hit=27
+   ->  Sort (actual time=0.306..0.307 rows=10 loops=1)
+         Sort Key: i.request_id
+         Sort Method: quicksort  Memory: 25kB
+         Buffers: shared hit=27
+         ->  Hash Semi Join (actual time=0.269..0.289 rows=10 loops=1)
+               Hash Cond: (i.request_id = "ANY_subquery".id)
+               Buffers: shared hit=27
+               ->  Seq Scan on equipment_request_items i (actual time=0.008..0.100 rows=1810 loops=1)
+                     Buffers: shared hit=21
+               ->  Hash (actual time=0.043..0.043 rows=10 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     Buffers: shared hit=6
+                     ->  Subquery Scan on "ANY_subquery" (actual time=0.030..0.036 rows=10 loops=1)
+                           Buffers: shared hit=6
+                           ->  Limit (actual time=0.030..0.034 rows=10 loops=1)
+                                 Buffers: shared hit=6
+                                 ->  Index Only Scan using idx_equipment_requests_owner_created on equipment_requests e (actual time=0.029..0.033 rows=10 loops=1)
+                                       Index Cond: (owner_id = 'seed-employee-03'::text)
+                                       Heap Fetches: 10
+                                       Buffers: shared hit=6
+ Planning:
+   Buffers: shared hit=93
+ Planning Time: 0.833 ms
+ Execution Time: 0.371 ms
+(27 rows)
+

@@ -26,4 +26,6 @@ Tests: `src/test/kotlin/com/example/equipment/`; resources และ Flyway migr
 
 บน macOS/Linux ใช้ `./mvnw` แทน หลังเริ่ม PostgreSQL และ Redis จาก repository root ด้วย `docker compose up -d --wait` backend จะอ่านค่า connection จาก environment variables ใน `.env.example` หรือใช้ local defaults
 
-TASK-003 endpoints: `POST /api/v1/equipment-requests` และ `GET/PUT /api/v1/equipment-requests/{id}` ทุก request ต้องส่ง `X-User-Id` และ `X-Role` ตั้ง `FRONTEND_ORIGIN` เพื่อเปลี่ยน allowed CORS origin จากค่าเริ่มต้น `http://localhost:3000`
+Endpoints: `GET/POST /api/v1/equipment-requests` (list/search และ create), `GET/PUT /api/v1/equipment-requests/{id}` และ `POST /api/v1/equipment-requests/{id}/submit|cancel|approve|reject` ทุก request ต้องส่ง `X-User-Id` และ `X-Role` ตั้ง `FRONTEND_ORIGIN` เพื่อเปลี่ยน allowed CORS origin จากค่าเริ่มต้น `http://localhost:3000`
+
+`EquipmentRequestSearchIntegrationTest` ใช้ Testcontainers (`postgres:17-alpine`) จึงต้องเปิด Docker ระหว่าง `test`/`package` ถ้าไม่มี Docker test ชุดนี้จะถูก skip (รายงานใน `Skipped`) ซึ่งต้องถือเป็น NOT RUN ใน evidence

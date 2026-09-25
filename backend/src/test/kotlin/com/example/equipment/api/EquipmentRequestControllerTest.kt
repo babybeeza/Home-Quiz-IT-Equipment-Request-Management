@@ -1,5 +1,6 @@
 package com.example.equipment.api
 
+import com.example.equipment.application.EquipmentRequestQueryService
 import com.example.equipment.application.EquipmentRequestService
 import com.example.equipment.configuration.ApplicationConfiguration
 import com.example.equipment.domain.EquipmentRequestValidator
@@ -7,20 +8,28 @@ import com.example.equipment.domain.EquipmentType
 import com.example.equipment.domain.RequestStatus
 import com.example.equipment.persistence.EquipmentRequestEntity
 import com.example.equipment.persistence.EquipmentRequestRepository
+import com.example.equipment.persistence.ItemQuantityTotal
 import com.example.equipment.persistence.NewEquipmentItem
 import com.example.equipment.persistence.RequestNumberAllocator
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import io.mockk.verify
 import org.hamcrest.Matchers.matchesPattern
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.dao.OptimisticLockingFailureException
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockHttpServletRequestDsl
@@ -36,6 +45,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.UUID
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @WebMvcTest(EquipmentRequestController::class, properties = ["app.cors.allowed-origin=http://localhost:3100"])
 @Import(ApplicationConfiguration::class, EquipmentRequestControllerTest.ServiceBeans::class)
@@ -65,6 +75,86 @@ class EquipmentRequestControllerTest {
             clock: Clock,
             businessZone: ZoneId,
         ) = EquipmentRequestService(repository, allocator, validator, clock, businessZone)
+
+        @Bean
+        fun equipmentRequestQueryService(repository: EquipmentRequestRepository) =
+            EquipmentRequestQueryService(repository)
+    }
+
+    @Test
+    fun `list applies contract defaults and returns page metadata`() {
+        val entity = existingEntity(version = 1)
+        val pageable = slot<Pageable>()
+        every { repository.findAll(any<Specification<EquipmentRequestEntity>>(), capture(pageable)) } answers {
+            PageImpl(listOf(entity), pageable.captured, 11)
+        }
+        every { repository.sumItemQuantities(listOf(entity.id)) } returns listOf(ItemQuantityTotal(entity.id, 2))
+
+        mockMvc.get(BASE) { identity() }.andExpect {
+            status { isOk() }
+            jsonPath("$.content[0].requestNumber") { value("REQ-2026-000001") }
+            jsonPath("$.content[0].totalItems") { value(2) }
+            jsonPath("$.content[0].items") { doesNotExist() }
+            jsonPath("$.page") { value(0) }
+            jsonPath("$.size") { value(10) }
+            jsonPath("$.totalElements") { value(11) }
+            jsonPath("$.totalPages") { value(2) }
+        }
+        assertEquals(0, pageable.captured.pageNumber)
+        assertEquals(10, pageable.captured.pageSize)
+        assertEquals(
+            Sort.by(Sort.Direction.DESC, "createdAt", "id"),
+            pageable.captured.sort,
+        )
+    }
+
+    @Test
+    fun `list sort ascending orders by createdAt then id ascending`() {
+        val pageable = slot<Pageable>()
+        every { repository.findAll(any<Specification<EquipmentRequestEntity>>(), capture(pageable)) } answers {
+            PageImpl(emptyList(), pageable.captured, 0)
+        }
+
+        mockMvc.get("$BASE?sort=createdAt,asc&page=3&size=25") { identity() }.andExpect {
+            status { isOk() }
+            jsonPath("$.content") { isEmpty() }
+            jsonPath("$.page") { value(3) }
+            jsonPath("$.totalPages") { value(0) }
+        }
+        assertEquals(Sort.by(Sort.Direction.ASC, "createdAt", "id"), pageable.captured.sort)
+        assertEquals(3, pageable.captured.pageNumber)
+        verify(exactly = 0) { repository.sumItemQuantities(any()) }
+    }
+
+    @ParameterizedTest(name = "{0}={1}")
+    @CsvSource(
+        "page, -1", "page, x", "size, 0", "size, 101", "size, x",
+        "sort, 'title,asc'", "status, OPEN", "status, pending",
+    )
+    fun `invalid list parameters name the failing field`(field: String, value: String) {
+        mockMvc.get(BASE) {
+            identity()
+            param(field, value)
+        }.andExpect {
+            status { isBadRequest() }
+            jsonPath("$.code") { value("VALIDATION_ERROR") }
+            jsonPath("$.fieldErrors.$field") { exists() }
+        }
+        verify(exactly = 0) { repository.findAll(any<Specification<EquipmentRequestEntity>>(), any<Pageable>()) }
+    }
+
+    @Test
+    fun `overlong keyword and department are validation errors and identity is checked first`() {
+        mockMvc.get(BASE) {
+            identity()
+            param("keyword", "k".repeat(151))
+            param("department", "d".repeat(101))
+        }.andExpect {
+            status { isBadRequest() }
+            jsonPath("$.fieldErrors.keyword") { exists() }
+            jsonPath("$.fieldErrors.department") { exists() }
+        }
+        mockMvc.get("$BASE?size=0") { header("X-Role", "EMPLOYEE") }.andExpectMalformed()
     }
 
     @BeforeEach

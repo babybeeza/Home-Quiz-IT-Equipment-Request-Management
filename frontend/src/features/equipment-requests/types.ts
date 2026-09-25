@@ -50,3 +50,27 @@ export type ApiError = {
 
 
 export type RequestActionName = "submit" | "cancel" | "approve" | "reject";
+
+export type ListSort = "createdAt,desc" | "createdAt,asc";
+
+/** List parameters as held in the URL; empty strings mean "no filter". */
+export type ListParams = {
+  keyword: string;
+  status: RequestStatus | "";
+  department: string;
+  page: number;
+  sort: ListSort;
+};
+
+export type EquipmentRequestSummary = Pick<
+  EquipmentRequest,
+  "id" | "requestNumber" | "title" | "employeeName" | "department" | "requiredDate" | "totalItems" | "status" | "version" | "createdAt" | "updatedAt"
+>;
+
+export type EquipmentRequestPage = {
+  content: EquipmentRequestSummary[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+};

@@ -36,3 +36,8 @@ Technology versions ถูกกำหนดใน ADR-001 และ contract/do
 
 - [ADR-004 approval workflow actions](decisions/ADR-004-approval-workflow.md)
 - [TASK-004 verification design](../quality/TASK-004-test-design.md)
+
+## TASK-005 approved design
+
+- [ADR-005 request list, search and pagination](decisions/ADR-005-search-list.md)
+- [TASK-005 verification design](../quality/TASK-005-test-design.md)

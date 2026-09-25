@@ -1,4 +1,12 @@
-import type { Actor, ApiError, EquipmentRequest, EquipmentRequestInput, RequestActionName } from "./types";
+import type {
+  Actor,
+  ApiError,
+  EquipmentRequest,
+  EquipmentRequestInput,
+  EquipmentRequestPage,
+  ListParams,
+  RequestActionName,
+} from "./types";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1";
 
@@ -70,4 +78,24 @@ export function performRequestAction(
     method: "POST",
     body: JSON.stringify(body),
   });
+}
+
+export function equipmentRequestListKey(actor: Actor, params: ListParams) {
+  return ["equipment-requests", actor.userId, actor.role, params] as const;
+}
+
+/** Serializes list parameters, omitting defaults so URLs stay short. Shared by the URL state and the API call. */
+export function listQueryString(params: ListParams) {
+  const query = new URLSearchParams();
+  if (params.keyword) query.set("keyword", params.keyword);
+  if (params.status) query.set("status", params.status);
+  if (params.department) query.set("department", params.department);
+  if (params.page > 0) query.set("page", String(params.page));
+  if (params.sort !== "createdAt,desc") query.set("sort", params.sort);
+  const text = query.toString();
+  return text ? `?${text}` : "";
+}
+
+export function searchEquipmentRequests(actor: Actor, params: ListParams, signal?: AbortSignal) {
+  return request<EquipmentRequestPage>(`/equipment-requests${listQueryString(params)}`, actor, { signal });
 }
