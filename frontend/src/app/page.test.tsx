@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import HomePage from "./page";
+import RequestsPage from "./requests/page";
 
-describe("HomePage", () => {
+describe("RequestsPage", () => {
   it("renders the application heading", () => {
-    render(<HomePage />);
-    expect(screen.getByRole("heading", { name: "ระบบจัดการคำขออุปกรณ์ IT" })).toBeInTheDocument();
+    render(<RequestsPage />);
+    expect(screen.getByRole("heading", { name: "คำขออุปกรณ์ IT" })).toBeInTheDocument();
   });
 });

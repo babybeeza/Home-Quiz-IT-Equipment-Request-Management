@@ -2,7 +2,7 @@
 
 โครงสร้างตั้งต้นสำหรับพัฒนาระบบตาม [โจทย์ต้นฉบับ](Home-Quiz-IT-Equipment-Request-Management_revise_1.html) โดยให้มนุษย์และ AI ใช้ requirement, แผนงาน และหลักฐานทดสอบชุดเดียวกัน
 
-**สถานะ:** TASK-002 contract/domain/data baseline ได้รับ Implement approval แล้ว; TASK-003 draft vertical slice อยู่ระหว่าง Design review
+**สถานะ:** TASK-002 contract/domain/data baseline ได้รับ Implement approval แล้ว; TASK-003 create/view/edit draft อยู่ระหว่าง Implement review
 
 ## Project structure
 
@@ -55,7 +55,7 @@ cd backend
 docker run --rm -it -p 3000:3000 -v "${PWD}:/workspace" -w /workspace/frontend node:24.15.0-alpine npm run dev -- --hostname 0.0.0.0
 ```
 
-Frontend: http://localhost:3000 ส่วน backend เริ่มที่ http://localhost:8080 และยังไม่มี business endpoints จนกว่า TASK-003 จะเสร็จ ใช้ `docker compose down` เพื่อหยุด local servicesโดย volumes ยังอยู่
+Frontend: http://localhost:3000 ส่วน backend เริ่มที่ http://localhost:8080 ปัจจุบันมี create/detail/edit draft endpoints และหน้า `/requests/new`, `/requests/{id}`, `/requests/{id}/edit` ใช้ `docker compose down` เพื่อหยุด local servicesโดย volumes ยังอยู่
 
 Pinned stack: Next.js 16.3.6, React 19.3.0, TypeScript 5.9.3, Node.js 24.15.0; Spring Boot 4.1.1, Kotlin 2.3.21, Java 21 target, Maven Wrapper; PostgreSQL 17 และ Redis 8 ดูเหตุผลใน [ADR-001](docs/architecture/decisions/ADR-001-toolchains.md)
 
