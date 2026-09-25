@@ -1,5 +1,6 @@
 package com.example.equipment.api
 
+import com.example.equipment.application.EquipmentRequestQueryService
 import com.example.equipment.application.EquipmentRequestService
 import com.example.equipment.domain.Actor
 import com.example.equipment.domain.ActorRole
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -20,6 +22,7 @@ import java.util.UUID
 @RequestMapping("/api/v1/equipment-requests")
 class EquipmentRequestController(
     private val service: EquipmentRequestService,
+    private val queryService: EquipmentRequestQueryService,
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -28,6 +31,22 @@ class EquipmentRequestController(
         @RequestHeader("X-Role") role: String,
         @Valid @RequestBody body: CreateEquipmentRequestBody,
     ): EquipmentRequestResponse = service.create(actor(userId, role), body.toDraft()).toResponse()
+
+    @GetMapping
+    fun search(
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+        @RequestParam(required = false) keyword: String?,
+        @RequestParam(required = false) status: String?,
+        @RequestParam(required = false) department: String?,
+        @RequestParam(required = false) page: String?,
+        @RequestParam(required = false) size: String?,
+        @RequestParam(required = false) sort: String?,
+    ): EquipmentRequestPageResponse {
+        val actor = actor(userId, role) // identity errors take precedence over parameter errors
+        val criteria = parseSearchCriteria(keyword, status, department, page, size, sort)
+        return queryService.search(actor, criteria).toResponse()
+    }
 
     @GetMapping("/{id}")
     fun get(

@@ -105,3 +105,25 @@ data class RejectActionBody(
     // Nullable so a missing reason reaches the service and returns 422 after version/state checks (ADR-004).
     val reason: String? = null,
 )
+
+data class EquipmentRequestSummaryResponse(
+    val id: UUID,
+    val requestNumber: String,
+    val title: String,
+    val employeeName: String,
+    val department: String,
+    val requiredDate: LocalDate,
+    val totalItems: Int,
+    val status: RequestStatus,
+    val version: Long,
+    val createdAt: Instant,
+    val updatedAt: Instant,
+)
+
+data class EquipmentRequestPageResponse(
+    val content: List<EquipmentRequestSummaryResponse>,
+    val page: Int,
+    val size: Int,
+    val totalElements: Long,
+    val totalPages: Int,
+)

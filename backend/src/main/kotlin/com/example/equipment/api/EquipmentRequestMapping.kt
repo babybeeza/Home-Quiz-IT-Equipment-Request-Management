@@ -1,5 +1,6 @@
 package com.example.equipment.api
 
+import com.example.equipment.application.EquipmentRequestSummaryPage
 import com.example.equipment.application.EquipmentRequestView
 import com.example.equipment.domain.EquipmentItemDraft
 import com.example.equipment.domain.EquipmentRequestDraft
@@ -45,4 +46,26 @@ fun EquipmentRequestView.toResponse() = EquipmentRequestResponse(
     totalItems = totalItems,
     createdAt = createdAt,
     updatedAt = updatedAt,
+)
+
+fun EquipmentRequestSummaryPage.toResponse() = EquipmentRequestPageResponse(
+    content = content.map {
+        EquipmentRequestSummaryResponse(
+            id = it.id,
+            requestNumber = it.requestNumber,
+            title = it.title,
+            employeeName = it.employeeName,
+            department = it.department,
+            requiredDate = it.requiredDate,
+            totalItems = it.totalItems,
+            status = it.status,
+            version = it.version,
+            createdAt = it.createdAt,
+            updatedAt = it.updatedAt,
+        )
+    },
+    page = page,
+    size = size,
+    totalElements = totalElements,
+    totalPages = totalPages,
 )
