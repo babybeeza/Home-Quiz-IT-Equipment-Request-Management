@@ -9,6 +9,7 @@ servers:
   - url: http://localhost:8080
 tags:
   - name: Equipment Requests
+  - name: Reference Data
 
 paths:
   /api/v1/equipment-requests:
@@ -208,6 +209,27 @@ paths:
         '422': { $ref: '#/components/responses/BusinessRuleViolation' }
         '500': { $ref: '#/components/responses/InternalError' }
 
+  /api/v1/reference-data:
+    get:
+      tags: [Reference Data]
+      operationId: getReferenceData
+      summary: Department suggestions and equipment options (Caffeine-cached per instance, ADR-006)
+      description: |
+        Identical for every actor and changed only by migration. Each backend instance caches it
+        locally for up to 1 hour, so a department change may take that long to appear.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Role'
+      responses:
+        '200':
+          description: Reference data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceData'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
 components:
   parameters:
     UserId:
@@ -371,6 +393,29 @@ components:
         size: { type: integer, minimum: 1, maximum: 100 }
         totalElements: { type: integer, format: int64, minimum: 0 }
         totalPages: { type: integer, minimum: 0 }
+    ReferenceData:
+      type: object
+      required: [departments, equipmentTypes]
+      properties:
+        departments:
+          type: array
+          description: Active departments in display order; suggestions only, department stays free text
+          items:
+            type: object
+            required: [code, name]
+            properties:
+              code: { type: string, pattern: '^[A-Z][A-Z0-9_]{1,31}$', example: FINANCE }
+              name: { type: string, maxLength: 100, example: Finance }
+        equipmentTypes:
+          type: array
+          items:
+            type: object
+            required: [type, label, minQuantity, maxQuantity]
+            properties:
+              type: { $ref: '#/components/schemas/EquipmentType' }
+              label: { type: string, example: จอภาพ }
+              minQuantity: { type: integer, example: 1 }
+              maxQuantity: { type: integer, example: 5 }
     ApiError:
       type: object
       required: [timestamp, status, code, message, path, fieldErrors]

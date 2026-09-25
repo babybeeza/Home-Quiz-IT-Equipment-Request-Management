@@ -28,6 +28,7 @@ class EquipmentRequestService(
     private val validator: EquipmentRequestValidator,
     private val clock: Clock,
     private val businessZone: ZoneId,
+    private val detailCache: RequestDetailCache,
 ) {
     @Transactional
     fun create(actor: Actor, draft: EquipmentRequestDraft): EquipmentRequestView {
@@ -54,11 +55,19 @@ class EquipmentRequestService(
         return repository.saveAndFlush(entity).toView()
     }
 
+    /**
+     * ADR-006 read path: owner and version always come from PostgreSQL, so authorization is never
+     * cached and a cached entry is only ever used for the exact committed version.
+     */
     @Transactional(readOnly = true)
     fun get(actor: Actor, id: UUID): EquipmentRequestView {
+        val header = repository.findAccessHeaderById(id) ?: throw EquipmentRequestNotFound(id)
+        requireAccess(actor, RequestOperation.VIEW, header.ownerId)
+        detailCache.get(id, header.version)?.let { return it }
+
         val entity = repository.findAggregateById(id) ?: throw EquipmentRequestNotFound(id)
-        requireAccess(actor, RequestOperation.VIEW, entity.ownerId)
-        return entity.toView()
+        // If a commit landed between the two reads, this caches the newer version under its own key, which stays correct.
+        return entity.toView().also(detailCache::put)
     }
 
     @Transactional
@@ -76,7 +85,7 @@ class EquipmentRequestService(
         entity.additionalNote = draft.additionalNote.normalized()
         entity.updatedAt = Instant.now(clock)
         entity.replaceItems(draft.items.toNewItems())
-        return repository.saveAndFlush(entity).toView()
+        return saveAndPublish(entity, expectedVersion)
     }
 
     @Transactional
@@ -123,7 +132,20 @@ class EquipmentRequestService(
         applyRules(entity)
         entity.status = nextStatus
         entity.updatedAt = Instant.now(clock)
-        return repository.saveAndFlush(entity).toView()
+        return saveAndPublish(entity, expectedVersion)
+    }
+
+    /**
+     * Publishes the new version and drops the superseded one only after commit: a rolled-back version
+     * number can be reused by a later commit with different content, so it must never reach the cache.
+     */
+    private fun saveAndPublish(entity: EquipmentRequestEntity, previousVersion: Long): EquipmentRequestView {
+        val view = repository.saveAndFlush(entity).toView()
+        afterCommit {
+            detailCache.put(view)
+            detailCache.evict(view.id, previousVersion)
+        }
+        return view
     }
 
     private fun loadForMutation(

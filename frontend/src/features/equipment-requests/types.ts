@@ -74,3 +74,8 @@ export type EquipmentRequestPage = {
   totalElements: number;
   totalPages: number;
 };
+
+export type ReferenceData = {
+  departments: { code: string; name: string }[];
+  equipmentTypes: { type: EquipmentType; label: string; minQuantity: number; maxQuantity: number }[];
+};

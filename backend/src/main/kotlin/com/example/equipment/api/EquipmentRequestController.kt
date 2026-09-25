@@ -3,7 +3,6 @@ package com.example.equipment.api
 import com.example.equipment.application.EquipmentRequestQueryService
 import com.example.equipment.application.EquipmentRequestService
 import com.example.equipment.domain.Actor
-import com.example.equipment.domain.ActorRole
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -99,17 +98,5 @@ class EquipmentRequestController(
     ): EquipmentRequestResponse =
         service.reject(actor(userId, role), id, body.expectedVersion, body.reason).toResponse()
 
-    private fun actor(userId: String, rawRole: String): Actor {
-        val normalizedUserId = userId.trim()
-        if (normalizedUserId.isEmpty() || normalizedUserId.length > 100) throw MalformedIdentity()
-        val role = try {
-            ActorRole.valueOf(rawRole)
-        } catch (_: IllegalArgumentException) {
-            throw MalformedIdentity()
-        }
-        return Actor(normalizedUserId, role)
-    }
+    private fun actor(userId: String, rawRole: String): Actor = parseActor(userId, rawRole)
 }
-
-class MalformedIdentity : RuntimeException("X-User-Id or X-Role is invalid")
-

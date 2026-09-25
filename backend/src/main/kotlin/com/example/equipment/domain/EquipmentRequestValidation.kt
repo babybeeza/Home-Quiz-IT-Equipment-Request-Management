@@ -4,6 +4,9 @@ import java.time.Clock
 import java.time.LocalDate
 import java.time.ZoneId
 
+const val MIN_ITEM_QUANTITY = 1
+const val MAX_ITEM_QUANTITY = 5
+
 enum class EquipmentType {
     NOTEBOOK,
     MONITOR,
@@ -49,7 +52,7 @@ class EquipmentRequestValidator(
         }
 
         draft.items.forEachIndexed { index, item ->
-            if (item.quantity !in 1..5) {
+            if (item.quantity !in MIN_ITEM_QUANTITY..MAX_ITEM_QUANTITY) {
                 put("items[$index].quantity", "Quantity must be between 1 and 5")
             }
             if (item.specification != null && item.specification.length > 250) {

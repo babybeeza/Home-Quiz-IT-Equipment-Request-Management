@@ -10,10 +10,12 @@ import com.example.equipment.domain.RequestNotEditable
 import com.example.equipment.domain.RequestStatus
 import com.example.equipment.persistence.EquipmentRequestEntity
 import com.example.equipment.persistence.EquipmentRequestRepository
+import com.example.equipment.persistence.RequestAccessHeader
 import com.example.equipment.persistence.RequestNumberAllocator
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.springframework.dao.DataAccessResourceFailureException
 import java.time.Clock
 import java.time.Instant
 import java.time.LocalDate
@@ -36,8 +38,20 @@ class EquipmentRequestServiceTest {
         EquipmentRequestValidator(clock, zone),
         clock,
         zone,
+        NoOpRequestDetailCache,
+    )
+    private val cache = mockk<RequestDetailCache>(relaxUnitFun = true)
+    private val cachingService = EquipmentRequestService(
+        repository,
+        allocator,
+        EquipmentRequestValidator(clock, zone),
+        clock,
+        zone,
+        cache,
     )
     private val owner = Actor("employee-001", ActorRole.EMPLOYEE)
+
+    private fun EquipmentRequestEntity.header() = RequestAccessHeader(id, ownerId, version)
 
     @Test
     fun `create derives owner and request metadata while normalizing input`() {
@@ -67,6 +81,7 @@ class EquipmentRequestServiceTest {
     @Test
     fun `owner and approver can read while another employee is denied`() {
         val entity = existingEntity()
+        every { repository.findAccessHeaderById(entity.id) } returns entity.header()
         every { repository.findAggregateById(entity.id) } returns entity
 
         assertEquals(entity.id, service.get(owner, entity.id).id)
@@ -79,9 +94,78 @@ class EquipmentRequestServiceTest {
     @Test
     fun `missing request returns not found before authorization`() {
         val id = UUID.randomUUID()
-        every { repository.findAggregateById(id) } returns null
+        every { repository.findAccessHeaderById(id) } returns null
 
         assertFailsWith<EquipmentRequestNotFound> { service.get(owner, id) }
+    }
+
+    @Test
+    fun `cache hit for the authoritative version skips the aggregate load`() {
+        val entity = existingEntity(version = 4)
+        every { repository.findAccessHeaderById(entity.id) } returns entity.header()
+        every { repository.findAggregateById(entity.id) } returns entity
+        val cached = service.get(owner, entity.id) // uncached service builds a realistic view
+        every { cache.get(entity.id, 4) } returns cached
+
+        assertEquals(cached, cachingService.get(owner, entity.id))
+        verify(exactly = 1) { repository.findAggregateById(entity.id) } // only the uncached call above
+    }
+
+    @Test
+    fun `database failures propagate instead of being masked by the cache`() {
+        val id = UUID.randomUUID()
+        every { repository.findAccessHeaderById(id) } throws DataAccessResourceFailureException("database down")
+
+        assertFailsWith<DataAccessResourceFailureException> { cachingService.get(owner, id) }
+        verify(exactly = 0) { cache.get(any(), any()) }
+    }
+
+    @Test
+    fun `cache is consulted only after authorization`() {
+        val entity = existingEntity(version = 4)
+        every { repository.findAccessHeaderById(entity.id) } returns entity.header()
+
+        assertFailsWith<EquipmentRequestAccessDenied> {
+            cachingService.get(Actor("employee-002", ActorRole.EMPLOYEE), entity.id)
+        }
+        verify(exactly = 0) { cache.get(any(), any()) }
+    }
+
+    @Test
+    fun `cache miss loads the aggregate and stores it under its own version`() {
+        val entity = existingEntity(version = 4)
+        every { repository.findAccessHeaderById(entity.id) } returns entity.header()
+        every { repository.findAggregateById(entity.id) } returns entity
+        every { cache.get(entity.id, 4) } returns null
+
+        val view = cachingService.get(owner, entity.id)
+
+        verify(exactly = 1) { cache.put(view) }
+        assertEquals(4, view.version)
+    }
+
+    @Test
+    fun `mutation publishes the new version and evicts the superseded one`() {
+        val entity = existingEntity(version = 3)
+        every { repository.findAggregateById(entity.id) } returns entity
+        every { repository.saveAndFlush(entity) } answers { firstArg<EquipmentRequestEntity>().apply { version = 4 } }
+
+        val view = cachingService.update(owner, entity.id, validDraft(), expectedVersion = 3)
+
+        verify(exactly = 1) { cache.put(view) }
+        verify(exactly = 1) { cache.evict(entity.id, 3) }
+    }
+
+    @Test
+    fun `failed mutation publishes nothing`() {
+        val entity = existingEntity(version = 3)
+        every { repository.findAggregateById(entity.id) } returns entity
+
+        assertFailsWith<EquipmentRequestVersionConflict> {
+            cachingService.update(owner, entity.id, validDraft(), expectedVersion = 2)
+        }
+        verify(exactly = 0) { cache.put(any()) }
+        verify(exactly = 0) { cache.evict(any(), any()) }
     }
 
     @Test

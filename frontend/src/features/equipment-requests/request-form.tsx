@@ -1,9 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useId } from "react";
+import { DepartmentOptions } from "./department-options";
 import { equipmentTypes, type EquipmentRequest } from "./types";
 import { useEquipmentRequestForm } from "./use-equipment-request-form";
 import { confirmDirtyNavigation } from "./use-dirty-warning";
+import { useDepartmentSuggestions } from "./use-reference-data";
 
 export function RequestForm({ mode, request }: { mode: "create" | "edit"; request?: EquipmentRequest }) {
   const router = useRouter();
@@ -13,6 +16,8 @@ export function RequestForm({ mode, request }: { mode: "create" | "edit"; reques
     onSuccess: (saved) => router.push(`/requests/${saved.id}`),
   });
   const { register, formState: { errors, isDirty } } = form;
+  const departmentListId = useId();
+  const departmentSuggestions = useDepartmentSuggestions();
 
   return (
     <main className="page-shell">
@@ -35,7 +40,8 @@ export function RequestForm({ mode, request }: { mode: "create" | "edit"; reques
           <div className="form-grid">
             <Field label="ชื่อพนักงาน" error={errors.employeeName?.message}><input {...register("employeeName")} /></Field>
             <Field label="อีเมล" error={errors.employeeEmail?.message}><input type="email" {...register("employeeEmail")} /></Field>
-            <Field label="แผนก" error={errors.department?.message}><input {...register("department")} /></Field>
+            <Field label="แผนก" error={errors.department?.message}><input list={departmentListId} autoComplete="off" {...register("department")} /></Field>
+            <DepartmentOptions id={departmentListId} names={departmentSuggestions} />
             <Field label="หัวข้อคำขอ" error={errors.title?.message}><input {...register("title")} /></Field>
           </div>
           <Field label="วัตถุประสงค์" error={errors.purpose?.message}><textarea rows={4} {...register("purpose")} /></Field>

@@ -40,6 +40,7 @@ class EquipmentRequestWorkflowTest {
         EquipmentRequestValidator(clock, zone),
         clock,
         zone,
+        NoOpRequestDetailCache,
     )
 
     @ParameterizedTest(name = "{0} + {1}")
