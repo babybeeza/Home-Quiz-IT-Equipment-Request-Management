@@ -1,6 +1,6 @@
 # API behavior matrix
 
-Status: Proposed for TASK-002 Design approval. The machine-readable source is [openapi.yaml](../../contracts/openapi.yaml).
+Status: Approved in TASK-002 Design on 2026-09-25. The machine-readable source is [openapi.yaml](../../contracts/openapi.yaml).
 
 ## Permissions
 

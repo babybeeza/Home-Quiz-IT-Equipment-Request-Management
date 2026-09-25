@@ -1,6 +1,6 @@
 # Frontend interaction design
 
-Status: Proposed for Design approval
+Status: Approved in TASK-002 Design on 2026-09-25
 
 ## Routes
 
@@ -30,7 +30,7 @@ flowchart LR
 
 ## Form state
 
-- React Hook Form + Zod is the proposed form/validation pair; TanStack Query is proposed for server state. These library choices become binding only through Design approval.
+- React Hook Form + Zod is the approved form/validation pair; TanStack Query owns server state. ADR-003 specifies their TASK-003 boundaries.
 - Form owns editable values and dirty/touched/errors; query cache owns fetched request data. Status, totalItems and available actions are derived rather than duplicated state.
 - Dynamic item rows use stable client keys independent of persisted item IDs.
 - While save/action is pending, its control is disabled and repeated submission is ignored. Other destructive navigation is also guarded as needed.

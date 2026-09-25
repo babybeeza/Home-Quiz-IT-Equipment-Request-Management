@@ -1,12 +1,22 @@
 # TASK-003: Create, view และ edit draft end-to-end
 
-Status: Planned
-Owner: Unassigned (developer)
+Status: In progress — Implement
+Owner: Developer
 Requirement IDs: REQ-01, REQ-03, REQ-04, REQ-06, REQ-07, REQ-08, REQ-09, REQ-11
 Dependencies: TASK-002
 
+## Human approvals
+
+| Gate | Approver | Decision | Date / revision |
+| --- | --- | --- | --- |
+| Requirements | Project owner | Approved | 2026-09-25 / approved requirements and Discover baseline |
+| Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-003 + TASK-003 test design |
+| Implement | Code reviewer | In progress | — |
+| Verify | QA / acceptance owner | Pending | — |
+| Delivery | Release owner | Pending | — |
+
 ## Context
-[แผนหลัก](../implementation-plan.md), [requirements](../../product/requirements.md), contract และ accepted ADR จาก TASK-002
+[แผนหลัก](../implementation-plan.md), [requirements](../../product/requirements.md), [OpenAPI](../../../contracts/openapi.yaml), [ADR-002](../../architecture/decisions/ADR-002-request-contract-and-domain.md), [ADR-003 proposal](../../architecture/decisions/ADR-003-draft-vertical-slice.md) และ [test design](../../quality/TASK-003-test-design.md)
 
 ## Scope / non-goals
 สร้าง/อ่าน/แก้ draft ตั้งแต่ UI ถึง PostgreSQL; ยังไม่รวม full search และ approval workflow
@@ -31,4 +41,4 @@ Dependencies: TASK-002
 FE behavior tests: required fields, dynamic items, duplicate submit, server errors, error preservation/success reset, 409 UX; BE tests: create/ownership/validation/update/404/409; PostgreSQL integration ตรวจ rollback และ item-only optimistic locking
 
 ## Handoff
-แนบ evidence และอัปเดต traceability; ส่ง draft slice ให้ 004 และ 005 ขณะนี้ทุก check NOT RUN
+Design approved; implementation follows ADR-003 and the approved test design

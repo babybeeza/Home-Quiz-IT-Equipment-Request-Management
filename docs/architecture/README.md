@@ -15,9 +15,9 @@
 4. Redis สำหรับข้อมูลที่ต้องแชร์หลาย instance; Caffeine สำหรับ reference data ที่เปลี่ยนน้อย — เป็นข้อเสนอ ต้องสรุป keys/TTL/eviction/fallback ใน ADR
 5. Cache ต้องไม่ข้าม authorization หรือใช้แทน authoritative version/state checks; ระบุ invalidation หลัง transaction commit และทดสอบ cross-user isolation
 
-Technology versions และรายละเอียด contract ยังไม่ finalized; บันทึก decision ก่อน implement ส่วนที่พึ่งพามัน
+Technology versions ถูกกำหนดใน ADR-001 และ contract/domain baseline ถูกกำหนดใน ADR-002 งานแต่ละ slice ต้องมี decision ที่เกี่ยวข้องก่อน implement
 
-## TASK-002 proposed design
+## TASK-002 approved design
 
 - [ADR-002](decisions/ADR-002-request-contract-and-domain.md)
 - [API behavior matrix](api-behavior.md)
@@ -25,3 +25,9 @@ Technology versions และรายละเอียด contract ยัง�
 - [Frontend interaction design](ui-flow.md)
 - [OpenAPI contract](../../contracts/openapi.yaml)
 - [Design verification plan](../quality/TASK-002-test-design.md)
+
+## TASK-003 proposed design
+
+- [ADR-003 draft vertical slice](decisions/ADR-003-draft-vertical-slice.md)
+- [Frontend interaction design](ui-flow.md)
+- [TASK-003 verification design](../quality/TASK-003-test-design.md)

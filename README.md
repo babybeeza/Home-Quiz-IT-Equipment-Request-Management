@@ -2,7 +2,7 @@
 
 โครงสร้างตั้งต้นสำหรับพัฒนาระบบตาม [โจทย์ต้นฉบับ](Home-Quiz-IT-Equipment-Request-Management_revise_1.html) โดยให้มนุษย์และ AI ใช้ requirement, แผนงาน และหลักฐานทดสอบชุดเดียวกัน
 
-**สถานะ:** TASK-001 foundation อยู่ระหว่าง human review มี Git repository, frontend/backend manifests, tests และ local PostgreSQL/Redis; business features ยังไม่ได้ implement
+**สถานะ:** TASK-002 contract/domain/data baseline ได้รับ Implement approval แล้ว; TASK-003 draft vertical slice อยู่ระหว่าง Design review
 
 ## Project structure
 

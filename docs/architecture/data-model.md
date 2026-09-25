@@ -1,6 +1,6 @@
 # Equipment request data model
 
-Status: Proposed for TASK-002 Design approval
+Status: Approved in TASK-002 Design on 2026-09-25
 Requirements: REQ-01, REQ-02, REQ-03, REQ-05, REQ-07
 
 ## Relationship

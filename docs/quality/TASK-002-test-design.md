@@ -1,6 +1,6 @@
 # TASK-002 design verification plan
 
-Status: Proposed; these are executable checks for the Implement/Verify phases, not test results
+Status: Approved in TASK-002 Design on 2026-09-25; these are executable checks, not test results
 
 | Area | Required cases |
 | --- | --- |
