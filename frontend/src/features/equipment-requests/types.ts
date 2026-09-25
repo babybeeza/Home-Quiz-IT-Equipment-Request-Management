@@ -48,3 +48,5 @@ export type ApiError = {
   fieldErrors: Record<string, string>;
 };
 
+
+export type RequestActionName = "submit" | "cancel" | "approve" | "reject";

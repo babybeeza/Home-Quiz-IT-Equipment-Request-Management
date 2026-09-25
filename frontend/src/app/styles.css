@@ -87,6 +87,16 @@ button:disabled { cursor: wait; opacity: .6; }
 .item-list { padding: 0; list-style: none; }
 .item-list li { display: grid; grid-template-columns: 1fr .5fr 1.5fr; gap: 1rem; padding: .9rem 0; border-top: 1px solid #e1ebe7; }
 
+.request-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem; margin: 0 0 1rem; }
+button.danger { background: var(--danger); border-color: var(--danger); }
+button.danger:hover { background: #862626; }
+.field-error { margin: .4rem 0 0; color: var(--danger); font-weight: 600; }
+.reject-dialog { position: fixed; inset: 0; z-index: 10; width: min(32rem, calc(100% - 2rem)); margin: auto; padding: 1.5rem; border: 1px solid var(--border); border-radius: .9rem; box-shadow: 0 20px 60px rgb(0 0 0 / 25%); }
+.reject-dialog h2 { margin-top: 0; }
+.reject-dialog label { display: block; margin-bottom: .4rem; font-weight: 700; }
+.reject-dialog textarea { width: 100%; padding: .7rem; border: 1px solid var(--border); border-radius: .55rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
 @media (max-width: 700px) {
   .app-header, .page-heading { align-items: flex-start; flex-direction: column; }
   .identity-selector { width: 100%; align-items: flex-start; flex-direction: column; }

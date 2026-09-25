@@ -1,9 +1,14 @@
 package com.example.equipment.api
 
+import com.example.equipment.application.BUSINESS_RULE_VIOLATION
 import com.example.equipment.application.EquipmentRequestAccessDenied
+import com.example.equipment.application.EquipmentRequestBusinessRuleViolation
 import com.example.equipment.application.EquipmentRequestNotFound
 import com.example.equipment.application.EquipmentRequestValidationFailed
 import com.example.equipment.application.EquipmentRequestVersionConflict
+import com.example.equipment.application.ITEMS_REQUIRED
+import com.example.equipment.application.REJECTION_REASON_REQUIRED
+import com.example.equipment.domain.InvalidRequestTransition
 import com.example.equipment.domain.RequestNotEditable
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException
@@ -75,11 +80,36 @@ class ApiExceptionHandler(
     fun stateConflict(exception: RequestNotEditable, request: HttpServletRequest) =
         error(HttpStatus.CONFLICT, "REQUEST_STATE_CONFLICT", "This request can no longer be edited", request)
 
+    @ExceptionHandler(InvalidRequestTransition::class)
+    fun transitionConflict(exception: InvalidRequestTransition, request: HttpServletRequest) =
+        error(
+            HttpStatus.CONFLICT,
+            "REQUEST_STATE_CONFLICT",
+            "This action is not allowed while the request is ${exception.currentStatus}",
+            request,
+        )
+
+    @ExceptionHandler(EquipmentRequestBusinessRuleViolation::class)
+    fun businessRule(exception: EquipmentRequestBusinessRuleViolation, request: HttpServletRequest) =
+        error(
+            HttpStatus.UNPROCESSABLE_CONTENT,
+            exception.code,
+            businessRuleMessages[exception.code] ?: "The request does not satisfy a business rule",
+            request,
+            exception.fieldErrors,
+        )
+
     @ExceptionHandler(Exception::class)
     fun unexpected(exception: Exception, request: HttpServletRequest): ResponseEntity<ApiErrorResponse> {
         logger.error("Unexpected request failure", exception)
         return error(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "An unexpected error occurred", request)
     }
+
+    private val businessRuleMessages = mapOf(
+        ITEMS_REQUIRED to "At least one equipment item is required before submit",
+        BUSINESS_RULE_VIOLATION to "The request cannot be submitted in its current form",
+        REJECTION_REASON_REQUIRED to "A rejection reason is required",
+    )
 
     private fun error(
         status: HttpStatus,

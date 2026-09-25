@@ -95,3 +95,13 @@ data class EquipmentRequestResponse(
     val updatedAt: Instant,
 )
 
+
+data class VersionActionBody(
+    val expectedVersion: Long,
+)
+
+data class RejectActionBody(
+    val expectedVersion: Long,
+    // Nullable so a missing reason reaches the service and returns 422 after version/state checks (ADR-004).
+    val reason: String? = null,
+)
