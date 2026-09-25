@@ -1,6 +1,6 @@
 # TASK-009: Whole system in Docker for UI testing
 
-Status: Implement approved
+Status: Verify approved — Delivery pending
 Owner: Developer
 Requirement IDs: REQ-13 (delivery; the Docker Compose bonus), supporting the TASK-008 acceptance run
 Dependencies: TASK-008
@@ -12,6 +12,7 @@ Dependencies: TASK-008
 | Requirements | Project owner | Approved | 2026-09-25 / user requests: "build เป็น docker สำหรับ test ui", project name `home-quiz`, "compose ให้เหลือ file เดียว" |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / decisions 1–5 below |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / [TASK-009 evidence](../../quality/evidence/TASK-009.md) |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved" |
 
 ## Design decisions
 1. **One `compose.yaml` (project `home-quiz`) with profiles:**

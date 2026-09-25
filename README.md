@@ -3,7 +3,7 @@
 ระบบให้ Employee สร้างและติดตามคำขออุปกรณ์ IT และให้ Approver ค้นหา อนุมัติ หรือปฏิเสธคำขอ ตาม[โจทย์ต้นฉบับ](Home-Quiz-IT-Equipment-Request-Management_revise_1.html)
 พัฒนาแบบ AI-native SDLC: ทุก task มี design, human approval gate และหลักฐานทดสอบจริงใน repository (ดู [playbook](docs/playbook.md) และ [approvals](docs/governance/approvals.md))
 
-**สถานะ:** TASK-001 ถึง TASK-007 ผ่าน Implement gate แล้ว (k6 ผ่านทุก threshold, clean-start rehearsal ผ่าน); Verify และ Delivery gates รอ QA / release owner; ประเด็นเปิด G-1 และ H-1 ดู [TASK-007 evidence](docs/quality/evidence/TASK-007.md)
+**สถานะ:** TASK-001 ถึง TASK-009 ผ่าน Verify gate แล้ว (2026-09-25); รอ Delivery gate โดย release owner; ประเด็นเปิด G-1 และ H-1 ดู [TASK-007 evidence](docs/quality/evidence/TASK-007.md)
 
 ## Environment
 

@@ -1,6 +1,6 @@
 # TASK-008: Playwright acceptance automation
 
-Status: Implement approved — results handed to QA / acceptance owner
+Status: Verify approved — Delivery pending
 Owner: Developer
 Requirement IDs: REQ-01–REQ-08, REQ-10, REQ-11 (verification only; no product change)
 Dependencies: TASK-007 (merged); [acceptance test cases](../../quality/acceptance-test-cases.md)
@@ -12,6 +12,7 @@ Dependencies: TASK-007 (merged); [acceptance test cases](../../quality/acceptanc
 | Requirements | Project owner | Approved | 2026-09-25 / user request "test ด้วย playwright" |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / decisions 1–6 below (reviewed together with the implementation) |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / [TASK-008 evidence](../../quality/evidence/TASK-008.md) |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved" |
 
 ## Scope / non-goals
 Automate the QA acceptance cases in a real browser. Non-goals: product changes, changing the QA sign-off process (automation results are evidence; the QA / acceptance owner still decides the Verify gate), cross-browser coverage and CI.
