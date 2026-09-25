@@ -295,7 +295,7 @@ components:
       required: [employeeName, employeeEmail, department, title, purpose, requiredDate, items]
       properties:
         employeeName: { type: string, minLength: 2, maxLength: 100 }
-        employeeEmail: { type: string, format: email }
+        employeeEmail: { type: string, format: email, maxLength: 254 }
         department: { type: string, minLength: 1, maxLength: 100 }
         title: { type: string, minLength: 5, maxLength: 150 }
         purpose: { type: string, minLength: 10, maxLength: 500 }

@@ -1,6 +1,6 @@
 # TASK-002: Contract, domain และ data baseline
 
-Status: In progress — Implement
+Status: Implement approved — Verify pending
 Owner: Developer
 Requirement IDs: REQ-01, REQ-02, REQ-03, REQ-06, REQ-07, REQ-09
 Dependencies: TASK-001
@@ -10,7 +10,7 @@ Dependencies: TASK-001
 | --- | --- | --- | --- |
 | Requirements | Project owner | Approved | 2026-09-25 / Discover analysis Q-01 through Q-12 |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-002 + OpenAPI + data/UI/test design |
-| Implement | Code reviewer | In progress | domain + migration baseline |
+| Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / domain + migration baseline + evidence |
 | Verify | QA / acceptance owner | Pending | — |
 | Delivery | Release owner | Pending | — |
 
@@ -28,14 +28,14 @@ Dependencies: TASK-001
 5. ออกแบบ application transaction, entity/DTO mapping, optimistic locking และ exception translation
 
 ## Acceptance criteria
-- [ ] Contract ครบ endpoints และ pagination metadata; version/reason/identity ระบุชัด
-- [ ] State/role matrix มีทั้ง allowed และ denied cases; client status ไม่กำหนด state ของ entity
-- [ ] Validation boundaries ของ name/email/department/title/purpose/date/note/type/quantity/specification ครบ
-- [ ] Fresh DB migration สำเร็จและรันซ้ำไม่สร้าง schema ซ้ำ; ไม่มี production ddl-auto=create
-- [ ] Domain tests ครอบคลุม transitions และ terminal states; assumptions/ADR ตรงกับ contract
+- [x] Contract ครบ endpoints และ pagination metadata; version/reason/identity ระบุชัดและ parser ผ่าน
+- [x] State/role matrix มีทั้ง allowed และ denied cases; client status ไม่อยู่ใน mutation inputs
+- [x] Validation boundaries ของ name/email/department/title/purpose/date/note/type/quantity/specification ครบ
+- [x] Fresh DB migration สำเร็จและ restart ไม่สร้าง schema ซ้ำ; configuration ใช้ `ddl-auto=validate`
+- [x] Domain tests ครอบคลุม allowed/invalid/terminal transitions; assumptions/ADR ตรงกับ contract
 
 ## Verification
 ตรวจ OpenAPI ด้วย validator ที่เลือกจริง; รัน domain tests และ migration บน local PostgreSQL ตรวจ constraints, indexes และ unique number behavior บันทึก commands/output ใน evidence
 
 ## Handoff
-Design approved; domain code, Flyway migration and implementation tests are in progress
+Implement gate approved; ดู [TASK-002 evidence](../../quality/evidence/TASK-002.md) และเริ่ม TASK-003 ได้ ส่วน Verify/Delivery จะรวมตรวจใน TASK-007
