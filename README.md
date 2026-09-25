@@ -18,6 +18,20 @@ Stack: Next.js 16.3.6, React 19.3.0, TypeScript 5.9.3; Spring Boot 4.1.1, Kotlin
 
 ## Run
 
+### ทางลัด: ทั้งระบบใน Docker (สำหรับ test UI / QA)
+
+ต้องมีแค่ Docker — build backend และ frontend เป็น image แล้วรันพร้อม PostgreSQL และ Redis จาก `compose.yaml` ไฟล์เดียว (project `home-quiz`):
+
+```bash
+docker compose --profile app up -d --build --wait        # http://localhost:3000/requests , API http://localhost:8080
+docker compose --profile app --profile seed run --rm seed # (optional) 1,200 คำขอสำหรับทดสอบ search/pagination
+docker compose --profile app down                         # หยุด (ใส่ -v เพื่อลบข้อมูล)
+```
+
+ถ้า port ชน ให้ตั้ง `FRONTEND_PORT` / `BACKEND_PORT` เช่น `FRONTEND_PORT=3300 BACKEND_PORT=8090 docker compose --profile app up -d --build --wait` Browser เรียก API ผ่าน frontend เดียวกัน (`/api/v1` → backend) จึงไม่ต้องตั้ง CORS เอง
+
+### Development (backend/frontend บน host)
+
 จาก repository root (PowerShell; บน macOS/Linux ใช้ `cp` และ `./mvnw`):
 
 ```powershell
@@ -56,7 +70,7 @@ docker run --rm -v "${PWD}:/workspace" -w /workspace/frontend node:24.15.0-alpin
 
 - Backend: JUnit 5 + MockK; MVC tests สำหรับ error envelope/precedence; Testcontainers PostgreSQL + Redis สำหรับ search, cache, rollback และ outage
 - Frontend: Vitest + React Testing Library เน้นพฤติกรรมที่ผู้ใช้เห็น (form, actions, list/URL state, stale response)
-- E2E / acceptance: Playwright ใน [`tests/e2e`](tests/e2e/README.md) — `bash tests/e2e/run-e2e.sh` รัน 53 จาก 55 [acceptance test cases](docs/quality/acceptance-test-cases.md) ผ่าน browser จริง
+- E2E / acceptance: Playwright ใน [`tests/e2e`](tests/e2e/README.md) — `bash tests/e2e/run-e2e.sh` (ต้องมีแค่ Docker) build ทั้งระบบเป็น container แล้วรัน 53 จาก 55 [acceptance test cases](docs/quality/acceptance-test-cases.md) ผ่าน browser จริง
 - Performance: [k6 README](tests/performance/README.md) และผลใน [`tests/performance/results/`](tests/performance/results/)
 
 ## API
@@ -137,5 +151,5 @@ backend/      Spring Boot service (api, application, domain, persistence, cache,
 contracts/    OpenAPI contract
 tests/        k6 workload, seed และผล performance
 docs/         requirements, ADRs, task packets, test evidence, approvals
-compose.yaml  PostgreSQL + Redis สำหรับ local
+compose.yaml  PostgreSQL + Redis (default), ทั้งระบบ (profile app), seed และ Playwright (profile e2e)
 ```

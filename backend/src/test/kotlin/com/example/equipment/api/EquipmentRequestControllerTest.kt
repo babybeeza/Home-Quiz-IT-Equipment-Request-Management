@@ -48,7 +48,7 @@ import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@WebMvcTest(EquipmentRequestController::class, properties = ["app.cors.allowed-origin=http://localhost:3100"])
+@WebMvcTest(EquipmentRequestController::class, properties = ["app.cors.allowed-origin=http://localhost:3100, http://frontend:3000"])
 @Import(ApplicationConfiguration::class, EquipmentRequestControllerTest.ServiceBeans::class)
 class EquipmentRequestControllerTest {
     @Autowired
@@ -294,6 +294,30 @@ class EquipmentRequestControllerTest {
             status { isOk() }
             header { string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:3100") }
         }
+    }
+
+    @Test
+    fun `every configured origin may mutate and an unlisted origin is rejected`() {
+        val entity = existingEntity(version = 0)
+        every { repository.findAggregateById(entity.id) } returns entity
+        every { repository.saveAndFlush(any()) } answers { firstArg() }
+
+        // A same-origin POST proxied by the frontend still carries Origin (TASK-009 Docker stack).
+        mockMvc.post("$BASE/${entity.id}/submit") {
+            header(HttpHeaders.ORIGIN, "http://frontend:3000")
+            header("X-User-Id", "employee-001")
+            header("X-Role", "EMPLOYEE")
+            contentType = MediaType.APPLICATION_JSON
+            content = """{"expectedVersion":0}"""
+        }.andExpect { status { isOk() } }
+
+        mockMvc.post("$BASE/${entity.id}/submit") {
+            header(HttpHeaders.ORIGIN, "http://evil.example")
+            header("X-User-Id", "employee-001")
+            header("X-Role", "EMPLOYEE")
+            contentType = MediaType.APPLICATION_JSON
+            content = """{"expectedVersion":1}"""
+        }.andExpect { status { isForbidden() } }
     }
 
     @Test
