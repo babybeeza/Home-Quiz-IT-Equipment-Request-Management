@@ -1,0 +1,32 @@
+# TASK-007: Final verification, performance และส่งมอบ
+
+Status: Planned
+Owner: Unassigned (developer / reviewer)
+Requirement IDs: REQ-01 ถึง REQ-13 (final audit), โดยเฉพาะ REQ-11, REQ-12, REQ-13
+Dependencies: TASK-004, TASK-005, TASK-006
+
+## Context
+[แผนหลัก](../implementation-plan.md), [test strategy](../../quality/test-strategy.md), [traceability](../../product/traceability.md), [runbook](../../operations/runbook.md), [performance template](../../../tests/performance/results/TEMPLATE.md)
+
+## Implementation plan
+1. Audit requirement→implementation→test→evidence ทุก ID; ตรวจ FE ≥4, BE ≥6 พร้อม behavioral assertions ไม่ใช่เพียงไฟล์ test
+2. รัน lint/typecheck/build/unit และ integration/contract checks ของ final revision; smoke user journeys ครบ roles พร้อม conflict/error path
+3. Resolve A-06: finalize k6 thresholds/dataset/workload/hardware ก่อนรัน สร้าง seed/cleanup ที่รันซ้ำได้ ใช้ dates อิง clock
+4. k6 smoke → baseline → stress; เก็บ disabled/cold/warm cache แยกกัน, expected conflicts แยก metric, ใช้ IDs/versions ไม่ชนกันจาก test setup
+5. รายงาน p50/p95/p99, throughput, unexpected errors, correctness, cache/DB observations พร้อม artifact และข้อจำกัด
+6. README prerequisites/versions/install/run/test/API/mock identity/state/cache/decisions/assumptions; migration/schema และ env example ครบ
+7. Clean-start rehearsal บน local environment, migration/restore หรือ forward-fix rehearsal ตามที่เลือก; บันทึก repository/revision และ final handoff
+
+## Acceptance criteria
+- [ ] Mandatory requirements ทุกข้อมี evidence หรือรายงาน gap ที่ทำให้ยังไม่ผ่านอย่างชัดเจน
+- [ ] FE/BE minimum tests ผ่านจริง และ concurrency/transaction/cache tests ของแผนผ่าน
+- [ ] k6 รันจริงและมี report พร้อม workload/environment/threshold results; threshold fail ต้องรายงาน ไม่ปรับย้อนหลังเพื่อให้ผ่าน
+- [ ] ผู้อื่นทำตาม README จาก clean checkout แล้ว start frontend/backend/DB/Redis และ demo workflow ได้
+- [ ] Source, tests, API docs, migration/schema, lockfiles/wrapper และ limitations ครบ; ไม่มี secrets
+- [ ] Runbook ระบุ health/smoke/recovery steps ที่ทดสอบแล้ว; ไม่อ้างว่า deploy cloud แล้ว
+
+## Verification
+ใช้ commands จาก manifests/wrappers จริง เก็บ output ที่ docs/quality/evidence และ tests/performance/results; หาก environment ทำให้ตรวจไม่ได้ ระบุ NOT RUN และยังไม่ mark task Done
+
+## Handoff
+Release summary: revision, behaviors, test/perf evidence, known limitations, run instructions และ bonus ที่เลื่อน; implementation ยัง NOT RUN
