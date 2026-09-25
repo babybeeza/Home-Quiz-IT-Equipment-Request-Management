@@ -16,7 +16,7 @@ Dependencies: None
 | Requirements | Project owner | Approved to proceed | 2026-09-25 / implementation request |
 | Design | Project owner acting as technical owner | Approved to proceed | 2026-09-25 / implementation plan + ADR-001 |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / TASK-001 working tree and evidence |
-| Verify | QA / acceptance owner | Pending | — |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved"; sign-off details in [acceptance test cases](../../quality/acceptance-test-cases.md) |
 | Delivery | Release owner | Pending | — |
 
 ## Scope

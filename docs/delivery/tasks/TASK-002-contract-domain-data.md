@@ -1,6 +1,6 @@
 # TASK-002: Contract, domain และ data baseline
 
-Status: Implement approved — Verify pending
+Status: Verify approved — Delivery pending
 Owner: Developer
 Requirement IDs: REQ-01, REQ-02, REQ-03, REQ-06, REQ-07, REQ-09
 Dependencies: TASK-001
@@ -11,7 +11,7 @@ Dependencies: TASK-001
 | Requirements | Project owner | Approved | 2026-09-25 / Discover analysis Q-01 through Q-12 |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-002 + OpenAPI + data/UI/test design |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / domain + migration baseline + evidence |
-| Verify | QA / acceptance owner | Pending | — |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved"; sign-off details in [acceptance test cases](../../quality/acceptance-test-cases.md) |
 | Delivery | Release owner | Pending | — |
 
 ## Context

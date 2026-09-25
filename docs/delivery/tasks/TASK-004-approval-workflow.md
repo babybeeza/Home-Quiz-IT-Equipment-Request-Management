@@ -1,6 +1,6 @@
 # TASK-004: Submit, approve, reject และ cancel
 
-Status: Implement approved — Verify pending
+Status: Verify approved — Delivery pending
 Owner: Developer
 Requirement IDs: REQ-01, REQ-02, REQ-03, REQ-04, REQ-06, REQ-07, REQ-11
 Dependencies: TASK-003 (Implement approved)
@@ -12,7 +12,7 @@ Dependencies: TASK-003 (Implement approved)
 | Requirements | Project owner | Approved | 2026-09-25 / approved requirements and Discover baseline |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-004 + TASK-004 test design |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / TASK-004 evidence |
-| Verify | QA / acceptance owner | Pending | — |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved"; sign-off details in [acceptance test cases](../../quality/acceptance-test-cases.md) |
 | Delivery | Release owner | Pending | — |
 
 ## Context

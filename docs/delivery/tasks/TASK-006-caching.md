@@ -1,6 +1,6 @@
 # TASK-006: Redis และ Caffeine caching
 
-Status: Implement approved — Verify pending
+Status: Verify approved — Delivery pending
 Owner: Developer
 Requirement IDs: REQ-01, REQ-07, REQ-10, REQ-11
 Dependencies: TASK-004, TASK-005 (both Implement approved and merged)
@@ -12,7 +12,7 @@ Dependencies: TASK-004, TASK-005 (both Implement approved and merged)
 | Requirements | Project owner | Approved | 2026-09-25 / approved requirements and Discover baseline (Q-11) |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-006 + TASK-006 test design |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / TASK-006 evidence |
-| Verify | QA / acceptance owner | Pending | — |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved"; sign-off details in [acceptance test cases](../../quality/acceptance-test-cases.md) |
 | Delivery | Release owner | Pending | — |
 
 ## Context

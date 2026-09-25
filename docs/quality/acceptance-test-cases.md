@@ -137,12 +137,12 @@ Use a request `{id}` and its current `version` from `GET /equipment-requests/{id
 
 | Item | Value |
 | --- | --- |
-| Tester | |
-| Execution date / environment | |
-| P1 result | __ / 43 Pass |
-| P2 result | __ / 12 Pass |
-| Defects opened | |
-| Decision on G-1 (AT-33) | |
-| Verify gate decision | Approved / Changes requested |
+| Tester | Project owner acting as QA / acceptance owner |
+| Execution date / environment | 2026-09-25 / not stated at approval |
+| P1 result | Not provided at approval (latest automated run: 49/49 tests covering 53 AT cases, [TASK-009 evidence](evidence/TASK-009.md)) |
+| P2 result | Not provided at approval |
+| Defects opened | None reported |
+| Decision on G-1 (AT-33) | **Not stated.** Approval was given while G-1 is open, so the deviation stands as documented until the owner decides |
+| Verify gate decision | **Approved**: user statement "QA Approved", 2026-09-25 |
 
 The Verify gate may be approved only when every P1 case passes, or its failure has a decision recorded. Record that decision in [approvals.md](../governance/approvals.md).

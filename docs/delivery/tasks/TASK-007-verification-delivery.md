@@ -1,6 +1,6 @@
 # TASK-007: Final verification, performance และส่งมอบ
 
-Status: Implement approved — Verify pending (G-1, H-1 open)
+Status: Verify approved — Delivery pending (G-1, H-1 still open)
 Owner: Developer
 Requirement IDs: REQ-01 ถึง REQ-13 (final audit), โดยเฉพาะ REQ-11, REQ-12, REQ-13
 Dependencies: TASK-004, TASK-005, TASK-006 (all Implement approved and merged)
@@ -12,7 +12,7 @@ Dependencies: TASK-004, TASK-005, TASK-006 (all Implement approved and merged)
 | Requirements | Project owner | Approved | 2026-09-25 / approved requirements and Discover baseline (Q-12) |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-007 + TASK-007 test design |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / TASK-007 evidence + performance report; G-1 and H-1 not yet decided |
-| Verify | QA / acceptance owner | Pending | — |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved"; sign-off details in [acceptance test cases](../../quality/acceptance-test-cases.md) |
 | Delivery | Release owner | Pending | — |
 
 ## Context

@@ -1,6 +1,6 @@
 # TASK-003: Create, view และ edit draft end-to-end
 
-Status: Implement approved — Verify pending
+Status: Verify approved — Delivery pending
 Owner: Developer
 Requirement IDs: REQ-01, REQ-03, REQ-04, REQ-06, REQ-07, REQ-08, REQ-09, REQ-11
 Dependencies: TASK-002
@@ -12,7 +12,7 @@ Dependencies: TASK-002
 | Requirements | Project owner | Approved | 2026-09-25 / approved requirements and Discover baseline |
 | Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-003 + TASK-003 test design |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / TASK-003 evidence review rounds 1–2 |
-| Verify | QA / acceptance owner | Pending | — |
+| Verify | Project owner acting as QA / acceptance owner | Approved | 2026-09-25 / user statement "QA Approved"; sign-off details in [acceptance test cases](../../quality/acceptance-test-cases.md) |
 | Delivery | Release owner | Pending | — |
 
 ## Context

@@ -7,7 +7,7 @@
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
 | Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-007 |
 | Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-009 |
-| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Pending |
+| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Approved through TASK-009 (project owner acting as QA) |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
 
 ## Approval record
@@ -37,5 +37,6 @@
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-008 evidence](../quality/evidence/TASK-008.md) | User approved the acceptance automation (49/49 tests, 53 of 55 AT cases); Verify still requires the QA / acceptance owner |
 | Design | Approved | Project owner acting as technical owner | 2026-09-25 | [TASK-009 packet](../delivery/tasks/TASK-009-docker-ui-test.md) | User approved the single compose.yaml (project home-quiz), Docker images, same-origin proxy and multi-origin CORS |
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-009 evidence](../quality/evidence/TASK-009.md) | User approved the Docker UI-test stack (Playwright 49/49 in containers), including the disclosed Dockerfile overwrite and the old-project volumes left in place |
+| Verify | Approved | Project owner acting as QA / acceptance owner | 2026-09-25 | [acceptance test cases](../quality/acceptance-test-cases.md), [TASK-008](../quality/evidence/TASK-008.md) and [TASK-009](../quality/evidence/TASK-009.md) evidence | User stated "QA Approved" for TASK-001 to TASK-009. No manual pass counts or G-1 decision were supplied; G-1 and H-1 remain open |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง
