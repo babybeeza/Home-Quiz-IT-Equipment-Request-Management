@@ -6,24 +6,22 @@ Pinned: `@playwright/test` 1.63.0 (lockfile) running in `mcr.microsoft.com/playw
 
 ## Run
 
-From the repository root, with Docker running and the backend jar built (`cd backend; .\mvnw.cmd package`):
+From the repository root. **Only Docker is required**: the backend and frontend are built as images from `compose.yaml` (profile `e2e`, TASK-009).
 
 ```bash
 bash tests/e2e/run-e2e.sh                  # all tests
 bash tests/e2e/run-e2e.sh -g "AT-2"        # filter by title
+KEEP_STACK=1 bash tests/e2e/run-e2e.sh     # keep the stack running afterwards for inspection
 ```
 
 The script:
-1. starts Compose PostgreSQL/Redis and loads the [seed dataset](../performance/seed-search-dataset.sql) that section F needs
-2. starts the backend jar on `:8080`, allowing CORS from `http://host.docker.internal:3200`
-3. builds and starts the frontend (`next build && next start`) on `:3200`, with `NEXT_PUBLIC_API_BASE_URL=http://host.docker.internal:8080/api/v1`
-4. runs Playwright in its container, where the browser reaches the host through `host.docker.internal`
-5. stops the backend and the frontend container, and exits with the Playwright status
+1. builds the images
+2. runs the `e2e` service as the separate Compose project `home-quiz-e2e`, on ports 55432/56379/58080/53000 (override with `E2E_*_PORT`), so it never touches the development database
+3. Compose starts PostgreSQL, Redis, backend, frontend and the one-shot `seed` in dependency order
+4. Playwright runs inside the same Docker network against `http://frontend:3000`; the API cases hit `http://backend:8080` directly
+5. the whole project and its volumes are removed afterwards
 
-Change the frontend port with `E2E_FRONTEND_PORT`. Outputs, all git-ignored:
-- `playwright-report/index.html`: HTML report with traces and screenshots of failures
-- `results/results.json`
-- `results/backend.log`
+Outputs, all git-ignored: `playwright-report/index.html` (HTML report with traces and screenshots of failures) and `results/results.json`.
 
 ## Conventions
 

@@ -21,13 +21,15 @@ class ApplicationConfiguration {
     fun equipmentRequestValidator(clock: Clock, businessZone: ZoneId) =
         EquipmentRequestValidator(clock, businessZone)
 
+    /** `app.cors.allowed-origin` accepts a comma-separated list (e.g. the host URL and the Docker-network URL). */
     @Bean
     fun corsConfiguration(
         @Value("\${app.cors.allowed-origin}") allowedOrigin: String,
     ): WebMvcConfigurer = object : WebMvcConfigurer {
         override fun addCorsMappings(registry: CorsRegistry) {
+            val origins = allowedOrigin.split(',').map(String::trim).filter(String::isNotEmpty)
             registry.addMapping("/api/**")
-                .allowedOrigins(allowedOrigin)
+                .allowedOrigins(*origins.toTypedArray())
                 .allowedMethods("GET", "POST", "PUT", "OPTIONS")
                 .allowedHeaders("Content-Type", "X-User-Id", "X-Role")
         }

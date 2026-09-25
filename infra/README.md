@@ -1,5 +1,15 @@
 # Infrastructure
 
-พื้นที่สำหรับ local PostgreSQL/Redis และ deployment configuration หลังเลือก versions และ target แล้ว ยังไม่มี services ที่ provision หรือ Compose file ที่รันได้
+Local environments are defined by the single [`compose.yaml`](../compose.yaml) (project `home-quiz`) and the two Dockerfiles:
 
-เมื่อ implement: ระบุ ports, health checks, persistent volumes, environment variables, migrations และ seed data ใน README ใช้ `.env.example` เฉพาะชื่อ/ค่าตัวอย่างที่ไม่ใช่ความลับ ห้าม commit `.env`
+| Profile | Services | Use |
+| --- | --- | --- |
+| (default) | `postgres`, `redis` | Development with the backend and frontend on the host |
+| `app` | + `backend` ([Dockerfile](../backend/Dockerfile)), `frontend` ([Dockerfile](../frontend/Dockerfile)) | Whole system in Docker for manual UI testing / QA |
+| `seed` | `seed` (one-shot) | Loads the 1,200-request search dataset |
+| `e2e` | app + seed + `e2e` (Playwright) | Acceptance suite; run through `tests/e2e/run-e2e.sh` as the isolated project `home-quiz-e2e` |
+
+- **Ports:** set by `POSTGRES_PORT`, `REDIS_PORT`, `BACKEND_PORT` and `FRONTEND_PORT` (see `.env.example`).
+- **Frontend image:** production Next.js build. The browser calls same-origin `/api/v1`, which Next proxies to `http://backend:8080`.
+- **CORS:** the backend accepts a comma-separated `FRONTEND_ORIGIN` because proxied POST/PUT still carry the browser's `Origin`.
+- **No cloud target:** none is provisioned; see the [runbook](../docs/operations/runbook.md).

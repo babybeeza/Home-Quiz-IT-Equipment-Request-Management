@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
 | Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-007 |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-008 |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-009 |
 | Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Pending |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
 
@@ -35,5 +35,7 @@
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-007 evidence](../quality/evidence/TASK-007.md), [performance report](../../tests/performance/results/TASK-007-report.md) | User approved TASK-007 without deciding G-1 (list row actions) or H-1 (token in assignment HTML); both remain open for the Verify/Delivery owners |
 | Design | Approved | Project owner acting as technical owner | 2026-09-25 | [TASK-008 packet](../delivery/tasks/TASK-008-e2e-acceptance.md) | User approved the Playwright tooling decisions together with the implementation |
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-008 evidence](../quality/evidence/TASK-008.md) | User approved the acceptance automation (49/49 tests, 53 of 55 AT cases); Verify still requires the QA / acceptance owner |
+| Design | Approved | Project owner acting as technical owner | 2026-09-25 | [TASK-009 packet](../delivery/tasks/TASK-009-docker-ui-test.md) | User approved the single compose.yaml (project home-quiz), Docker images, same-origin proxy and multi-origin CORS |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-009 evidence](../quality/evidence/TASK-009.md) | User approved the Docker UI-test stack (Playwright 49/49 in containers), including the disclosed Dockerfile overwrite and the old-project volumes left in place |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง
