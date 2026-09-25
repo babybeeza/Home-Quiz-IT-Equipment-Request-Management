@@ -1,0 +1,253 @@
+{
+    "root_group": {
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "employee list: first page": {
+                    "name": "employee list: first page",
+                    "path": "::employee list: first page",
+                    "id": "d17ed16d2b562e501afa47def885e6c5",
+                    "passes": 29,
+                    "fails": 0
+                },
+                "employee list: exactly own 120": {
+                    "name": "employee list: exactly own 120",
+                    "path": "::employee list: exactly own 120",
+                    "id": "2e6b834594bd4d6f00abf3d09fa7d1d5",
+                    "passes": 29,
+                    "fails": 0
+                },
+                "employee list: only own rows": {
+                    "fails": 0,
+                    "name": "employee list: only own rows",
+                    "path": "::employee list: only own rows",
+                    "id": "f2e5ee727662a90a9a66444d2ec23d79",
+                    "passes": 29
+                },
+                "approver list: status filter holds": {
+                    "id": "ccc849adc70f773243e67e9736ab6a77",
+                    "passes": 9,
+                    "fails": 0,
+                    "name": "approver list: status filter holds",
+                    "path": "::approver list: status filter holds"
+                },
+                "approver list: department filter holds": {
+                    "fails": 0,
+                    "name": "approver list: department filter holds",
+                    "path": "::approver list: department filter holds",
+                    "id": "72315706f5e075e6b210c4ee12d5e798",
+                    "passes": 9
+                },
+                "approver list: keyword filter holds": {
+                    "passes": 9,
+                    "fails": 0,
+                    "name": "approver list: keyword filter holds",
+                    "path": "::approver list: keyword filter holds",
+                    "id": "880ed2e6f139ff6f7513cd448c695770"
+                },
+                "approver list: page metadata consistent": {
+                    "passes": 9,
+                    "fails": 0,
+                    "name": "approver list: page metadata consistent",
+                    "path": "::approver list: page metadata consistent",
+                    "id": "9f76e2f2a60b6bc92c41cb1f0e333369"
+                },
+                "detail: correct id": {
+                    "name": "detail: correct id",
+                    "path": "::detail: correct id",
+                    "id": "101bbd11c549942261f9f8f2072d1b2b",
+                    "passes": 36,
+                    "fails": 0
+                },
+                "detail: seeded version": {
+                    "name": "detail: seeded version",
+                    "path": "::detail: seeded version",
+                    "id": "5bc0bb5d51a7681a05587e32eb457141",
+                    "passes": 36,
+                    "fails": 0
+                },
+                "workflow: created DRAFT v0": {
+                    "name": "workflow: created DRAFT v0",
+                    "path": "::workflow: created DRAFT v0",
+                    "id": "0fa8e05c6b8e5d03919a4ed9b3b396fa",
+                    "passes": 22,
+                    "fails": 0
+                },
+                "workflow: edited v1": {
+                    "name": "workflow: edited v1",
+                    "path": "::workflow: edited v1",
+                    "id": "fa2fbd3713b025c2a180f1df72c6180d",
+                    "passes": 22,
+                    "fails": 0
+                },
+                "workflow: submitted PENDING v2": {
+                    "name": "workflow: submitted PENDING v2",
+                    "path": "::workflow: submitted PENDING v2",
+                    "id": "a75168372cc5638c9ee3a0eb2e313018",
+                    "passes": 22,
+                    "fails": 0
+                },
+                "workflow: decided v3": {
+                    "fails": 0,
+                    "name": "workflow: decided v3",
+                    "path": "::workflow: decided v3",
+                    "id": "be69d6e605b3d83f3d4a252581438654",
+                    "passes": 22
+                },
+                "workflow: detail shows final state": {
+                    "name": "workflow: detail shows final state",
+                    "path": "::workflow: detail shows final state",
+                    "id": "1f51263ca6e2d3a0d0b01308ba5ecd58",
+                    "passes": 22,
+                    "fails": 0
+                },
+                "workflow: stale approve is 409 version conflict": {
+                    "passes": 4,
+                    "fails": 0,
+                    "name": "workflow: stale approve is 409 version conflict",
+                    "path": "::workflow: stale approve is 409 version conflict",
+                    "id": "d08ef286de5d381ef213df01a1598d1d"
+                }
+            },
+        "name": ""
+    },
+    "metrics": {
+        "http_req_duration{expected_response:true}": {
+            "p(99)": 49.05459471999988,
+            "max": 145.134299,
+            "avg": 11.894827945945943,
+            "min": 4.948724,
+            "med": 11.226796,
+            "p(90)": 15.1029338,
+            "p(95)": 16.5030272
+        },
+        "expected_conflicts": {
+            "count": 4,
+            "rate": 0.13288124667823334
+        },
+        "unexpected_errors": {
+            "passes": 0,
+            "fails": 188,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "http_req_connecting": {
+            "med": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "p(99)": 1.2523543600000002,
+            "max": 1.4753,
+            "avg": 0.0213019417989418,
+            "min": 0
+        },
+        "http_req_duration": {
+            "p(95)": 16.5398578,
+            "p(99)": 80.13878980000008,
+            "max": 145.134299,
+            "avg": 12.2427594021164,
+            "min": 4.948724,
+            "med": 11.177356,
+            "p(90)": 15.195362800000007,
+            "thresholds": {
+                "p(95)<500": false,
+                "p(99)<1000": false
+            }
+        },
+        "data_received": {
+            "count": 250867,
+            "rate": 8333.879927607091
+        },
+        "checks": {
+            "fails": 0,
+            "passes": 309,
+            "thresholds": {
+                "rate==1.0": false
+            },
+            "value": 1
+        },
+        "http_reqs": {
+            "count": 189,
+            "rate": 6.278638905546526
+        },
+        "http_req_failed": {
+            "passes": 4,
+            "fails": 185,
+            "value": 0.021164021164021163
+        },
+        "data_sent": {
+            "count": 51970,
+            "rate": 1726.459597466947
+        },
+        "vus": {
+            "min": 1,
+            "max": 1,
+            "value": 1
+        },
+        "iteration_duration": {
+            "avg": 313.4191418645835,
+            "min": 112.779881,
+            "med": 283.6632945,
+            "p(90)": 478.0871185,
+            "p(95)": 493.66657050000003,
+            "p(99)": 532.4600502499999,
+            "max": 547.265805
+        },
+        "vus_max": {
+            "max": 1,
+            "value": 1,
+            "min": 1
+        },
+        "http_req_receiving": {
+            "avg": 0.11402886243386241,
+            "min": 0.065704,
+            "med": 0.105207,
+            "p(90)": 0.13822800000000002,
+            "p(95)": 0.15566939999999993,
+            "p(99)": 0.3618209600000006,
+            "max": 0.517435
+        },
+        "http_req_blocked": {
+            "p(95)": 0.006460999999999999,
+            "p(99)": 1.371181400000001,
+            "max": 3.133005,
+            "avg": 0.03656107407407407,
+            "min": 0.0031,
+            "med": 0.0045,
+            "p(90)": 0.0059
+        },
+        "http_req_tls_handshaking": {
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "p(99)": 0,
+            "max": 0
+        },
+        "http_req_waiting": {
+            "max": 145.005991,
+            "avg": 12.099813899470897,
+            "min": 4.834817,
+            "med": 11.050747,
+            "p(90)": 15.033211800000007,
+            "p(95)": 16.349271199999997,
+            "p(99)": 79.92658004000008
+        },
+        "iterations": {
+            "count": 96,
+            "rate": 3.1891499202776004
+        },
+        "http_req_sending": {
+            "min": 0.0098,
+            "med": 0.033402,
+            "p(90)": 0.04380280000000001,
+            "p(95)": 0.05150259999999998,
+            "p(99)": 0.07100100000000004,
+            "max": 0.078505,
+            "avg": 0.028916640211640213
+        }
+    }
+}

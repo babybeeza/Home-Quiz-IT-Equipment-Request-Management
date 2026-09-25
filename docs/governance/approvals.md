@@ -5,8 +5,8 @@
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
-| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-006 |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-006 |
+| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-007 |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-007 |
 | Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Pending |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
 
@@ -31,5 +31,7 @@
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-005 evidence](../quality/evidence/TASK-005.md) | User explicitly approved the TASK-005 search/list implementation, tests, query-plan evidence and the documented debounce deviation |
 | Design | Approved | Project owner acting as technical owner | 2026-09-25 | [ADR-006](../architecture/decisions/ADR-006-caching.md), [TASK-006 test design](../quality/TASK-006-test-design.md) | User explicitly approved the TASK-006 caching design including decisions 1–6 (reference-data endpoint, V2 departments migration, actuator) in [design evidence](../quality/evidence/TASK-006-design.md) |
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-006 evidence](../quality/evidence/TASK-006.md) | User explicitly approved the TASK-006 caching implementation, tests, two-instance evidence and the documented outage-latency and health limitations |
+| Design | Approved | Project owner acting as technical owner | 2026-09-25 | [ADR-007](../architecture/decisions/ADR-007-performance-and-delivery.md), [TASK-007 test design](../quality/TASK-007-test-design.md) | User explicitly approved the k6 thresholds, workload, runs and delivery verification before any run, resolving A-06 |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-007 evidence](../quality/evidence/TASK-007.md), [performance report](../../tests/performance/results/TASK-007-report.md) | User approved TASK-007 without deciding G-1 (list row actions) or H-1 (token in assignment HTML); both remain open for the Verify/Delivery owners |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง
