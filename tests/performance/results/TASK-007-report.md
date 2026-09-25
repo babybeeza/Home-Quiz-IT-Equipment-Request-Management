@@ -78,5 +78,5 @@ Every check passed in every run.
 - k6 summary export has no per-endpoint percentiles because no tag-scoped thresholds were defined. The raw per-run output is kept alongside this report.
 
 Evidence artifacts: [`TASK-007/`](TASK-007/)
-- per run: `<run>.json` (summary export), `<run>.txt` (k6 output), `<run>-cache.txt` (actuator counters and Redis key count) and `<run>-backend.log`
+- per run: `<run>.json` (summary export), `<run>.txt` (k6 output) and `<run>-cache.txt` (actuator counters and Redis key count). Backend logs (`<run>-backend.log`) are written by the script but excluded by `.gitignore` (`*.log`), so they are not in the repository
 - per warm run: `<run>-warmup.txt`
