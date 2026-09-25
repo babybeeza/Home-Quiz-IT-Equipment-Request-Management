@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
 | Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-003 |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | In progress for TASK-003 |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-003 |
 | Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Pending |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
 
@@ -24,5 +24,6 @@
 | Design | Approved | Project owner acting as technical owner | 2026-09-25 | [ADR-002](../architecture/decisions/ADR-002-request-contract-and-domain.md), [OpenAPI](../../contracts/openapi.yaml), [data model](../architecture/data-model.md), [UI flow](../architecture/ui-flow.md) | User explicitly approved the TASK-002 Design package |
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-002 evidence](../quality/evidence/TASK-002.md) | User explicitly approved the TASK-002 domain, validation, tests and migration baseline |
 | Design | Approved | Project owner acting as technical owner | 2026-09-25 | [ADR-003](../architecture/decisions/ADR-003-draft-vertical-slice.md), [TASK-003 test design](../quality/TASK-003-test-design.md) | User explicitly approved the TASK-003 draft vertical-slice design |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-003 evidence](../quality/evidence/TASK-003.md) | User explicitly approved TASK-003 after review rounds 1–2, including the ADR-003 layer-wording amendment (no behavior or contract change) |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง

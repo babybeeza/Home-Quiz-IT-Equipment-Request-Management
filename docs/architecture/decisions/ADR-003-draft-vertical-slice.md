@@ -33,8 +33,8 @@ Option 1 separates server and form concerns and supports dynamic arrays and nest
 
 ### Backend layers
 
-- `api`: controllers, header identity parsing, request/response DTOs and global exception translation.
-- `application`: transactional create/get/update use cases, request-number allocation, authorization order and DTO mapping.
+- `api`: controllers, header identity parsing, request/response DTOs, DTO ↔ draft/view mapping and global exception translation.
+- `application`: transactional create/get/update use cases over domain drafts, request-number allocation, authorization order and entity → view mapping. It does not depend on `api` types. (Amended 2026-09-25 in TASK-003 review round 2; no behavior or contract change.)
 - `domain`: approved status, access and validation policies. The application layer calls these policies rather than duplicating rules.
 - `persistence`: JPA entities and repositories. API responses never expose entities.
 

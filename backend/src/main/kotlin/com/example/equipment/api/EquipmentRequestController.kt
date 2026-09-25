@@ -1,0 +1,62 @@
+package com.example.equipment.api
+
+import com.example.equipment.application.EquipmentRequestService
+import com.example.equipment.domain.Actor
+import com.example.equipment.domain.ActorRole
+import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
+
+@RestController
+@RequestMapping("/api/v1/equipment-requests")
+class EquipmentRequestController(
+    private val service: EquipmentRequestService,
+) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    fun create(
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+        @Valid @RequestBody body: CreateEquipmentRequestBody,
+    ): EquipmentRequestResponse = service.create(actor(userId, role), body.toDraft()).toResponse()
+
+    @GetMapping("/{id}")
+    fun get(
+        @PathVariable id: UUID,
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+    ): EquipmentRequestResponse = service.get(actor(userId, role), id).toResponse()
+
+    @PutMapping("/{id}")
+    fun update(
+        @PathVariable id: UUID,
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+        // No @Valid: the service validates after ownership, version and state checks to keep the contract's error precedence.
+        @RequestBody body: UpdateEquipmentRequestBody,
+    ): EquipmentRequestResponse =
+        service.update(actor(userId, role), id, body.toDraft(), body.expectedVersion).toResponse()
+
+    private fun actor(userId: String, rawRole: String): Actor {
+        val normalizedUserId = userId.trim()
+        if (normalizedUserId.isEmpty() || normalizedUserId.length > 100) throw MalformedIdentity()
+        val role = try {
+            ActorRole.valueOf(rawRole)
+        } catch (_: IllegalArgumentException) {
+            throw MalformedIdentity()
+        }
+        return Actor(normalizedUserId, role)
+    }
+}
+
+class MalformedIdentity : RuntimeException("X-User-Id or X-Role is invalid")
+
