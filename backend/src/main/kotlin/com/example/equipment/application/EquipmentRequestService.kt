@@ -6,6 +6,7 @@ import com.example.equipment.domain.EquipmentRequestDraft
 import com.example.equipment.domain.EquipmentRequestValidator
 import com.example.equipment.domain.EquipmentType
 import com.example.equipment.domain.RequestAccessPolicy
+import com.example.equipment.domain.RequestAction
 import com.example.equipment.domain.RequestOperation
 import com.example.equipment.domain.RequestStatus
 import com.example.equipment.persistence.EquipmentRequestEntity
@@ -62,14 +63,7 @@ class EquipmentRequestService(
 
     @Transactional
     fun update(actor: Actor, id: UUID, draft: EquipmentRequestDraft, expectedVersion: Long): EquipmentRequestView {
-        val entity = repository.findAggregateById(id) ?: throw EquipmentRequestNotFound(id)
-        requireAccess(actor, RequestOperation.EDIT, entity.ownerId)
-        if (expectedVersion < 0) {
-            throw EquipmentRequestValidationFailed(mapOf("expectedVersion" to "Expected version must not be negative"))
-        }
-        if (entity.version != expectedVersion) {
-            throw EquipmentRequestVersionConflict(expectedVersion, entity.version)
-        }
+        val entity = loadForMutation(actor, id, RequestOperation.EDIT, expectedVersion)
         entity.status.requireEditable()
 
         validate(draft)
@@ -83,6 +77,70 @@ class EquipmentRequestService(
         entity.updatedAt = Instant.now(clock)
         entity.replaceItems(draft.items.toNewItems())
         return repository.saveAndFlush(entity).toView()
+    }
+
+    @Transactional
+    fun submit(actor: Actor, id: UUID, expectedVersion: Long): EquipmentRequestView =
+        transition(actor, id, expectedVersion, RequestOperation.SUBMIT, RequestAction.SUBMIT) { entity ->
+            // Stored data is revalidated because the required date may have passed since the draft was saved.
+            val errors = validator.validateForSubmit(entity.toDraft())
+            if (errors.isNotEmpty()) {
+                val code = if (errors.keys == setOf("items")) ITEMS_REQUIRED else BUSINESS_RULE_VIOLATION
+                throw EquipmentRequestBusinessRuleViolation(code, errors)
+            }
+        }
+
+    @Transactional
+    fun cancel(actor: Actor, id: UUID, expectedVersion: Long): EquipmentRequestView =
+        transition(actor, id, expectedVersion, RequestOperation.CANCEL, RequestAction.CANCEL) {}
+
+    @Transactional
+    fun approve(actor: Actor, id: UUID, expectedVersion: Long): EquipmentRequestView =
+        transition(actor, id, expectedVersion, RequestOperation.APPROVE, RequestAction.APPROVE) {}
+
+    @Transactional
+    fun reject(actor: Actor, id: UUID, expectedVersion: Long, reason: String?): EquipmentRequestView =
+        transition(actor, id, expectedVersion, RequestOperation.REJECT, RequestAction.REJECT) { entity ->
+            val errors = validator.validateRejectionReason(reason)
+            if (errors.isNotEmpty()) {
+                if (reason.isNullOrBlank()) throw EquipmentRequestBusinessRuleViolation(REJECTION_REASON_REQUIRED, errors)
+                throw EquipmentRequestValidationFailed(errors)
+            }
+            entity.rejectionReason = reason?.trim()
+        }
+
+    /** Shared ADR-004 order: load → access → version → state → business rules → persist. */
+    private fun transition(
+        actor: Actor,
+        id: UUID,
+        expectedVersion: Long,
+        operation: RequestOperation,
+        action: RequestAction,
+        applyRules: (EquipmentRequestEntity) -> Unit,
+    ): EquipmentRequestView {
+        val entity = loadForMutation(actor, id, operation, expectedVersion)
+        val nextStatus = entity.status.transition(action)
+        applyRules(entity)
+        entity.status = nextStatus
+        entity.updatedAt = Instant.now(clock)
+        return repository.saveAndFlush(entity).toView()
+    }
+
+    private fun loadForMutation(
+        actor: Actor,
+        id: UUID,
+        operation: RequestOperation,
+        expectedVersion: Long,
+    ): EquipmentRequestEntity {
+        val entity = repository.findAggregateById(id) ?: throw EquipmentRequestNotFound(id)
+        requireAccess(actor, operation, entity.ownerId)
+        if (expectedVersion < 0) {
+            throw EquipmentRequestValidationFailed(mapOf("expectedVersion" to "Expected version must not be negative"))
+        }
+        if (entity.version != expectedVersion) {
+            throw EquipmentRequestVersionConflict(expectedVersion, entity.version)
+        }
+        return entity
     }
 
     private fun validate(draft: EquipmentRequestDraft) {
@@ -101,6 +159,12 @@ class EquipmentRequestNotFound(val requestId: UUID) : RuntimeException("Equipmen
 class EquipmentRequestAccessDenied : RuntimeException("Actor cannot access this equipment request")
 class EquipmentRequestVersionConflict(val expected: Long, val actual: Long) : RuntimeException("Equipment request version is stale")
 class EquipmentRequestValidationFailed(val fieldErrors: Map<String, String>) : RuntimeException("Equipment request validation failed")
+class EquipmentRequestBusinessRuleViolation(val code: String, val fieldErrors: Map<String, String>) :
+    RuntimeException("Equipment request business rule violated: $code")
+
+const val ITEMS_REQUIRED = "ITEMS_REQUIRED"
+const val BUSINESS_RULE_VIOLATION = "BUSINESS_RULE_VIOLATION"
+const val REJECTION_REASON_REQUIRED = "REJECTION_REASON_REQUIRED"
 
 data class EquipmentItemView(
     val id: UUID,
@@ -126,6 +190,17 @@ data class EquipmentRequestView(
     val totalItems: Int,
     val createdAt: Instant,
     val updatedAt: Instant,
+)
+
+private fun EquipmentRequestEntity.toDraft() = EquipmentRequestDraft(
+    employeeName,
+    employeeEmail,
+    department,
+    title,
+    purpose,
+    requiredDate,
+    additionalNote,
+    items.map { EquipmentItemDraft(it.equipmentType, it.quantity.toInt(), it.specification) },
 )
 
 private fun List<EquipmentItemDraft>.toNewItems() = map { NewEquipmentItem(it.equipmentType, it.quantity, it.specification.normalized()) }

@@ -31,3 +31,8 @@ Technology versions ถูกกำหนดใน ADR-001 และ contract/do
 - [ADR-003 draft vertical slice](decisions/ADR-003-draft-vertical-slice.md)
 - [Frontend interaction design](ui-flow.md)
 - [TASK-003 verification design](../quality/TASK-003-test-design.md)
+
+## TASK-004 approved design
+
+- [ADR-004 approval workflow actions](decisions/ADR-004-approval-workflow.md)
+- [TASK-004 verification design](../quality/TASK-004-test-design.md)

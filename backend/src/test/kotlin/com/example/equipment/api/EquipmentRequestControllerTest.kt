@@ -205,6 +205,98 @@ class EquipmentRequestControllerTest {
         }
     }
 
+    @Test
+    fun `submit returns the updated request as PENDING`() {
+        val entity = existingEntity(version = 2)
+        every { repository.findAggregateById(entity.id) } returns entity
+        every { repository.saveAndFlush(any()) } answers { firstArg() }
+
+        action(entity.id, "submit", """{"expectedVersion":2}""").andExpect {
+            status { isOk() }
+            jsonPath("$.status") { value("PENDING") }
+            jsonPath("$.id") { value(entity.id.toString()) }
+        }
+    }
+
+    @Test
+    fun `action bodies that are missing or malformed return the malformed envelope`() {
+        val entity = existingEntity(version = 0)
+        every { repository.findAggregateById(entity.id) } returns entity
+
+        listOf("submit", "cancel", "approve", "reject").forEach { name ->
+            val (userId, role) = if (name in listOf("approve", "reject")) "approver-001" to "APPROVER" else "employee-001" to "EMPLOYEE"
+            mockMvc.post("$BASE/${entity.id}/$name") {
+                header("X-User-Id", userId)
+                header("X-Role", role)
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpectMalformed()
+            action(entity.id, name, "not json", userId, role).andExpectMalformed()
+            action(entity.id, name, """{"expectedVersion":"one"}""", userId, role).andExpectMalformed()
+            action(entity.id, name, "{}", userId, role).andExpectMalformed()
+        }
+        verify(exactly = 0) { repository.saveAndFlush(any()) }
+    }
+
+    @Test
+    fun `business rule failures use 422 with a stable code and field errors`() {
+        val empty = existingEntity(version = 0).apply { replaceItems(emptyList()) }
+        every { repository.findAggregateById(empty.id) } returns empty
+        action(empty.id, "submit", """{"expectedVersion":0}""").andExpect {
+            status { isUnprocessableContent() }
+            jsonPath("$.code") { value("ITEMS_REQUIRED") }
+            jsonPath("$.fieldErrors.items") { exists() }
+        }
+
+        val pending = existingEntity(version = 0).apply { status = RequestStatus.PENDING }
+        every { repository.findAggregateById(pending.id) } returns pending
+        listOf("""{"expectedVersion":0}""", """{"expectedVersion":0,"reason":"   "}""").forEach { body ->
+            action(pending.id, "reject", body, "approver-001", "APPROVER").andExpect {
+                status { isUnprocessableContent() }
+                jsonPath("$.code") { value("REJECTION_REASON_REQUIRED") }
+                jsonPath("$.fieldErrors.reason") { exists() }
+            }
+        }
+        verify(exactly = 0) { repository.saveAndFlush(any()) }
+    }
+
+    @Test
+    fun `invalid transitions, unknown requests and flush conflicts use the shared envelope`() {
+        val approved = existingEntity(version = 1).apply { status = RequestStatus.APPROVED }
+        every { repository.findAggregateById(approved.id) } returns approved
+        action(approved.id, "approve", """{"expectedVersion":1}""", "approver-001", "APPROVER").andExpect {
+            status { isConflict() }
+            jsonPath("$.code") { value("REQUEST_STATE_CONFLICT") }
+        }
+
+        val missing = UUID.randomUUID()
+        every { repository.findAggregateById(missing) } returns null
+        action(missing, "cancel", """{"expectedVersion":0}""").andExpect {
+            status { isNotFound() }
+            jsonPath("$.code") { value("REQUEST_NOT_FOUND") }
+        }
+
+        val pending = existingEntity(version = 0).apply { status = RequestStatus.PENDING }
+        every { repository.findAggregateById(pending.id) } returns pending
+        every { repository.saveAndFlush(any()) } throws OptimisticLockingFailureException("row changed")
+        action(pending.id, "approve", """{"expectedVersion":0}""", "approver-001", "APPROVER").andExpect {
+            status { isConflict() }
+            jsonPath("$.code") { value("REQUEST_VERSION_CONFLICT") }
+        }
+    }
+
+    private fun action(
+        id: UUID,
+        name: String,
+        body: String,
+        userId: String = "employee-001",
+        role: String = "EMPLOYEE",
+    ) = mockMvc.post("$BASE/$id/$name") {
+        header("X-User-Id", userId)
+        header("X-Role", role)
+        contentType = MediaType.APPLICATION_JSON
+        content = body
+    }
+
     private fun postRequest(body: String, userId: String = "employee-001", role: String = "EMPLOYEE") =
         mockMvc.post(BASE) {
             header("X-User-Id", userId)

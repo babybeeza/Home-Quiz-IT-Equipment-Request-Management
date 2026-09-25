@@ -46,6 +46,40 @@ class EquipmentRequestController(
     ): EquipmentRequestResponse =
         service.update(actor(userId, role), id, body.toDraft(), body.expectedVersion).toResponse()
 
+    // Action bodies are not @Valid for the same precedence reason as update.
+    @PostMapping("/{id}/submit")
+    fun submit(
+        @PathVariable id: UUID,
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+        @RequestBody body: VersionActionBody,
+    ): EquipmentRequestResponse = service.submit(actor(userId, role), id, body.expectedVersion).toResponse()
+
+    @PostMapping("/{id}/cancel")
+    fun cancel(
+        @PathVariable id: UUID,
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+        @RequestBody body: VersionActionBody,
+    ): EquipmentRequestResponse = service.cancel(actor(userId, role), id, body.expectedVersion).toResponse()
+
+    @PostMapping("/{id}/approve")
+    fun approve(
+        @PathVariable id: UUID,
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+        @RequestBody body: VersionActionBody,
+    ): EquipmentRequestResponse = service.approve(actor(userId, role), id, body.expectedVersion).toResponse()
+
+    @PostMapping("/{id}/reject")
+    fun reject(
+        @PathVariable id: UUID,
+        @RequestHeader("X-User-Id") userId: String,
+        @RequestHeader("X-Role") role: String,
+        @RequestBody body: RejectActionBody,
+    ): EquipmentRequestResponse =
+        service.reject(actor(userId, role), id, body.expectedVersion, body.reason).toResponse()
+
     private fun actor(userId: String, rawRole: String): Actor {
         val normalizedUserId = userId.trim()
         if (normalizedUserId.isEmpty() || normalizedUserId.length > 100) throw MalformedIdentity()

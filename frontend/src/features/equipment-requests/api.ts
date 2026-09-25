@@ -1,4 +1,4 @@
-import type { Actor, ApiError, EquipmentRequest, EquipmentRequestInput } from "./types";
+import type { Actor, ApiError, EquipmentRequest, EquipmentRequestInput, RequestActionName } from "./types";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1";
 
@@ -59,3 +59,15 @@ export function updateEquipmentRequest(
   });
 }
 
+
+export function performRequestAction(
+  actor: Actor,
+  id: string,
+  action: RequestActionName,
+  body: { expectedVersion: number; reason?: string },
+) {
+  return request<EquipmentRequest>(`/equipment-requests/${id}/${action}`, actor, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}

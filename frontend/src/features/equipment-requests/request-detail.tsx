@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { equipmentRequestQueryKey, getEquipmentRequest, EquipmentRequestApiError } from "./api";
 import { useIdentity } from "./identity";
+import { RequestActions } from "./request-actions";
 
 export function RequestDetail({ id }: { id: string }) {
   const { actor } = useIdentity();
@@ -26,6 +27,7 @@ export function RequestDetail({ id }: { id: string }) {
         <div><p className="eyebrow">{request.requestNumber}</p><h1>{request.title}</h1></div>
         <span className={`status-pill status-${request.status.toLowerCase()}`}>{request.status}</span>
       </div>
+      <RequestActions request={request} />
       <section className="detail-card">
         <dl className="details-grid">
           <Detail label="ผู้ขอ" value={request.employeeName} />
@@ -35,6 +37,7 @@ export function RequestDetail({ id }: { id: string }) {
         </dl>
         <h2>วัตถุประสงค์</h2><p>{request.purpose}</p>
         {request.additionalNote && <><h2>หมายเหตุ</h2><p>{request.additionalNote}</p></>}
+        {request.status === "REJECTED" && request.rejectionReason && <><h2>เหตุผลการปฏิเสธ</h2><p>{request.rejectionReason}</p></>}
         <h2>รายการอุปกรณ์ ({request.totalItems} ชิ้น)</h2>
         {request.items.length === 0 ? <p className="empty-note">ยังไม่มีรายการอุปกรณ์</p> : (
           <ul className="item-list">{request.items.map((item) => <li key={item.id}><strong>{item.equipmentType}</strong><span>{item.quantity} ชิ้น</span><span>{item.specification || "—"}</span></li>)}</ul>
