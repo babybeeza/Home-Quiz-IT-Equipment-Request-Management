@@ -3,6 +3,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { IdentityProvider } from "./identity";
 import { RequestList } from "./request-list";
+import { stubApi } from "./test-api";
 import type { EquipmentRequestPage, EquipmentRequestSummary } from "./types";
 
 // In-memory URL so router.push re-renders useSearchParams consumers like Next.js does.
@@ -81,7 +82,7 @@ describe("RequestList", () => {
   afterEach(() => cleanup());
 
   it("renders every list column, a detail link and pagination bounds", async () => {
-    vi.stubGlobal("fetch", vi.fn(() => respond(page([row()], { totalElements: 25, totalPages: 3 }))));
+    stubApi(vi.fn(() => respond(page([row()], { totalElements: 25, totalPages: 3 }))));
     renderList();
 
     expect(screen.getByRole("status")).toHaveTextContent("กำลังโหลดรายการ…");
@@ -98,7 +99,7 @@ describe("RequestList", () => {
 
   it("restores every parameter from the URL and falls back to defaults for invalid values", async () => {
     const fetchMock = vi.fn(() => respond(page([row()])));
-    vi.stubGlobal("fetch", fetchMock);
+    stubApi(fetchMock);
     navigate("keyword=mon&status=PENDING&department=Finance&page=2&sort=createdAt,asc");
     renderList();
 
@@ -119,7 +120,7 @@ describe("RequestList", () => {
   });
 
   it("returns to the first page when a filter changes and keeps filters while paging", async () => {
-    vi.stubGlobal("fetch", vi.fn(() => respond(page([row()], { page: 2, totalElements: 40, totalPages: 4 }))));
+    stubApi(vi.fn(() => respond(page([row()], { page: 2, totalElements: 40, totalPages: 4 }))));
     navigate("status=PENDING&page=2");
     renderList();
     await screen.findByRole("table");
@@ -133,7 +134,7 @@ describe("RequestList", () => {
 
   it("debounces the keyword into one request and cancels the timer on unmount", async () => {
     const fetchMock = vi.fn(() => respond(page([row()])));
-    vi.stubGlobal("fetch", fetchMock);
+    stubApi(fetchMock);
     const view = renderList();
     await screen.findByRole("table");
 
@@ -163,7 +164,7 @@ describe("RequestList", () => {
       }
       return respond(page([row({ id: "new-id", title: keyword === "new" ? "New result" : "Initial" })]));
     });
-    vi.stubGlobal("fetch", fetchMock);
+    stubApi(fetchMock);
     navigate("keyword=old");
     renderList();
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
@@ -178,7 +179,7 @@ describe("RequestList", () => {
 
   it("offers to clear filters when nothing matches and shows an accessible error", async () => {
     const fetchMock = vi.fn(() => respond(page([])));
-    vi.stubGlobal("fetch", fetchMock);
+    stubApi(fetchMock);
     navigate("keyword=zzz&status=DRAFT");
     renderList();
 
@@ -187,7 +188,7 @@ describe("RequestList", () => {
     expect(nav.push).toHaveBeenLastCalledWith("/requests", { scroll: false });
 
     cleanup();
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({}) } as Response));
+    stubApi(vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({}) } as Response));
     renderList();
     expect(await screen.findByRole("alert")).toHaveTextContent("โหลดรายการไม่สำเร็จ");
     expect(screen.getByRole("button", { name: "ลองใหม่" })).toBeInTheDocument();

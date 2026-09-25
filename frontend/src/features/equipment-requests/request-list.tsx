@@ -6,7 +6,9 @@ import { useId } from "react";
 import { equipmentRequestListKey, searchEquipmentRequests } from "./api";
 import { useIdentity } from "./identity";
 import type { RequestStatus } from "./types";
+import { DepartmentOptions } from "./department-options";
 import { useDebouncedUrlField, useRequestSearch } from "./use-request-search";
+import { useDepartmentSuggestions } from "./use-reference-data";
 
 const statusOptions: RequestStatus[] = ["DRAFT", "PENDING", "APPROVED", "REJECTED", "CANCELLED"];
 const createdAtFormat = new Intl.DateTimeFormat("th-TH", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Bangkok" });
@@ -15,6 +17,7 @@ export function RequestList() {
   const { actor } = useIdentity();
   const { params, update } = useRequestSearch();
   const ids = useId();
+  const departmentSuggestions = useDepartmentSuggestions();
   const [keyword, setKeyword] = useDebouncedUrlField(params.keyword, (value) => update({ keyword: value }));
   const [department, setDepartment] = useDebouncedUrlField(params.department, (value) => update({ department: value }));
 
@@ -51,8 +54,9 @@ export function RequestList() {
         </div>
         <div>
           <label htmlFor={`${ids}-department`}>แผนก</label>
-          <input id={`${ids}-department`} value={department} maxLength={100} placeholder="เช่น Finance"
+          <input id={`${ids}-department`} list={`${ids}-departments`} autoComplete="off" value={department} maxLength={100} placeholder="เช่น Finance"
             onChange={(event) => setDepartment(event.target.value)} />
+          <DepartmentOptions id={`${ids}-departments`} names={departmentSuggestions} />
         </div>
         <div>
           <label htmlFor={`${ids}-sort`}>เรียงตามวันที่สร้าง</label>

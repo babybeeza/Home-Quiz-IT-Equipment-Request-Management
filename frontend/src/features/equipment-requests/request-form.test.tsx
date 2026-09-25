@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { equipmentRequestQueryKey } from "./api";
 import { demoActors, IdentityProvider } from "./identity";
+import { stubApi, testReferenceData } from "./test-api";
 import { RequestForm } from "./request-form";
 import type { ApiError, EquipmentRequest } from "./types";
 
@@ -55,9 +56,35 @@ describe("RequestForm", () => {
     window.localStorage.clear();
     push.mockReset();
     vi.restoreAllMocks();
+    stubApi(vi.fn()); // tests that call the request API install their own handler
   });
 
   afterEach(() => cleanup());
+
+  it("suggests departments from reference data while keeping the field free text", async () => {
+    renderForm();
+    const department = screen.getByLabelText("แผนก");
+    const listId = department.getAttribute("list");
+
+    await waitFor(() => {
+      const options = [...document.querySelectorAll(`datalist[id="${listId}"] option`)].map((option) => option.getAttribute("value"));
+      expect(options).toEqual(testReferenceData.departments.map((item) => item.name));
+    });
+    fireEvent.change(department, { target: { value: "Brand New Team" } });
+    expect(department).toHaveValue("Brand New Team");
+  });
+
+  it("stays usable without suggestions when reference data fails", async () => {
+    const reference = vi.fn(() => Promise.resolve({ ok: false, status: 500, json: async () => ({}) } as Response));
+    stubApi(vi.fn(), reference);
+    renderForm();
+
+    await waitFor(() => expect(reference).toHaveBeenCalled());
+    const department = screen.getByLabelText("แผนก");
+    expect(document.querySelectorAll(`datalist[id="${department.getAttribute("list")}"] option`)).toHaveLength(0);
+    fireEvent.change(department, { target: { value: "Finance" } });
+    expect(department).toHaveValue("Finance");
+  });
 
   it("adds and removes dynamic item rows and protects a dirty form", async () => {
     const addListener = vi.spyOn(window, "addEventListener");
@@ -75,7 +102,7 @@ describe("RequestForm", () => {
 
   it("shows client validation errors without calling the API", async () => {
     const fetchMock = vi.fn();
-    vi.stubGlobal("fetch", fetchMock);
+    stubApi(fetchMock);
     renderForm();
 
     fireEvent.click(screen.getByRole("button", { name: "บันทึก Draft" }));
@@ -89,7 +116,7 @@ describe("RequestForm", () => {
     const removeListener = vi.spyOn(window, "removeEventListener");
     let resolveFetch!: (value: Response) => void;
     const fetchMock = vi.fn(() => new Promise<Response>((resolve) => { resolveFetch = resolve; }));
-    vi.stubGlobal("fetch", fetchMock);
+    stubApi(fetchMock);
     renderForm();
     fillValidForm();
 
@@ -117,7 +144,7 @@ describe("RequestForm", () => {
         "items[0].quantity": "Quantity was rejected by the server",
       },
     };
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 400, json: async () => apiError } as Response));
+    stubApi(vi.fn().mockResolvedValue({ ok: false, status: 400, json: async () => apiError } as Response));
     renderForm();
     fillValidForm();
     fireEvent.click(screen.getByRole("button", { name: "+ เพิ่มรายการ" }));
@@ -138,7 +165,7 @@ describe("RequestForm", () => {
       path: `/api/v1/equipment-requests/${savedRequest.id}`,
       fieldErrors: {},
     };
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 409, json: async () => conflict } as Response));
+    stubApi(vi.fn().mockResolvedValue({ ok: false, status: 409, json: async () => conflict } as Response));
     renderForm({ mode: "edit", request: savedRequest });
     fireEvent.change(screen.getByLabelText("หัวข้อคำขอ"), { target: { value: "Locally edited notebook title" } });
 
@@ -150,7 +177,7 @@ describe("RequestForm", () => {
   });
 
   it("stores the saved request in the detail cache before navigating", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => savedRequest } as Response));
+    stubApi(vi.fn().mockResolvedValue({ ok: true, json: async () => savedRequest } as Response));
     const { client } = renderForm();
     fillValidForm();
 
@@ -163,7 +190,7 @@ describe("RequestForm", () => {
 
   it("keeps in-progress edits and the loaded version when newer data arrives", async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ...savedRequest, version: 1 }) } as Response);
-    vi.stubGlobal("fetch", fetchMock);
+    stubApi(fetchMock);
     const { rerenderWith } = renderForm({ mode: "edit", request: savedRequest });
     fireEvent.change(screen.getByLabelText("หัวข้อคำขอ"), { target: { value: "Locally edited notebook title" } });
 

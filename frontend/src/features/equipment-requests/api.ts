@@ -5,6 +5,7 @@ import type {
   EquipmentRequestInput,
   EquipmentRequestPage,
   ListParams,
+  ReferenceData,
   RequestActionName,
 } from "./types";
 
@@ -98,4 +99,8 @@ export function listQueryString(params: ListParams) {
 
 export function searchEquipmentRequests(actor: Actor, params: ListParams, signal?: AbortSignal) {
   return request<EquipmentRequestPage>(`/equipment-requests${listQueryString(params)}`, actor, { signal });
+}
+
+export function getReferenceData(actor: Actor, signal?: AbortSignal) {
+  return request<ReferenceData>("/reference-data", actor, { signal });
 }

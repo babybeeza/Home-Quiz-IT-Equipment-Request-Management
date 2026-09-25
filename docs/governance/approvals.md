@@ -5,8 +5,8 @@
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
-| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-005 |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-005 |
+| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-006 |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-006 |
 | Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Pending |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
 
@@ -29,5 +29,7 @@
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-004 evidence](../quality/evidence/TASK-004.md) | User explicitly approved the TASK-004 approval-workflow implementation, tests and evidence |
 | Design | Approved | Project owner acting as technical owner | 2026-09-25 | [ADR-005](../architecture/decisions/ADR-005-search-list.md), [TASK-005 test design](../quality/TASK-005-test-design.md) | User explicitly approved the TASK-005 search/list design including decisions 1–5 in [design evidence](../quality/evidence/TASK-005-design.md) |
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-005 evidence](../quality/evidence/TASK-005.md) | User explicitly approved the TASK-005 search/list implementation, tests, query-plan evidence and the documented debounce deviation |
+| Design | Approved | Project owner acting as technical owner | 2026-09-25 | [ADR-006](../architecture/decisions/ADR-006-caching.md), [TASK-006 test design](../quality/TASK-006-test-design.md) | User explicitly approved the TASK-006 caching design including decisions 1–6 (reference-data endpoint, V2 departments migration, actuator) in [design evidence](../quality/evidence/TASK-006-design.md) |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-006 evidence](../quality/evidence/TASK-006.md) | User explicitly approved the TASK-006 caching implementation, tests, two-instance evidence and the documented outage-latency and health limitations |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง

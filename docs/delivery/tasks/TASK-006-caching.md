@@ -1,12 +1,22 @@
 # TASK-006: Redis และ Caffeine caching
 
-Status: Planned
-Owner: Unassigned (developer)
+Status: Implement approved — Verify pending
+Owner: Developer
 Requirement IDs: REQ-01, REQ-07, REQ-10, REQ-11
-Dependencies: TASK-004, TASK-005
+Dependencies: TASK-004, TASK-005 (both Implement approved and merged)
+
+## Human approvals
+
+| Gate | Approver | Decision | Date / revision |
+| --- | --- | --- | --- |
+| Requirements | Project owner | Approved | 2026-09-25 / approved requirements and Discover baseline (Q-11) |
+| Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-006 + TASK-006 test design |
+| Implement | Project owner acting as code reviewer | Approved | 2026-09-25 / TASK-006 evidence |
+| Verify | QA / acceptance owner | Pending | — |
+| Delivery | Release owner | Pending | — |
 
 ## Context
-[Cache plan](../implementation-plan.md), [architecture](../../architecture/README.md), final read/write paths จาก 003–005
+[Cache plan](../implementation-plan.md), [architecture](../../architecture/README.md), final read/write paths จาก 003–005, [ADR-006](../../architecture/decisions/ADR-006-caching.md), [test design](../../quality/TASK-006-test-design.md) และ [design evidence](../../quality/evidence/TASK-006-design.md)
 
 ## Scope / non-goals
 ทำทั้ง shared Redis cache และ in-process Caffeine โดยมี read paths ใช้งานจริง ไม่เพิ่ม inventory management หรือ cache ทุก query โดยไม่มีเหตุผล
@@ -19,15 +29,15 @@ Dependencies: TASK-004, TASK-005
 5. Redis timeout/outage fallback DB, metrics hit/miss/error ไม่เผย PII; ไม่ cache error/authorization result
 
 ## Acceptance criteria
-- [ ] พิสูจน์ load→hit→expiry ได้ทั้ง Redis และ Caffeine; configuration ถูกบันทึกใน README
-- [ ] Edit/submit/approve/reject/cancel แล้วอ่านได้สถานะ/version ที่ถูกต้องตาม consistency contract
-- [ ] Rollback ไม่ publish cached mutation; stale reader ไม่ทำให้ latest read คืนข้อมูลเก่า
-- [ ] Employee อีกคนอ่าน cached request ไม่ได้; role change ไม่มีข้อมูลค้างข้าม identity
-- [ ] Redis unavailable ยังอ่านผ่าน DB ได้ภายใน timeout policy; DB errors ไม่ถูกกลบ
-- [ ] มีหลักฐาน invalidation ข้าม backend instances และ Caffeine เป็น local จริง
+- [x] พิสูจน์ load→hit→expiry ได้ทั้ง Redis และ Caffeine; configuration ถูกบันทึกใน README
+- [x] Edit/submit/approve/reject/cancel แล้วอ่านได้สถานะ/version ที่ถูกต้องตาม consistency contract
+- [x] Rollback ไม่ publish cached mutation; stale reader ไม่ทำให้ latest read คืนข้อมูลเก่า
+- [x] Employee อีกคนอ่าน cached request ไม่ได้; role change ไม่มีข้อมูลค้างข้าม identity
+- [x] Redis unavailable ยังอ่านผ่าน DB ได้ภายใน timeout policy; DB errors ไม่ถูกกลบ
+- [x] มีหลักฐาน invalidation ข้าม backend instances และ Caffeine เป็น local จริง
 
 ## Verification
 Unit tests ของ keys/eviction; integration กับ Redis และ PostgreSQL สำหรับ stale-fill race/rollback/cross-user; สอง app instances ตรวจ shared invalidation; deterministic expiry tests และบันทึก metrics จริง
 
 ## Handoff
-ส่ง cache switches/config และ warm/cold procedure ให้ k6 task; ไม่มีการอ้าง speedup จนกว่าจะวัด; ยัง NOT RUN
+Implement gate อนุมัติแล้ว 2026-09-25 ดู [TASK-006 evidence](../../quality/evidence/TASK-006.md); cache switches/config และ warm/cold procedure อยู่ใน [backend README](../../../backend/README.md) สำหรับ TASK-007; ไม่มีการอ้าง speedup จนกว่าจะวัด

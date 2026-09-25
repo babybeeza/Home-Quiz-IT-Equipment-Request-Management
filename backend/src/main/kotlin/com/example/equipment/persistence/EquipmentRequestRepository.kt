@@ -27,6 +27,12 @@ interface EquipmentRequestRepository :
         """,
     )
     fun sumItemQuantities(@Param("requestIds") requestIds: Collection<UUID>): List<ItemQuantityTotal>
+
+    @Query(
+        "select new com.example.equipment.persistence.RequestAccessHeader(r.id, r.ownerId, r.version) " +
+            "from EquipmentRequestEntity r where r.id = :id",
+    )
+    fun findAccessHeaderById(@Param("id") id: UUID): RequestAccessHeader?
 }
 
 data class ItemQuantityTotal(val requestId: UUID, val total: Long)

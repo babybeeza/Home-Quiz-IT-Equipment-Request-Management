@@ -2,6 +2,7 @@ package com.example.equipment.api
 
 import com.example.equipment.application.EquipmentRequestQueryService
 import com.example.equipment.application.EquipmentRequestService
+import com.example.equipment.application.NoOpRequestDetailCache
 import com.example.equipment.configuration.ApplicationConfiguration
 import com.example.equipment.domain.EquipmentRequestValidator
 import com.example.equipment.domain.EquipmentType
@@ -74,7 +75,7 @@ class EquipmentRequestControllerTest {
             validator: EquipmentRequestValidator,
             clock: Clock,
             businessZone: ZoneId,
-        ) = EquipmentRequestService(repository, allocator, validator, clock, businessZone)
+        ) = EquipmentRequestService(repository, allocator, validator, clock, businessZone, NoOpRequestDetailCache)
 
         @Bean
         fun equipmentRequestQueryService(repository: EquipmentRequestRepository) =
@@ -221,7 +222,7 @@ class EquipmentRequestControllerTest {
     @Test
     fun `unknown request returns not found`() {
         val id = UUID.randomUUID()
-        every { repository.findAggregateById(id) } returns null
+        every { repository.findAccessHeaderById(id) } returns null
 
         mockMvc.get("$BASE/$id") { identity() }.andExpect {
             status { isNotFound() }

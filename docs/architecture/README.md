@@ -41,3 +41,8 @@ Technology versions ถูกกำหนดใน ADR-001 และ contract/do
 
 - [ADR-005 request list, search and pagination](decisions/ADR-005-search-list.md)
 - [TASK-005 verification design](../quality/TASK-005-test-design.md)
+
+## TASK-006 approved design
+
+- [ADR-006 Redis and Caffeine caching](decisions/ADR-006-caching.md)
+- [TASK-006 verification design](../quality/TASK-006-test-design.md)
