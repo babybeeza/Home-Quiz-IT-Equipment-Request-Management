@@ -1,0 +1,390 @@
+openapi: 3.0.3
+info:
+  title: IT Equipment Request API
+  version: 1.0.0
+  description: |
+    Contract for the take-home equipment request system. X-User-Id and
+    X-Role simulate identity for this exercise and are not authentication.
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Equipment Requests
+
+paths:
+  /api/v1/equipment-requests:
+    post:
+      tags: [Equipment Requests]
+      operationId: createEquipmentRequest
+      summary: Create a DRAFT owned by the current employee
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Role'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEquipmentRequest'
+      responses:
+        '201':
+          description: Draft created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentRequest'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '422': { $ref: '#/components/responses/BusinessRuleViolation' }
+        '500': { $ref: '#/components/responses/InternalError' }
+    get:
+      tags: [Equipment Requests]
+      operationId: searchEquipmentRequests
+      summary: Search requests within the actor's scope
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Role'
+        - name: keyword
+          in: query
+          schema: { type: string, maxLength: 150 }
+          description: Case-insensitive contains match on request number, title or employee name
+        - name: status
+          in: query
+          schema: { $ref: '#/components/schemas/RequestStatus' }
+        - name: department
+          in: query
+          schema: { type: string, maxLength: 100 }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 0, default: 0 }
+        - name: size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: ['createdAt,asc', 'createdAt,desc']
+            default: 'createdAt,desc'
+      responses:
+        '200':
+          description: Page of scoped requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentRequestPage'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /api/v1/equipment-requests/{id}:
+    parameters:
+      - $ref: '#/components/parameters/RequestId'
+      - $ref: '#/components/parameters/UserId'
+      - $ref: '#/components/parameters/Role'
+    get:
+      tags: [Equipment Requests]
+      operationId: getEquipmentRequest
+      summary: Get request detail within the actor's scope
+      responses:
+        '200':
+          description: Request detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentRequest'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalError' }
+    put:
+      tags: [Equipment Requests]
+      operationId: updateEquipmentRequest
+      summary: Update an owned DRAFT using its current version
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEquipmentRequest'
+      responses:
+        '200':
+          description: Draft updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentRequest'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleViolation' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /api/v1/equipment-requests/{id}/submit:
+    post:
+      tags: [Equipment Requests]
+      operationId: submitEquipmentRequest
+      summary: Submit an owned DRAFT for approval
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Role'
+      requestBody:
+        $ref: '#/components/requestBodies/VersionAction'
+      responses:
+        '200':
+          $ref: '#/components/responses/MutationSucceeded'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleViolation' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /api/v1/equipment-requests/{id}/approve:
+    post:
+      tags: [Equipment Requests]
+      operationId: approveEquipmentRequest
+      summary: Approve a PENDING request as an approver
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Role'
+      requestBody:
+        $ref: '#/components/requestBodies/VersionAction'
+      responses:
+        '200':
+          $ref: '#/components/responses/MutationSucceeded'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleViolation' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /api/v1/equipment-requests/{id}/reject:
+    post:
+      tags: [Equipment Requests]
+      operationId: rejectEquipmentRequest
+      summary: Reject a PENDING request with a reason as an approver
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Role'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectAction'
+      responses:
+        '200':
+          $ref: '#/components/responses/MutationSucceeded'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleViolation' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+  /api/v1/equipment-requests/{id}/cancel:
+    post:
+      tags: [Equipment Requests]
+      operationId: cancelEquipmentRequest
+      summary: Cancel an owned DRAFT or PENDING request
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Role'
+      requestBody:
+        $ref: '#/components/requestBodies/VersionAction'
+      responses:
+        '200':
+          $ref: '#/components/responses/MutationSucceeded'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/BusinessRuleViolation' }
+        '500': { $ref: '#/components/responses/InternalError' }
+
+components:
+  parameters:
+    UserId:
+      name: X-User-Id
+      in: header
+      required: true
+      schema: { type: string, minLength: 1, maxLength: 100 }
+      description: Stable demo user identifier used for ownership
+      example: employee-001
+    Role:
+      name: X-Role
+      in: header
+      required: true
+      schema:
+        type: string
+        enum: [EMPLOYEE, APPROVER]
+    RequestId:
+      name: id
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+
+  requestBodies:
+    VersionAction:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VersionAction'
+
+  responses:
+    MutationSucceeded:
+      description: Mutation completed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EquipmentRequest'
+    BadRequest:
+      description: Malformed input or field validation failed
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    Forbidden:
+      description: Role or ownership does not allow this operation
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    NotFound:
+      description: Equipment request does not exist
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    Conflict:
+      description: Current version is stale or state transition is invalid
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    BusinessRuleViolation:
+      description: Input is well formed but a business rule failed
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    InternalError:
+      description: Unexpected server error with sanitized details
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+
+  schemas:
+    RequestStatus:
+      type: string
+      enum: [DRAFT, PENDING, APPROVED, REJECTED, CANCELLED]
+    EquipmentType:
+      type: string
+      enum: [NOTEBOOK, MONITOR, KEYBOARD, MOUSE, HEADSET, OTHER]
+    EquipmentItemInput:
+      type: object
+      required: [equipmentType, quantity]
+      properties:
+        equipmentType: { $ref: '#/components/schemas/EquipmentType' }
+        quantity: { type: integer, minimum: 1, maximum: 5 }
+        specification: { type: string, maxLength: 250, nullable: true }
+    CreateEquipmentRequest:
+      type: object
+      required: [employeeName, employeeEmail, department, title, purpose, requiredDate, items]
+      properties:
+        employeeName: { type: string, minLength: 2, maxLength: 100 }
+        employeeEmail: { type: string, format: email }
+        department: { type: string, minLength: 1, maxLength: 100 }
+        title: { type: string, minLength: 5, maxLength: 150 }
+        purpose: { type: string, minLength: 10, maxLength: 500 }
+        requiredDate: { type: string, format: date }
+        additionalNote: { type: string, maxLength: 500, nullable: true }
+        items:
+          type: array
+          description: May be empty while DRAFT; submit requires at least one item
+          items: { $ref: '#/components/schemas/EquipmentItemInput' }
+    UpdateEquipmentRequest:
+      allOf:
+        - $ref: '#/components/schemas/CreateEquipmentRequest'
+        - type: object
+          required: [expectedVersion]
+          properties:
+            expectedVersion: { type: integer, format: int64, minimum: 0 }
+    VersionAction:
+      type: object
+      additionalProperties: false
+      required: [expectedVersion]
+      properties:
+        expectedVersion: { type: integer, format: int64, minimum: 0 }
+    RejectAction:
+      type: object
+      additionalProperties: false
+      required: [expectedVersion, reason]
+      properties:
+        expectedVersion: { type: integer, format: int64, minimum: 0 }
+        reason: { type: string, minLength: 1, maxLength: 500 }
+    EquipmentItem:
+      allOf:
+        - $ref: '#/components/schemas/EquipmentItemInput'
+        - type: object
+          required: [id]
+          properties:
+            id: { type: string, format: uuid }
+    EquipmentRequestSummary:
+      type: object
+      required: [id, requestNumber, title, employeeName, department, requiredDate, totalItems, status, version, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        requestNumber: { type: string, pattern: '^REQ-[0-9]{4}-[0-9]{6,}$' }
+        title: { type: string }
+        employeeName: { type: string }
+        department: { type: string }
+        requiredDate: { type: string, format: date }
+        totalItems: { type: integer, minimum: 0, description: Sum of item quantities }
+        status: { $ref: '#/components/schemas/RequestStatus' }
+        version: { type: integer, format: int64, minimum: 0 }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    EquipmentRequest:
+      allOf:
+        - $ref: '#/components/schemas/EquipmentRequestSummary'
+        - type: object
+          required: [employeeEmail, purpose, items]
+          properties:
+            employeeEmail: { type: string, format: email }
+            purpose: { type: string }
+            additionalNote: { type: string, nullable: true }
+            rejectionReason: { type: string, nullable: true }
+            items:
+              type: array
+              items: { $ref: '#/components/schemas/EquipmentItem' }
+    EquipmentRequestPage:
+      type: object
+      required: [content, page, size, totalElements, totalPages]
+      properties:
+        content:
+          type: array
+          items: { $ref: '#/components/schemas/EquipmentRequestSummary' }
+        page: { type: integer, minimum: 0 }
+        size: { type: integer, minimum: 1, maximum: 100 }
+        totalElements: { type: integer, format: int64, minimum: 0 }
+        totalPages: { type: integer, minimum: 0 }
+    ApiError:
+      type: object
+      required: [timestamp, status, code, message, path, fieldErrors]
+      properties:
+        timestamp: { type: string, format: date-time }
+        status: { type: integer }
+        code:
+          type: string
+          example: REQUEST_VERSION_CONFLICT
+        message: { type: string }
+        path: { type: string }
+        fieldErrors:
+          type: object
+          additionalProperties: { type: string }
+          example:
+            employeeEmail: Email format is invalid
+            requiredDate: Required date must not be in the past

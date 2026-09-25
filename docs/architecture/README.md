@@ -16,3 +16,12 @@
 5. Cache ต้องไม่ข้าม authorization หรือใช้แทน authoritative version/state checks; ระบุ invalidation หลัง transaction commit และทดสอบ cross-user isolation
 
 Technology versions และรายละเอียด contract ยังไม่ finalized; บันทึก decision ก่อน implement ส่วนที่พึ่งพามัน
+
+## TASK-002 proposed design
+
+- [ADR-002](decisions/ADR-002-request-contract-and-domain.md)
+- [API behavior matrix](api-behavior.md)
+- [Data model](data-model.md)
+- [Frontend interaction design](ui-flow.md)
+- [OpenAPI contract](../../contracts/openapi.yaml)
+- [Design verification plan](../quality/TASK-002-test-design.md)

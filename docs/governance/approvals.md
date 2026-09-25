@@ -5,8 +5,8 @@
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
-| Design | Technical owner | architecture, ADRs, contract, data/test plan | In progress |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved for TASK-001 |
+| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | In progress for TASK-002 |
 | Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Pending |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
 
@@ -21,5 +21,6 @@
 | Delivery | Pending | Release owner | — | — | Cannot approve before verification |
 | Requirements | Reopened for review | Project owner (user) | 2026-09-25 | [Discover analysis](../product/discovery.md) | User explicitly selected Discover; Q-01 through Q-12 require approval before Design resumes |
 | Requirements | Approved | Project owner (user) | 2026-09-25 | [Discover analysis](../product/discovery.md) | User approved requirement baseline and proposed defaults Q-01 through Q-12 |
+| Design | Approved | Project owner acting as technical owner | 2026-09-25 | [ADR-002](../architecture/decisions/ADR-002-request-contract-and-domain.md), [OpenAPI](../../contracts/openapi.yaml), [data model](../architecture/data-model.md), [UI flow](../architecture/ui-flow.md) | User explicitly approved the TASK-002 Design package |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง

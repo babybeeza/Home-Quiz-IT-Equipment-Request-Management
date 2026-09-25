@@ -1,6 +1,6 @@
 # TASK-002: Contract, domain และ data baseline
 
-Status: In progress — Design
+Status: In progress — Implement
 Owner: Developer
 Requirement IDs: REQ-01, REQ-02, REQ-03, REQ-06, REQ-07, REQ-09
 Dependencies: TASK-001
@@ -9,8 +9,8 @@ Dependencies: TASK-001
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
 | Requirements | Project owner | Approved | 2026-09-25 / Discover analysis Q-01 through Q-12 |
-| Design | Technical owner | In progress | ADR-002 + OpenAPI + data model |
-| Implement | Code reviewer | Pending | — |
+| Design | Project owner acting as technical owner | Approved | 2026-09-25 / ADR-002 + OpenAPI + data/UI/test design |
+| Implement | Code reviewer | In progress | domain + migration baseline |
 | Verify | QA / acceptance owner | Pending | — |
 | Delivery | Release owner | Pending | — |
 
@@ -38,4 +38,4 @@ Dependencies: TASK-001
 ตรวจ OpenAPI ด้วย validator ที่เลือกจริง; รัน domain tests และ migration บน local PostgreSQL ตรวจ constraints, indexes และ unique number behavior บันทึก commands/output ใน evidence
 
 ## Handoff
-ส่ง contract/schema/domain baseline ให้ 003/004/005; implementation และ verification ยัง NOT RUN
+Design approved; domain code, Flyway migration and implementation tests are in progress

@@ -2,7 +2,7 @@
 
 Base path ตามโจทย์: `/api/v1/equipment-requests`
 
-TASK-002 ต้องสร้าง `openapi.yaml` พร้อม schemas/examples จริงสำหรับ create, list, detail, update, submit, approve, reject และ cancel
+[openapi.yaml](openapi.yaml) เป็น proposed contract สำหรับ create, list, detail, update, submit, approve, reject และ cancel อยู่ระหว่าง Design review ใน TASK-002
 
 ระบุ role/identity headers, ownership, expected version, field validation, pagination/sort, error envelope และ 400/404/409/422/500 รวมถึง denied-access behavior ที่ตกลงไว้ ไม่ส่ง entities เป็น response
 
