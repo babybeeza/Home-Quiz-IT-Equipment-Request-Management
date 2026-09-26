@@ -1,6 +1,6 @@
 # TASK-017: Check whether a non-JSON Accept header lets a mutation commit before 406 (R3)
 
-Status: Fixed and verified by automation — Implement/Verify/Delivery review pending
+Status: Done — all gates approved 2026-09-26 for `main` `cae008f` with stated limitations
 Owner: Backend developer investigates; project owner decides whether a fix is needed
 Requirement IDs: REQ-06 (error envelope / status), REQ-07 (data integrity), REQ-02 (state transitions)
 Dependencies: [TASK-016](TASK-016-framework-error-status.md) (bodiless 406 handler), finding R3 in [TASK-016 evidence](../../quality/evidence/TASK-016.md)
@@ -11,9 +11,9 @@ Dependencies: [TASK-016](TASK-016-framework-error-status.md) (bodiless 406 handl
 | --- | --- | --- | --- |
 | Requirements | Project owner | Investigation requested 2026-09-26 (“R3 เปิดเป็น task ตรวจสอบ”) | 2026-09-26 |
 | Design | Project owner acting as technical owner | Approved class-level `produces = application/json` | 2026-09-26 |
-| Implement | Project owner acting as code reviewer | Pending | — |
-| Verify | Project owner acting as QA / acceptance owner | Pending | — |
-| Delivery | Project owner acting as release owner | Pending | — |
+| Implement | Project owner acting as code reviewer | Approved | 2026-09-26 / `cae008f` |
+| Verify | Project owner acting as QA / acceptance owner | Approved with stated limitations | 2026-09-26 / `cae008f` |
+| Delivery | Project owner acting as release owner | Approved with stated limitations | 2026-09-26 / `cae008f` |
 
 ## Context
 
@@ -56,5 +56,5 @@ Out of scope until the owner decides: any change to controllers, the handler, th
 
 - Changes: class-level `produces = application/json` on both controllers; Testcontainers and MockMvc regression tests; ADR-002 amendment
 - Evidence: [TASK-017 evidence](../../quality/evidence/TASK-017.md) — R3 confirmed, then fixed: 406 with no state change on all six mutations; backend 142/142, Playwright 50/50
-- Decisions / open issues: Design approved 2026-09-26; Implement/Verify/Delivery pending
-- Next action: owner decides the Implement/Verify/Delivery gates; redeploy `home-quiz-release` only on request
+- Decisions / open issues: all gates approved 2026-09-26 for `cae008f`
+- Next action: none required; optional: redeploy `home-quiz-release` only on request
