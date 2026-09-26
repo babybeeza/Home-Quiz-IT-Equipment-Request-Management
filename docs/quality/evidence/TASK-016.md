@@ -56,3 +56,16 @@ Readiness: all TASK-016 acceptance checks have evidence. Implement, Verify and D
 Lessons:
 - PR #14 was merged before the second commit (`179a1a2`, rerun evidence plus the TASK-016 plan) was pushed, so that commit missed `main`. It was cherry-picked onto the TASK-016 branch. PR #15 then merged before R1/R2 were fixed, and a state check caught it this time, so the fixes went on a new branch. Before adding commits to an open PR, check `gh pr view <n> --json state`; after a merge, check that the expected commits are ancestors of `main`.
 - In Git Bash, `cmd //c "mvnw.cmd ..."` does not resolve the wrapper. Use PowerShell `.\mvnw.cmd`, as the README states.
+
+## Local release redeploy
+
+On 2026-09-26 the user asked to redeploy `home-quiz-release` with TASK-016. The stack was rebuilt from `main` `5392a55abb6a511c13c3c477620165830eb7427e` (PR #17 merge), which has no backend, frontend or Compose difference from the approved `c7cadf3`.
+
+| Check | Command / method | Exit | Result | Observation |
+| --- | --- | ---: | --- | --- |
+| Redeploy | `docker compose -p home-quiz-release --profile app up -d --build --wait` from the `main` worktree | 0 | PASS | Backend and frontend recreated at 12:47; postgres and redis not recreated (running since 10:39); all four healthy |
+| Error statuses | `curl` on default ports 8080 (backend) and 3000 (proxy) | 0 | PASS | Unmatched path 404 `NOT_FOUND` (backend and proxy); `DELETE /{id}` 405 `METHOD_NOT_ALLOWED`; `text/plain` POST 415 `UNSUPPORTED_MEDIA_TYPE`; `Accept: text/csv` 406 with an empty body; missing id 404 `REQUEST_NOT_FOUND` unchanged |
+| App smoke | `GET /requests`, list API via proxy, `/actuator/health`, CSS token search | 0 | PASS | UI 200; list 200; health `UP`; Spark theme CSS still served |
+| Logs and data | `docker logs` grep; `select count(*) from equipment_requests` | 0 | PASS | 0 "Failure in @ExceptionHandler" or "Unexpected request failure" lines; 0 rows before and after (volume kept, no test data written) |
+
+Local Docker only, not a cloud deployment. The previous images were not tagged; rollback means running the same command from an earlier checkout.
