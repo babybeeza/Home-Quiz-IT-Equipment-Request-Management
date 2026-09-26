@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.ErrorResponse
+import org.springframework.web.HttpMediaTypeNotAcceptableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingRequestHeaderException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -102,6 +103,13 @@ class ApiExceptionHandler(
             exception.fieldErrors,
         )
 
+    // The client accepts no representation we can produce, so the envelope cannot be written either.
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException::class)
+    fun notAcceptable(exception: HttpMediaTypeNotAcceptableException): ResponseEntity<Void> {
+        logger.debug("Client request rejected with status 406", exception)
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build()
+    }
+
     // @ExceptionHandler cannot target the ErrorResponse interface, so Spring MVC client errors
     // (unmatched route, wrong method or media type) are recognised here by their own 4xx status.
     @ExceptionHandler(Exception::class)
@@ -126,7 +134,6 @@ class ApiExceptionHandler(
     private val frameworkClientErrors = mapOf(
         404 to ("NOT_FOUND" to "The requested resource was not found"),
         405 to ("METHOD_NOT_ALLOWED" to "The HTTP method is not supported for this resource"),
-        406 to ("NOT_ACCEPTABLE" to "The requested response format is not supported"),
         415 to ("UNSUPPORTED_MEDIA_TYPE" to "The request content type is not supported"),
     )
 

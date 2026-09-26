@@ -28,16 +28,31 @@ Deviation from D1 wording, same behavior: D1 named `@ExceptionHandler(ErrorRespo
 
 | # | Severity | File / line | Finding | Evidence | Disposition |
 | --- | --- | --- | --- | --- | --- |
-| R1 | Low | `ApiExceptionHandler.kt` `unexpected` | For 406, the client refuses JSON, so the `ApiError` body cannot be written. Spring logs WARN "Failure in @ExceptionHandler", falls back to `DefaultHandlerExceptionResolver`, and returns 406 with an empty body and a duplicated `Accept` header. The status is correct, but the log is noisy. | Live check and backend log above | Open: a dedicated `HttpMediaTypeNotAcceptableException` handler returning bodiless 406 would remove the WARN. Owner decides whether to amend TASK-016 or defer |
-| R2 | Low | `EquipmentRequestControllerTest.kt` | The fallback branch (other 4xx → `MALFORMED_REQUEST`) and a 5xx `ErrorResponse` staying `INTERNAL_ERROR` have no automated test. | Code review | Open: two small tests would cover these branches |
+| R1 | Low | `ApiExceptionHandler.kt` `unexpected` | For 406, the client refuses JSON, so the `ApiError` body cannot be written. Spring logs WARN "Failure in @ExceptionHandler", falls back to `DefaultHandlerExceptionResolver`, and returns 406 with an empty body and a duplicated `Accept` header. The status is correct, but the log is noisy. | Live check and backend log above | Fixed in the review-fix revision below |
+| R2 | Low | `EquipmentRequestControllerTest.kt` | The fallback branch (other 4xx → `MALFORMED_REQUEST`) and a 5xx `ErrorResponse` staying `INTERNAL_ERROR` have no automated test. | Code review | Fixed in the review-fix revision below |
 | R3 | Info, pre-existing, unverified | Controller methods without `produces` | A mutating POST/PUT sent with an `Accept` header that excludes JSON may commit before response writing fails with 406. Not introduced by TASK-016. | Reasoning from the Spring return-value flow; not reproduced | Candidate follow-up; verify before acting |
 
 No finding affects ownership, state transitions, version checks or cache invalidation: no domain, persistence or cache code changed.
 
+## Review fixes (R1, R2)
+
+PR #15 merged at `6e4efc0` before these fixes were ready. On 2026-09-26 the owner asked for R1 and R2 to be fixed, so the fixes went on branch `codex/task-016-review-fixes` from that merge.
+
+- R1: a dedicated `HttpMediaTypeNotAcceptableException` handler returns 406 with no body and logs at DEBUG. `NOT_ACCEPTABLE` was removed from the code map because it is now unreachable, and OpenAPI and ADR-002 were updated to match. This refines D2: a 406 has no `ApiError` body, since the client accepts no JSON.
+- R2: `ApiExceptionHandlerTest` covers a 4xx `ErrorResponse` outside the map (`MissingServletRequestParameterException` → 400 `MALFORMED_REQUEST`) and a 5xx `ErrorResponse` (`ResponseStatusException` 503 → 500 `INTERNAL_ERROR`). The controller test adds `Accept: text/csv` → 406 with an empty body.
+
+| Check | Command / method | Exit | Result | Observation |
+| --- | --- | ---: | --- | --- |
+| Targeted tests | PowerShell: `.\mvnw.cmd --batch-mode test "-Dtest=EquipmentRequestControllerTest,ApiExceptionHandlerTest"` | 0 | PASS | 32/32 (30 + 2) |
+| Backend package | PowerShell: `.\mvnw.cmd --batch-mode clean package` | 0 | PASS | 16 Surefire reports, 135 tests, 0 failures, 0 errors, 0 skipped |
+| Live check | Isolated `home-quiz-task016`, same ports, rebuilt; `curl` | 0 | PASS | 406 `Content-Length: 0`, no duplicated header; 404/405/415 unchanged; 0 "Failure in @ExceptionHandler" or "Unexpected request failure" log lines. Stack removed with `down -v` afterwards |
+| Browser acceptance | Git Bash: `bash tests/e2e/run-e2e.sh` | 0 | PASS | 50/50 Chromium, including AT-33; isolated project removed by runner |
+| Frontend | — | N/A | NOT RUN | No frontend change since the 32/32 run above |
+
 ## Deliver and learn
 
-Readiness: all TASK-016 acceptance checks have evidence. Implement, Verify and Delivery gates await the project owner. R1 and R2 are the only open items. The local `home-quiz-release` stack does not include TASK-016 until redeployed on request.
+Readiness: all TASK-016 acceptance checks have evidence. Implement, Verify and Delivery gates await the project owner. R1 and R2 are fixed. R3 remains a pre-existing, unverified candidate follow-up. The local `home-quiz-release` stack does not include TASK-016 until redeployed on request.
 
 Lessons:
-- PR #14 was merged before the second commit (`179a1a2`, rerun evidence plus the TASK-016 plan) was pushed, so that commit missed `main`. It was cherry-picked onto this branch. Before adding commits to an open PR, check `gh pr view <n> --json state`; after a merge, check that the expected commits are ancestors of `main`.
+- PR #14 was merged before the second commit (`179a1a2`, rerun evidence plus the TASK-016 plan) was pushed, so that commit missed `main`. It was cherry-picked onto the TASK-016 branch. PR #15 then merged before R1/R2 were fixed, and a state check caught it this time, so the fixes went on a new branch. Before adding commits to an open PR, check `gh pr view <n> --json state`; after a merge, check that the expected commits are ancestors of `main`.
 - In Git Bash, `cmd //c "mvnw.cmd ..."` does not resolve the wrapper. Use PowerShell `.\mvnw.cmd`, as the README states.

@@ -428,8 +428,8 @@ components:
             Stable machine-readable code. Domain codes include VALIDATION_ERROR, MALFORMED_REQUEST,
             ACCESS_DENIED, REQUEST_NOT_FOUND, REQUEST_VERSION_CONFLICT, REQUEST_STATE_CONFLICT and
             the 422 business-rule codes. Framework request errors use NOT_FOUND (404, unmatched route),
-            METHOD_NOT_ALLOWED (405, with Allow header), NOT_ACCEPTABLE (406) and
-            UNSUPPORTED_MEDIA_TYPE (415). Unexpected failures use INTERNAL_ERROR (500).
+            METHOD_NOT_ALLOWED (405, with Allow header) and UNSUPPORTED_MEDIA_TYPE (415). A 406 has
+            no body because the client accepts no JSON. Unexpected failures use INTERNAL_ERROR (500).
           example: REQUEST_VERSION_CONFLICT
         message: { type: string }
         path: { type: string }

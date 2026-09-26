@@ -61,6 +61,6 @@ Non-goals: no change to domain exceptions, existing codes, controllers, security
 ## Handoff
 
 - Changes: `ErrorResponse` 4xx mapping in `ApiExceptionHandler`, 3 controller tests, OpenAPI `ApiError.code` description, ADR-002 amendment
-- Evidence: [TASK-016 evidence](../../quality/evidence/TASK-016.md) — backend 132/132, frontend 32/32, Playwright 50/50, live 404/405/415
-- Decisions / open issues: Design D1–D3 approved; review findings R1 (406 WARN log) and R2 (fallback test gap) open
-- Next action: owner decides R1/R2 and the Implement/Verify/Delivery gates; redeploy `home-quiz-release` only on request
+- Evidence: [TASK-016 evidence](../../quality/evidence/TASK-016.md) — backend 135/135 after review fixes, frontend 32/32, Playwright 50/50, live 404/405/406/415
+- Decisions / open issues: Design D1–D3 approved; R1 (bodiless 406) and R2 (fallback tests) fixed on `codex/task-016-review-fixes`; R3 pre-existing candidate follow-up
+- Next action: owner decides the Implement/Verify/Delivery gates; redeploy `home-quiz-release` only on request
