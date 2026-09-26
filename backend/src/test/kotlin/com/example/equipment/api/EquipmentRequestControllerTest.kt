@@ -320,6 +320,20 @@ class EquipmentRequestControllerTest {
     }
 
     @Test
+    fun `an unacceptable response format returns 406 without a body`() {
+        every { repository.findAll(any<Specification<EquipmentRequestEntity>>(), any<Pageable>()) } returns
+            PageImpl(emptyList(), Pageable.ofSize(10), 0)
+
+        mockMvc.get(BASE) {
+            identity()
+            accept = MediaType.valueOf("text/csv")
+        }.andExpect {
+            status { isNotAcceptable() }
+            content { string("") }
+        }
+    }
+
+    @Test
     fun `CORS preflight allows the configured frontend origin and identity headers`() {
         mockMvc.options(BASE) {
             header(HttpHeaders.ORIGIN, "http://localhost:3100")
