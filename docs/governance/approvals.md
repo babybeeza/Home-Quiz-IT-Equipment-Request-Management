@@ -88,3 +88,11 @@ On 2026-09-26 the user answered “อนุมัติ” to the TASK-016 hand
 | Phase | Decision | Approver | Date | Revision / evidence | Notes |
 | --- | --- | --- | --- | --- | --- |
 | Design | Approved | Project owner acting as technical owner | 2026-09-26 | [TASK-016](../delivery/tasks/TASK-016-framework-error-status.md) D1–D3 | Implement, Verify and Delivery pending |
+
+On 2026-09-26, after the R1/R2 fixes and their evidence were presented and [PR #16](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/16) merged into `main` at `c7cadf3778350badecf5ff9e348b40a0089c9a9e`, the user answered “อนุมัติ gate Implement, Verify และ Delivery ของ TASK-016”. The approval covers the merged revision, whose application content matches reviewed head `5372128`. It accepts the stated limits: frontend not rerun after the backend-only R1/R2 fix, R3 (pre-existing, unverified) open, and the local `home-quiz-release` stack not redeployed with TASK-016.
+
+| Phase | Decision | Approver | Date | Revision / evidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-26 | `c7cadf3`; [TASK-016 evidence](../quality/evidence/TASK-016.md) | Includes the D1 mechanism deviation and the R1 refinement that 406 has no body |
+| Verify | Approved with stated limitations | Project owner acting as QA / acceptance owner | 2026-09-26 | `c7cadf3`; backend 135/135, Playwright 50/50, live 404/405/406/415 | Frontend 32/32 from the pre-fix revision; no frontend change since |
+| Delivery | Approved with stated limitations | Project owner acting as release owner | 2026-09-26 | `c7cadf3` on GitHub `main` | Repository handoff only; local release stack not redeployed; R3 open |

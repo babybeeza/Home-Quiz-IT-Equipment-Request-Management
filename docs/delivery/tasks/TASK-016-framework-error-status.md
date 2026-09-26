@@ -1,6 +1,6 @@
 # TASK-016: Return correct status for unmatched routes and framework HTTP errors
 
-Status: Implemented — Implement/Verify/Delivery review pending
+Status: Done — all gates approved 2026-09-26 for `main` `c7cadf3` with stated limitations
 Owner: Backend developer; project owner reviews as technical owner, code reviewer and QA owner
 Requirement IDs: REQ-06 (consistent error envelope, 400/404/409/422/500), REQ-11 (backend error tests)
 Dependencies: none; found during the [release redeploy](../../quality/evidence/TASK-015-release-deploy.md)
@@ -11,9 +11,9 @@ Dependencies: none; found during the [release redeploy](../../quality/evidence/T
 | --- | --- | --- | --- |
 | Requirements | Project owner | Covered by the approved REQ-06 baseline | 2026-09-25 |
 | Design | Project owner acting as technical owner | Approved D1–D3 | 2026-09-26 |
-| Implement | Project owner acting as code reviewer | Pending | — |
-| Verify | Project owner acting as QA / acceptance owner | Pending | — |
-| Delivery | Project owner acting as release owner | Pending | — |
+| Implement | Project owner acting as code reviewer | Approved | 2026-09-26 / `c7cadf3` |
+| Verify | Project owner acting as QA / acceptance owner | Approved with stated limitations | 2026-09-26 / `c7cadf3` |
+| Delivery | Project owner acting as release owner | Approved with stated limitations | 2026-09-26 / `c7cadf3` |
 
 ## Context
 
@@ -63,4 +63,4 @@ Non-goals: no change to domain exceptions, existing codes, controllers, security
 - Changes: `ErrorResponse` 4xx mapping in `ApiExceptionHandler`, 3 controller tests, OpenAPI `ApiError.code` description, ADR-002 amendment
 - Evidence: [TASK-016 evidence](../../quality/evidence/TASK-016.md) — backend 135/135 after review fixes, frontend 32/32, Playwright 50/50, live 404/405/406/415
 - Decisions / open issues: Design D1–D3 approved; R1 (bodiless 406) and R2 (fallback tests) fixed on `codex/task-016-review-fixes`; R3 pre-existing candidate follow-up
-- Next action: owner decides the Implement/Verify/Delivery gates; redeploy `home-quiz-release` only on request
+- Next action: none required; optional: redeploy `home-quiz-release` only on request
