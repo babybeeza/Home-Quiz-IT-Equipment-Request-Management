@@ -114,3 +114,5 @@ On 2026-09-26, after the TASK-017 fix evidence was presented and [PR #20](https:
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-26 | `cae008f`; [TASK-017 evidence](../quality/evidence/TASK-017.md) | Class-level `produces` and regression tests |
 | Verify | Approved with stated limitations | Project owner acting as QA / acceptance owner | 2026-09-26 | `cae008f`; backend 142/142, Playwright 50/50, live rerun | Frontend unit/build NOT RUN (no change) |
 | Delivery | Approved with stated limitations | Project owner acting as release owner | 2026-09-26 | `cae008f` on GitHub `main` | Repository handoff; local release stack not redeployed |
+
+Local release redeploy, 2026-09-26: at the user's request, `home-quiz-release` was rebuilt from `main` `446f402`, so the running stack includes TASK-017. See [TASK-017 evidence](../quality/evidence/TASK-017.md). This records an operation, not a new approval.

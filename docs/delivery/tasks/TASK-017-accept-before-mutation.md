@@ -57,4 +57,4 @@ Out of scope until the owner decides: any change to controllers, the handler, th
 - Changes: class-level `produces = application/json` on both controllers; Testcontainers and MockMvc regression tests; ADR-002 amendment
 - Evidence: [TASK-017 evidence](../../quality/evidence/TASK-017.md) — R3 confirmed, then fixed: 406 with no state change on all six mutations; backend 142/142, Playwright 50/50
 - Decisions / open issues: all gates approved 2026-09-26 for `cae008f`
-- Next action: none required; optional: redeploy `home-quiz-release` only on request
+- Next action: none required; local `home-quiz-release` redeployed from `446f402` ([evidence](../../quality/evidence/TASK-017.md))
