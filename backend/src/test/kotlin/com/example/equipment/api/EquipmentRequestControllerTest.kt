@@ -334,6 +334,44 @@ class EquipmentRequestControllerTest {
     }
 
     @Test
+    fun `a client that accepts no JSON is rejected before create or a transition runs`() {
+        val entity = existingEntity(version = 0)
+        every { repository.findAggregateById(entity.id) } returns entity
+
+        mockMvc.post(BASE) {
+            identity()
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.valueOf("text/csv")
+            content = validBody()
+        }.andExpect { status { isNotAcceptable() } }
+        mockMvc.post("$BASE/${entity.id}/submit") {
+            identity()
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.valueOf("text/csv")
+            content = """{"expectedVersion":0}"""
+        }.andExpect { status { isNotAcceptable() } }
+
+        verify(exactly = 0) { allocator.nextSequence() }
+        verify(exactly = 0) { repository.findAggregateById(any()) }
+        verify(exactly = 0) { repository.saveAndFlush(any()) }
+    }
+
+    @ParameterizedTest(name = "Accept: {0}")
+    @CsvSource("*/*", "application/json", "'application/json, text/csv;q=0.5'", "''")
+    fun `JSON-compatible or absent Accept headers still reach the handler`(accept: String) {
+        every { repository.findAll(any<Specification<EquipmentRequestEntity>>(), any<Pageable>()) } returns
+            PageImpl(emptyList(), Pageable.ofSize(10), 0)
+
+        mockMvc.get(BASE) {
+            identity()
+            if (accept.isNotEmpty()) header(HttpHeaders.ACCEPT, accept)
+        }.andExpect {
+            status { isOk() }
+            content { contentTypeCompatibleWith(MediaType.APPLICATION_JSON) }
+        }
+    }
+
+    @Test
     fun `CORS preflight allows the configured frontend origin and identity headers`() {
         mockMvc.options(BASE) {
             header(HttpHeaders.ORIGIN, "http://localhost:3100")
