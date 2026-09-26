@@ -19,7 +19,7 @@ async function listUpdate(page: Page, matches: (query: URLSearchParams) => boole
 }
 
 test.describe("E. List page", () => {
-  test("AT-31 AT-32 the list shows all eight columns and links each row to its detail", async ({ page, request }) => {
+  test("AT-31 AT-32 the list shows all eight data columns and links each row to its detail", async ({ page, request }) => {
     const created = await arrange(request, "PENDING", `${tag("at31")} columns`, USERS.somchai, {
       items: [{ equipmentType: "MONITOR", quantity: 2 }, { equipmentType: "MOUSE", quantity: 1 }],
     });
@@ -32,23 +32,56 @@ test.describe("E. List page", () => {
     const row = rows(page).filter({ hasText: created.title });
     await expect(row.getByRole("cell")).toHaveText([
       created.requestNumber, created.title, created.employeeName, created.department,
-      created.requiredDate, "3", "PENDING", /.+/,
+      created.requiredDate, "3", "PENDING", /.+/, /ยกเลิกคำขอ/,
     ]);
 
     await row.getByRole("link", { name: created.requestNumber }).click();
     await expect(page).toHaveURL(new RegExp(`/requests/${created.id}$`));
   });
 
-  test("AT-33 (G-1 open) list rows link to the detail page and carry no inline actions", async ({ page, request }) => {
-    test.info().annotations.push({ type: "open-item", description: "G-1: assignment §4.2 shows per-status actions in the list; this records the current behavior for the owner's decision" });
-    const created = await arrange(request, "DRAFT", `${tag("at33")} row actions`);
+  test("AT-33 list rows expose role- and status-specific actions and submit from the list", async ({ page, request }) => {
+    const marker = tag("at33");
+    const created = await arrange(request, "DRAFT", `${marker} row actions`);
+    await arrange(request, "APPROVED", `${marker} terminal`);
     await signInAs(page, USERS.somchai);
-    await page.getByRole("searchbox").fill(created.title);
+    await page.getByRole("searchbox").fill(marker);
 
     const row = rows(page).filter({ hasText: created.title });
     await expect(row).toHaveCount(1);
-    await expect(row.getByRole("button")).toHaveCount(0);
-    await expect(row.getByRole("link")).toHaveCount(1);
+    await expect(row.getByRole("link", { name: "แก้ไข Draft" })).toBeVisible();
+    await expect(row.getByRole("button", { name: "ส่งคำขอ" })).toBeVisible();
+    await expect(row.getByRole("button", { name: "ยกเลิกคำขอ" })).toBeVisible();
+    await expect(rows(page).filter({ hasText: `${marker} terminal` }).getByRole("button")).toHaveCount(0);
+
+    await row.getByRole("button", { name: "ส่งคำขอ" }).click();
+    await expect(row.getByRole("cell", { name: "PENDING" })).toBeVisible();
+    await expect(row.getByRole("button", { name: "ส่งคำขอ" })).toHaveCount(0);
+    await expect(row.getByRole("button", { name: "ยกเลิกคำขอ" })).toBeVisible();
+    expect((await api(request).get(USERS.somchai, created.id)).status).toBe("PENDING");
+
+    await signInAs(page, USERS.approver);
+    await page.getByRole("searchbox").fill(created.title);
+    const approverRow = rows(page).filter({ hasText: created.title });
+    await expect(approverRow.getByRole("button", { name: "อนุมัติ" })).toBeVisible();
+    await expect(approverRow.getByRole("button", { name: "ปฏิเสธ" })).toBeVisible();
+    await expect(approverRow.getByRole("button", { name: "ยกเลิกคำขอ" })).toHaveCount(0);
+  });
+
+  test("AT-33 a stale list action cannot overwrite an Employee cancellation", async ({ page, request }) => {
+    const created = await arrange(request, "PENDING", `${tag("at33-stale")} conflict`);
+    await signInAs(page, USERS.approver);
+    await page.getByRole("searchbox").fill(created.title);
+    const row = rows(page).filter({ hasText: created.title });
+    await expect(row.getByRole("button", { name: "อนุมัติ" })).toBeVisible();
+
+    await api(request).action(USERS.somchai, created.id, "cancel", created.version);
+    await row.getByRole("button", { name: "อนุมัติ" }).click();
+    await expect(row.getByRole("alert")).toContainText("คำขอนี้ถูกเปลี่ยนจากที่อื่นแล้ว");
+    expect((await api(request).get(USERS.approver, created.id)).status).toBe("CANCELLED");
+
+    await row.getByRole("button", { name: "โหลดข้อมูลล่าสุด" }).click();
+    await expect(row.getByRole("cell", { name: "CANCELLED" })).toBeVisible();
+    await expect(row.getByRole("button", { name: "อนุมัติ" })).toHaveCount(0);
   });
 });
 

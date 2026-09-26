@@ -1,10 +1,10 @@
 # Acceptance test cases (Verify gate)
 
-Status: Ready for execution by the QA / acceptance owner. Automated run recorded (below); manual QA results are not recorded yet.
+Status: TASK-010 changed AT-33 behavior after the 2026-09-25 Verify approval; current revision awaits Implement/Verify review. Manual QA results are not recorded.
 Revision under test: `main` at `d3ca981` (TASK-001–007 merged)
 Requirements: [REQ-01–REQ-13](../product/requirements.md). Source of truth: the [original assignment](../../Home-Quiz-IT-Equipment-Request-Management_revise_1.html)
 
-**Automation:** 53 of 55 cases are automated with Playwright in [`tests/e2e`](../../tests/e2e/README.md) (`bash tests/e2e/run-e2e.sh`, test titles carry the AT-ID). Latest run 49/49 tests passed ([TASK-008 evidence](evidence/TASK-008.md)). AT-44 and AT-46 remain manual. Automated results are evidence; the QA sign-off below is still a human decision.
+**Automation:** 53 of 55 cases are automated with Playwright in [`tests/e2e`](../../tests/e2e/README.md) (`bash tests/e2e/run-e2e.sh`, test titles carry the AT-ID). TASK-010 run: 50/50 passed, including two AT-33 tests ([evidence](evidence/TASK-010.md)). AT-44 and AT-46 remain manual. Automated results are evidence; the QA sign-off below is still a human decision.
 
 These are **black-box acceptance tests** run by a person through the UI, with a few API calls for the rules the backend must enforce even when the UI hides them. The automated tests (backend 128, frontend 31, k6) are listed in [TASK-007 evidence](evidence/TASK-007.md). This suite checks the system from the user's point of view and does not repeat that automation.
 
@@ -77,7 +77,7 @@ Priority: **P1** = a mandatory assignment rule; its failure blocks the Verify ga
 | --- | --- | --- | --- | --- | --- |
 | AT-31 | P1 | There are requests | Open `/requests` | The table has all 8 columns: เลขที่คำขอ, หัวข้อ, ผู้ขอ, แผนก, วันที่ต้องการใช้, จำนวนรวม, สถานะ, สร้างเมื่อ. Status is shown as text | |
 | AT-32 | P1 | Same | Click a request number | You go to that request's detail page | |
-| AT-33 | P1 | **Open item G-1** | Look for the per-status action buttons (Edit · Submit · Cancel / Approve · Reject · Cancel) **in the list page** | **Current behavior:** actions are on the detail page, not in list rows (TASK-005 decision). Record Pass/Fail against the assignment §4.2 criterion, and a Fail needs a decision from the owner | |
+| AT-33 | P1 | DRAFT, PENDING and terminal requests | Look for actions in the list; submit as Employee, then try a stale Approve after an Employee cancellation | Employee owner: DRAFT Edit/Submit/Cancel, PENDING Cancel. Approver: PENDING Approve/Reject. Terminal: no mutations. Stale action returns 409 without overwrite; explicit reload shows the latest state. The PENDING Cancel entry in assignment §4.2 applies to the Employee owner under the approved role matrix | PASS automated in TASK-010; current revision awaits human Verify review |
 
 ## F. Search, filter and pagination (REQ-05, REQ-08); run the seed data first
 
@@ -146,3 +146,7 @@ Use a request `{id}` and its current `version` from `GET /equipment-requests/{id
 | Verify gate decision | **Approved**: user statement "QA Approved", 2026-09-25 |
 
 The Verify gate may be approved only when every P1 case passes, or its failure has a decision recorded. Record that decision in [approvals.md](../governance/approvals.md).
+
+### TASK-010 revision
+
+The historical sign-off above applies to TASK-001–009. TASK-010 implements the list-row criterion and the latest automated run passes all 50 Playwright tests, including AT-33. Its 43 P1 cases have automated coverage; AT-44 and AT-46 are the two P2 manual cases and remain NOT RUN in this revision. Implement and Verify review for this changed revision are pending; no new human gate decision is recorded here.

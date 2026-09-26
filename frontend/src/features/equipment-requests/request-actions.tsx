@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { useIdentity } from "./identity";
-import type { EquipmentRequest, RequestActionName } from "./types";
+import type { EquipmentRequestSummary, RequestActionName } from "./types";
 import { availableActions, useRequestAction, type ActionError } from "./use-request-action";
 
 const labels: Record<RequestActionName, string> = {
@@ -12,7 +12,11 @@ const labels: Record<RequestActionName, string> = {
   reject: "ปฏิเสธ",
 };
 
-export function RequestActions({ request }: { request: EquipmentRequest }) {
+export function RequestActions({ request, inline = false, disabled = false }: {
+  request: EquipmentRequestSummary;
+  inline?: boolean;
+  disabled?: boolean;
+}) {
   const { actor } = useIdentity();
   const { run, pendingAction, error, hasConflict, announcement, reloadLatest } = useRequestAction(request);
   const [rejectOpen, setRejectOpen] = useState(false);
@@ -44,14 +48,14 @@ export function RequestActions({ request }: { request: EquipmentRequest }) {
       )}
       {error && !rejectOpen && <ErrorAlert error={error} />}
       {actions.length > 0 && (
-        <div className="request-actions" aria-label="การดำเนินการกับคำขอ" role="group">
+        <div className={`request-actions${inline ? " inline-actions" : ""}`} aria-label={inline ? `การดำเนินการกับคำขอ ${request.requestNumber}` : "การดำเนินการกับคำขอ"} role="group">
           {actions.map((action) => (
             <button
               key={action}
               ref={action === "reject" ? rejectButton : undefined}
               type="button"
               className={action === "cancel" || action === "reject" ? "danger" : undefined}
-              disabled={pendingAction !== null}
+              disabled={disabled || pendingAction !== null}
               onClick={() => trigger(action)}
             >
               {pendingAction === action ? "กำลังดำเนินการ…" : labels[action]}

@@ -16,7 +16,7 @@ Source: [assignment](../../Home-Quiz-IT-Equipment-Request-Management_revise_1.ht
 | REQ-10 | Implement Redis และ local Caffeine caching; อธิบาย data placement, TTL, invalidation และความถูกต้องเมื่อ cache ล้าสมัย |
 | REQ-11 | Frontend tests ≥4 ด้วย Vitest หรือ Jest + React Testing Library; backend tests ≥6 ด้วย JUnit 5 + MockK หรือ Mockito; เน้น behavior, errors และ data integrity |
 | REQ-12 | รัน k6 performance tests และส่งผลพร้อม workload/environment; ไม่อ้างผลจาก script ที่ยังไม่ได้รัน |
-| REQ-13 | ส่ง source, README prerequisites/runtime versions/install/run/test/API/decisions/assumptions/limitations, migration หรือ schema และ automated tests |
+| REQ-13 | ส่ง Git repository ที่ผู้อื่นติดตั้ง ทดสอบ และ run ได้ พร้อม frontend/backend source, README (environment/run/test & API/decisions/scope), migration หรือ schema และ automated tests; ดู [Discover detail](req-13-discovery.md) |
 
 Equipment types: NOTEBOOK, MONITOR, KEYBOARD, MOUSE, HEADSET, OTHER
 

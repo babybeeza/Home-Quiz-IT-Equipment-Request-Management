@@ -9,6 +9,7 @@ import type { RequestStatus } from "./types";
 import { DepartmentOptions } from "./department-options";
 import { useDebouncedUrlField, useRequestSearch } from "./use-request-search";
 import { useDepartmentSuggestions } from "./use-reference-data";
+import { RequestActions } from "./request-actions";
 
 const statusOptions: RequestStatus[] = ["DRAFT", "PENDING", "APPROVED", "REJECTED", "CANCELLED"];
 const createdAtFormat = new Intl.DateTimeFormat("th-TH", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Bangkok" });
@@ -89,12 +90,12 @@ export function RequestList() {
               <thead>
                 <tr>
                   <th scope="col">เลขที่คำขอ</th><th scope="col">หัวข้อ</th><th scope="col">ผู้ขอ</th><th scope="col">แผนก</th>
-                  <th scope="col">วันที่ต้องการใช้</th><th scope="col">จำนวนรวม</th><th scope="col">สถานะ</th><th scope="col">สร้างเมื่อ</th>
+                  <th scope="col">วันที่ต้องการใช้</th><th scope="col">จำนวนรวม</th><th scope="col">สถานะ</th><th scope="col">สร้างเมื่อ</th><th scope="col">การดำเนินการ</th>
                 </tr>
               </thead>
               <tbody>
                 {query.data.content.map((row) => (
-                  <tr key={row.id}>
+                  <tr key={`${row.id}-${row.version}`}>
                     <td><Link href={`/requests/${row.id}`}>{row.requestNumber}</Link></td>
                     <td>{row.title}</td>
                     <td>{row.employeeName}</td>
@@ -103,6 +104,11 @@ export function RequestList() {
                     <td>{row.totalItems}</td>
                     <td><span className={`status-pill status-${row.status.toLowerCase()}`}>{row.status}</span></td>
                     <td>{createdAtFormat.format(new Date(row.createdAt))}</td>
+                    <td className="row-actions-cell">
+                      {actor.role === "EMPLOYEE" && row.status === "DRAFT" &&
+                        <Link className="button secondary" href={`/requests/${row.id}/edit`}>แก้ไข Draft</Link>}
+                      <RequestActions request={row} inline disabled={query.isFetching} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
