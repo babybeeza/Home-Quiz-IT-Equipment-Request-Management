@@ -30,7 +30,7 @@ Deviation from D1 wording, same behavior: D1 named `@ExceptionHandler(ErrorRespo
 | --- | --- | --- | --- | --- | --- |
 | R1 | Low | `ApiExceptionHandler.kt` `unexpected` | For 406, the client refuses JSON, so the `ApiError` body cannot be written. Spring logs WARN "Failure in @ExceptionHandler", falls back to `DefaultHandlerExceptionResolver`, and returns 406 with an empty body and a duplicated `Accept` header. The status is correct, but the log is noisy. | Live check and backend log above | Fixed in the review-fix revision below |
 | R2 | Low | `EquipmentRequestControllerTest.kt` | The fallback branch (other 4xx → `MALFORMED_REQUEST`) and a 5xx `ErrorResponse` staying `INTERNAL_ERROR` have no automated test. | Code review | Fixed in the review-fix revision below |
-| R3 | Info, pre-existing, unverified | Controller methods without `produces` | A mutating POST/PUT sent with an `Accept` header that excludes JSON may commit before response writing fails with 406. Not introduced by TASK-016. | Reasoning from the Spring return-value flow; not reproduced | Candidate follow-up; verify before acting |
+| R3 | Info, pre-existing, unverified | Controller methods without `produces` | A mutating POST/PUT sent with an `Accept` header that excludes JSON may commit before response writing fails with 406. Not introduced by TASK-016. | Reasoning from the Spring return-value flow; not reproduced | Confirmed in [TASK-017](../../delivery/tasks/TASK-017-accept-before-mutation.md); fix pending Design |
 
 No finding affects ownership, state transitions, version checks or cache invalidation: no domain, persistence or cache code changed.
 
