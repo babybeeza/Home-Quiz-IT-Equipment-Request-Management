@@ -6,7 +6,7 @@ Environment: Windows PowerShell, Docker 29.5.2, `node:24.15.0-alpine`
 
 ## Result
 
-[ADR-008](../../architecture/decisions/ADR-008-spark-theme.md) preserves the 12 source colors from the user's table, keeps template `hlink`/`folHlink` outside PowerPoint `THEME`, and maps UI roles and states to semantic tokens. Derived neutrals and surfaces are named separately; no deck file was inspected. This is a proposed Design decision pending technical-owner review.
+[ADR-008](../../architecture/decisions/ADR-008-spark-theme.md) preserves the 12 source colors from the user's table, keeps template `hlink`/`folHlink` outside PowerPoint `THEME`, and maps UI roles and states to semantic tokens. Derived neutrals and surfaces are named separately; no deck file was inspected. The subsequent technical-owner Design approval applies to application revision `5a3b2e1`.
 
 | Check | Command / method | Exit code | Result |
 | --- | --- | --- | --- |
@@ -15,4 +15,4 @@ Environment: Windows PowerShell, Docker 29.5.2, `node:24.15.0-alpine`
 | Document links | Local Markdown relative-link check across eight edited `.md` files | 0 | All linked local paths resolved |
 | Patch whitespace | `git diff --check` | 0 | No whitespace errors |
 
-The contrast script reads CSS tokens and computes sRGB relative luminance using the formula in ADR-008. It checks the declared pairs; rendered hover/focus and responsive UI still require TASK-015 visual inspection. Design approval is **pending**. No approval is inferred from this calculation or from the user's Implement instruction.
+The contrast script reads CSS tokens and computes sRGB relative luminance using the formula in ADR-008. It checks the declared pairs; TASK-015 records rendered hover/focus and responsive UI inspection. The user subsequently approved the Design gate for application revision `5a3b2e1`; see the [approval record](../../governance/approvals.md). No approval was inferred from the calculation or the earlier Implement instruction.

@@ -1,6 +1,6 @@
 # TASK-014: Design Spark Deck color theme
 
-Status: Design prepared and checked — technical-owner approval pending
+Status: Design approved for application revision `5a3b2e1`
 Owner: Frontend developer prepares design; project owner acting as technical owner reviews it
 Requirement IDs: REQ-14
 Dependencies: [REQ-14 Discover](../../product/req-14-theme-discovery.md), [A-09](../../product/assumptions.md), current [UI flow](../../architecture/ui-flow.md)
@@ -10,10 +10,10 @@ Dependencies: [REQ-14 Discover](../../product/req-14-theme-discovery.md), [A-09]
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
 | Requirements | Project owner | User supplied 12-color palette; formal REQ-14 baseline review pending | — |
-| Design | Technical owner | Pending semantic mapping/contrast review | — |
-| Implement | Code reviewer | TASK-015 implementation in review | — |
-| Verify | QA / acceptance owner | TASK-015 evidence in review | — |
-| Delivery | Release owner | Not started | — |
+| Design | Project owner acting as technical owner | Approved | 2026-09-26 / `5a3b2e1` |
+| Implement | Project owner acting as code reviewer | Approved for TASK-015 | 2026-09-26 / `5a3b2e1` |
+| Verify | Project owner acting as QA / acceptance owner | Approved with stated limitations for TASK-015 | 2026-09-26 / `5a3b2e1` |
+| Delivery | Project owner acting as release owner | Approved for reviewed candidate with stated limitations | 2026-09-26 / `5a3b2e1` |
 
 ## Context
 
@@ -55,5 +55,5 @@ Design check results are recorded in [TASK-014 evidence](../../quality/evidence/
 
 - Changes: [ADR-008](../../architecture/decisions/ADR-008-spark-theme.md) proposes semantic mapping and derived shades
 - Evidence: [TASK-014 design evidence](../../quality/evidence/TASK-014-design.md)
-- Decisions / open issues: technical-owner Design approval remains pending
-- Next action: review ADR-008 and the implemented UI together for an explicit Design decision
+- Decisions / open issues: Design approval recorded in [governance](../../governance/approvals.md); formal REQ-14 Requirements baseline decision remains unrecorded
+- Next action: preserve the approved application revision during PR review and integration

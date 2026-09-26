@@ -1,6 +1,6 @@
 # TASK-015: Apply approved Spark Deck theme to the UI
 
-Status: Implemented for review — Design, Implement and Verify approvals pending
+Status: Implemented; Design, Implement, Verify and candidate Delivery approved for `5a3b2e1`
 Owner: Frontend developer; code reviewer and QA / acceptance owner review the result
 Requirement IDs: REQ-14; regression coverage for REQ-01–REQ-08 and AT-33
 Dependencies: [TASK-014](TASK-014-spark-theme-design.md) approved ADR-008/token mapping; [REQ-14 Discover](../../product/req-14-theme-discovery.md)
@@ -10,10 +10,10 @@ Dependencies: [TASK-014](TASK-014-spark-theme-design.md) approved ADR-008/token 
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
 | Requirements | Project owner | REQ-14 palette supplied; formal review in TASK-014 | — |
-| Design | Technical owner | ADR-008 proposed; review pending | — |
-| Implement | Code reviewer | Implementation and evidence in review | — |
-| Verify | QA / acceptance owner | Automated and visual evidence in review | — |
-| Delivery | Release owner | Not started | — |
+| Design | Project owner acting as technical owner | Approved | 2026-09-26 / `5a3b2e1` |
+| Implement | Project owner acting as code reviewer | Approved | 2026-09-26 / `5a3b2e1` |
+| Verify | Project owner acting as QA / acceptance owner | Approved with stated limitations | 2026-09-26 / `5a3b2e1` |
+| Delivery | Project owner acting as release owner | Approved for reviewed candidate with stated limitations | 2026-09-26 / `5a3b2e1` |
 
 ## Context
 
@@ -50,11 +50,11 @@ No backend, API, schema, role/state workflow, logo, typography, layout redesign 
 | Visual and accessibility | Inspect screenshots at about 1440×900 and 390×844 for routes/states above; keyboard Tab/focus; calculate contrast for rendered text/controls | Screenshots or review notes and contrast table, with failures fixed or stated |
 | Scope and hygiene | `git diff --check`; `rg -n '#[0-9A-Fa-f]{3,8}|rgb\(|hsl\(' frontend/src --glob '*.css' --glob '*.tsx'`; review `git diff` | Remaining raw colors explained by ADR-008; no backend/contract edits |
 
-Execution results are recorded in [TASK-015 evidence](../../quality/evidence/TASK-015.md). The user's Implement request authorized reversible work on an isolated branch; it is not recorded as formal Design, Implement or Verify approval.
+Execution results are recorded in [TASK-015 evidence](../../quality/evidence/TASK-015.md). The user's subsequent “approved” reply approved the four gates explicitly listed in the handoff for application revision `5a3b2e1`; see the [approval record](../../governance/approvals.md).
 
 ## Handoff
 
-- Changes: proposed theme applied to the shared UI stylesheet for review
+- Changes: approved theme mapping applied to the shared UI stylesheet at application revision `5a3b2e1`
 - Evidence: [TASK-015 evidence](../../quality/evidence/TASK-015.md)
-- Decisions / open issues: human Design/Implement/Verify/Delivery gates
-- Next action: review the exact revision and evidence before any release handoff
+- Decisions / open issues: the four listed gates approved for the candidate with stated limitations; formal REQ-14 Requirements baseline decision remains unrecorded
+- Next action: integrate the reviewed candidate without changing its application behavior, then record the actual integration revision separately

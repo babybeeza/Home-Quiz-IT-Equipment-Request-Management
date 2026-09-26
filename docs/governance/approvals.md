@@ -5,10 +5,10 @@
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
-| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved for TASK-010 on `77b56241` |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved for TASK-010 on `77b56241` |
-| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Approved for TASK-010 on `77b56241` |
-| Delivery | Release owner | release revision, runbook, rollback and limitations | Approved for `77b56241` with recorded limitations |
+| Design | Technical owner | architecture, ADRs, contract, data/test plan | TASK-010 approved on `77b56241`; REQ-14 ADR-008 approved on `5a3b2e1` |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | TASK-010 approved on `77b56241`; REQ-14 approved on `5a3b2e1` |
+| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | TASK-010 approved on `77b56241`; REQ-14 approved with limits on `5a3b2e1` |
+| Delivery | Release owner | release revision, runbook, rollback and limitations | `77b56241` approved with limits; REQ-14 candidate `5a3b2e1` approved with limits, integration pending |
 
 ## Approval record
 
@@ -61,4 +61,11 @@ On 2026-09-26, after the post-merge [TASK-013 evidence](../quality/evidence/TASK
 
 ## REQ-14 theme review
 
-On 2026-09-26 the user requested Implement after supplying the Spark Deck palette and planning TASK-014/TASK-015. This authorizes preparation of a reversible UI change on an isolated branch. [ADR-008](../architecture/decisions/ADR-008-spark-theme.md), [TASK-014 evidence](../quality/evidence/TASK-014-design.md) and [TASK-015 evidence](../quality/evidence/TASK-015.md) are submitted for review. No Requirements, Design, Implement, Verify or Delivery gate is recorded as approved for REQ-14; the earlier REQ-13 approvals remain scoped to `77b56241`.
+On 2026-09-26 the user requested Implement after supplying the Spark Deck palette and planning TASK-014/TASK-015. [ADR-008](../architecture/decisions/ADR-008-spark-theme.md), [TASK-014 evidence](../quality/evidence/TASK-014-design.md) and [TASK-015 evidence](../quality/evidence/TASK-015.md) were presented in draft PR #12 at application revision `5a3b2e107e30ba90f1b36e5ea1b2f587c955c4c9`. The handoff explicitly listed Design, Implement, Verify and Delivery as pending; the user replied “approved.” The user acts as technical owner, code reviewer, QA/acceptance owner and release owner for this take-home project. This accepts the stated limits: backend unit/integration and manual AT-44/AT-46 were not run, exhaustive rendered-pixel audit was not run, and the original deck file was not supplied. The approval applies to that application revision; this documentation-only record does not change UI behavior. Formal REQ-14 Requirements baseline approval was not among the four listed gates. The earlier REQ-13 approvals remain scoped to `77b56241`.
+
+| Phase | Decision | Approver | Date | Revision / evidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Design | Approved | Project owner acting as technical owner | 2026-09-26 | `5a3b2e1`; [ADR-008](../architecture/decisions/ADR-008-spark-theme.md), [design evidence](../quality/evidence/TASK-014-design.md) | Accepts semantic token mapping, contrast pairs and named derived colors |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-26 | `5a3b2e1`; [TASK-015 evidence](../quality/evidence/TASK-015.md) | Accepts CSS-only implementation and recorded checks |
+| Verify | Approved with stated limitations | Project owner acting as QA / acceptance owner | 2026-09-26 | `5a3b2e1`; [TASK-015 evidence](../quality/evidence/TASK-015.md) | 32 unit and 50 browser tests passed; listed unrun checks accepted |
+| Delivery | Approved for reviewed candidate with stated limitations | Project owner acting as release owner | 2026-09-26 | `5a3b2e1`; [PR #12](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/12) | Candidate handoff approved; this does not assert merge, deployment or change to the separate running release stack |

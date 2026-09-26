@@ -1,6 +1,6 @@
 # ADR-008: Spark Deck color theme for the light UI
 
-Status: Proposed for technical-owner review
+Status: Approved by project owner acting as technical owner on 2026-09-26 for application revision `5a3b2e1`
 Date: 2026-09-26
 Owner: Technical owner
 Requirements/tasks: REQ-14 / TASK-014, TASK-015
@@ -15,7 +15,7 @@ The user supplied the Spark Deck color table in [REQ-14 Discover](../../product/
 2. Preserve every source swatch, then map semantic roles to accessible foreground/background pairs and document the few derived neutrals and surfaces. This keeps the supplied identity visible while avoiding low-contrast combinations.
 3. Change layout, typography and component structure with the colors. This exceeds the user's color request and raises regression risk.
 
-## Proposed decision
+## Decision
 
 Use option 2. Keep the 12 source colors as immutable `--spark-*` CSS variables. The `hlink` and `folHlink` values are template colors outside PowerPoint `THEME`; they remain separate variables. Map UI roles to semantic variables rather than use raw slots directly in selectors. No workflow or component logic changes.
 
@@ -83,4 +83,4 @@ The supplied grey_dark / white is 4.35:1, orange / white 2.43:1, yellow / white 
 
 ## Consequences and verification
 
-The app gains a coherent light theme with palette provenance and explicit support colors. A single stylesheet remains the owner of the theme. There is no backend, contract or data migration. TASK-015 must inspect desktop/mobile routes and loading/error/conflict/dialog states, verify rendered contrast, and run frontend and browser acceptance checks. The user/technical owner must review this proposed design; implementation evidence cannot stand in for that approval.
+The app gains a coherent light theme with palette provenance and explicit support colors. A single stylesheet remains the owner of the theme. There is no backend, contract or data migration. TASK-015 records desktop/mobile route and state inspection, contrast calculation and frontend/browser acceptance checks. The user/technical owner approved this decision for application revision `5a3b2e1`; see the [approval record](../../governance/approvals.md).
