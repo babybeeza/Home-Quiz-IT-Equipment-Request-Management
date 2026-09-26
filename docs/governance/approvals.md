@@ -98,3 +98,11 @@ On 2026-09-26, after the R1/R2 fixes and their evidence were presented and [PR #
 | Delivery | Approved with stated limitations | Project owner acting as release owner | 2026-09-26 | `c7cadf3` on GitHub `main` | Repository handoff only; local release stack not redeployed; R3 open |
 
 Local release redeploy, 2026-09-26: at the user's request, `home-quiz-release` was rebuilt from `main` `5392a55` so the running stack includes TASK-016. See [TASK-016 evidence](../quality/evidence/TASK-016.md). This records an operation, not a new approval.
+
+## TASK-017 non-JSON Accept on mutations
+
+On 2026-09-26, after the [TASK-017 evidence](../quality/evidence/TASK-017.md) confirmed R3 and recommended class-level `produces = application/json`, the user answered “อนุมัติ”.
+
+| Phase | Decision | Approver | Date | Revision / evidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Design | Approved | Project owner acting as technical owner | 2026-09-26 | [TASK-017 evidence](../quality/evidence/TASK-017.md) recommendation | Covers `EquipmentRequestController` and `ReferenceDataController`, plus regression tests at MockMvc and Testcontainers level; Implement, Verify and Delivery pending |

@@ -41,3 +41,20 @@ Fix it, pending Design review. Candidate: `produces = [MediaType.APPLICATION_JSO
 - the TASK-016 bodiless-406 handler still applies
 
 Regression tests should assert 406 with no row, version or status change for create and one transition, at both MockMvc and Testcontainers level.
+
+## Fix (Design approved 2026-09-26)
+
+Branch `codex/task-017-produces-json` from `main` `78d73a6` (PR #19 merge). `EquipmentRequestController` has class-level `@RequestMapping(..., produces = [application/json])`, and `ReferenceDataController`'s `@GetMapping` has the same. Spring now matches `Accept` during handler mapping, so a request that accepts no JSON gets the TASK-016 bodiless 406 before the handler runs. OpenAPI already declared only `application/json` responses and a bodiless 406, so it is unchanged. ADR-002 has a TASK-017 amendment.
+
+Regression tests:
+- `AcceptBeforeMutationIntegrationTest` (Testcontainers PostgreSQL + Redis): a CSV create leaves 0 rows and the sequence unchanged; a CSV submit leaves `DRAFT v0`.
+- `EquipmentRequestControllerTest`: CSV create and submit never reach the allocator or repository. `*/*`, `application/json`, `application/json, text/csv;q=0.5` and no `Accept` still return 200 JSON.
+
+| Check | Command / method | Exit | Result | Observation |
+| --- | --- | ---: | --- | --- |
+| Targeted tests | PowerShell in `backend/`: `.\mvnw.cmd --batch-mode test "-Dtest=EquipmentRequestControllerTest,ReferenceDataControllerTest,AcceptBeforeMutationIntegrationTest,ApiExceptionHandlerTest"` | 0 | PASS | 41/41, including the Testcontainers class (2/2), not skipped |
+| Tests fail without the fix | Same runner with both controller files stashed | 1 | EXPECTED FAIL | `expected: <DRAFT v0> but was: <PENDING v1>`; `expected: <0> but was: <1>`; MockMvc test reached `nextSequence()`. Fix restored with `git stash pop` |
+| Backend package | PowerShell: `.\mvnw.cmd --batch-mode clean package` | 0 | PASS | 17 Surefire reports, 142 tests, 0 failures, 0 errors, 0 skipped |
+| Browser acceptance | Git Bash: `tests/e2e/run-e2e.sh` | 0 | PASS | 50/50 Chromium, including AT-33; browser requests unaffected |
+| Live rerun | Same reproduction script on a fresh `home-quiz-task017` | 0 | PASS | All six CSV mutations 406 with **no** change (create 0 rows; PUT, submit, approve, reject and cancel rows unchanged). JSON retries succeed (201/200) instead of duplicating or 409. First JSON create got `REQ-2026-000001`, so the CSV create consumed no number. Browser-like `Accept` via proxy 200; reference-data CSV 406; unmatched path 404; 0 handler WARN/ERROR lines. Stack removed with `down -v` |
+| Frontend unit/build | — | N/A | NOT RUN | No frontend change; UI behavior covered by Playwright above |

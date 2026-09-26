@@ -3,6 +3,7 @@ package com.example.equipment.api
 import com.example.equipment.application.ReferenceDataService
 import com.example.equipment.application.ReferenceDataView
 import com.example.equipment.domain.EquipmentType
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
@@ -25,7 +26,7 @@ data class ReferenceDataResponse(
 class ReferenceDataController(
     private val service: ReferenceDataService,
 ) {
-    @GetMapping("/api/v1/reference-data")
+    @GetMapping("/api/v1/reference-data", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun get(
         @RequestHeader("X-User-Id") userId: String,
         @RequestHeader("X-Role") role: String,
