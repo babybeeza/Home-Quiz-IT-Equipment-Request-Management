@@ -1,6 +1,6 @@
 # Delivery and operations runbook
 
-Status: local environment only; Delivery gate pending. The published candidate branch is `codex/req13-candidate-20260926` at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git`; its application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` passed clean-checkout build, automated acceptance and smoke ([TASK-013 evidence](../quality/evidence/TASK-013.md)). The host-based recovery steps were executed in [TASK-007](../quality/evidence/TASK-007.md). No cloud deployment exists or is claimed.
+Status: local environment only; Delivery gate pending. [PR #10](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/10) merged candidate head `642dc12` into `main` at `96acc6411133ecccd3261c53473dc59f2ba1d1fc`. Its application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` passed clean-checkout build, automated acceptance and smoke ([TASK-013 evidence](../quality/evidence/TASK-013.md)); no post-merge application run is claimed. The host-based recovery steps were executed in [TASK-007](../quality/evidence/TASK-007.md). No cloud deployment exists or is claimed.
 
 For the current Docker UI path, run `docker compose --profile app up -d --build --wait`, open `http://localhost:3000/requests`, and stop with `docker compose --profile app down`. Set `FRONTEND_PORT` and `BACKEND_PORT` before starting if the defaults are occupied; use the same values for `down`. `down -v` deletes the project database and Redis volumes. The isolated acceptance runner is `bash tests/e2e/run-e2e.sh`; it removes its own project and volumes unless `KEEP_STACK=1` is set.
 
@@ -13,7 +13,7 @@ For the current Docker UI path, run `docker compose --profile app up -d --build 
 - [x] Smoke: create draft → submit → decision → list (rehearsal HTTP journey)
 - [ ] AT-33 / G-1: list-row actions are implemented and automated AT-33 passes; obtain Design/Implement/Verify review for the changed revision ([TASK-010](../delivery/tasks/TASK-010-list-row-actions.md))
 - [x] H-1 source-owner disposition: user confirmed the token revoked on 2026-09-26; the saved link returned HTTP 403 again from this workspace. The original URL text remains in published Git history; release owner assesses that residual limitation ([TASK-011 evidence](../quality/evidence/TASK-011.md))
-- [ ] Release owner to accept the published GitHub branch/access method and final immutable commit at the Delivery gate; an independent clone with credential helpers disabled succeeded, but no reviewer sign-off is recorded
+- [ ] Release owner to accept merged `main` revision `96acc6411133ecccd3261c53473dc59f2ba1d1fc` at the Delivery gate; an independent candidate clone succeeded, but PR #10 recorded no submitted review or CI checks
 - [ ] Application rollback and data restore rehearsal; documented below but NOT RUN
 - [ ] Manual P2 acceptance AT-44 and AT-46; NOT RUN on this candidate
 
