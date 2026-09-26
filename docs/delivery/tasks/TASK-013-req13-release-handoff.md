@@ -1,6 +1,6 @@
 # TASK-013: Verify and hand off a REQ-13 release revision
 
-Status: Candidate verified; reviewer-access check and human gates pending; Delivery pending
+Status: Candidate verified and published; human gates pending; Delivery pending
 Owner: Developer prepares evidence; project owner reviews changed gates; release owner decides handoff
 Requirement IDs: REQ-13 (required delivery package), REQ-05/AT-33 as a changed dependency
 Dependencies: [TASK-010](TASK-010-list-row-actions.md) review, [TASK-011](TASK-011-assignment-token.md) source-owner disposition or explicit limitation, [A-08](../../product/assumptions.md) handoff choice, TASK-007–009 evidence
@@ -25,7 +25,7 @@ Prepare one identified repository revision for someone else to obtain, install, 
 
 ## Acceptance criteria
 
-- [ ] The release owner identifies the handoff Git remote/access method and immutable revision. A reviewer can fetch that revision; a configured `origin` alone does not establish reviewer access. If access fails, handoff remains pending.
+- [ ] The candidate branch is published at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git` and an unauthenticated HTTPS read succeeded. The release owner still needs to accept the final immutable revision and handoff method; a reviewer clone has not been observed.
 - [x] The application revision contains frontend/backend source, README, database migration or schema and automated tests. README covers environment, run, test/API, decisions and scope as listed in REQ-13 Discover.
 - [x] From an isolated clean checkout of the application revision, the documented setup starts the database and both applications, and a role-based create → submit → decision → list smoke succeeds. Port changes are recorded in [TASK-013 evidence](../../quality/evidence/TASK-013.md).
 - [x] Frontend lint, typecheck, tests and build; backend package/tests including the Testcontainers executed/skipped count; Compose validation; and Playwright acceptance are recorded with commands, exit codes and output in the evidence.
@@ -57,7 +57,7 @@ Plan validation on 2026-09-26 (Windows PowerShell): `git diff --check` exit 0, l
 
 ## Handoff
 
-- Changes: verified application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` on branch `codex/req13-candidate-20260926`, followed by a documentation-only handoff commit
+- Changes: verified application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` on published branch `codex/req13-candidate-20260926`, followed by documentation-only handoff commits
 - Evidence: [TASK-013 evidence](../../quality/evidence/TASK-013.md)
 - Decisions / open issues: A-08 location/access/revision; TASK-010 gates; TASK-011/H-1; release owner Delivery decision
-- Next action: confirm published branch access, then obtain TASK-010 review, H-1 source-owner disposition and the release owner's Delivery decision
+- Next action: obtain TASK-010 review, H-1 source-owner disposition, A-08 handoff acceptance and the release owner's Delivery decision
