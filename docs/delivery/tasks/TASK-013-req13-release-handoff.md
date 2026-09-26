@@ -1,6 +1,6 @@
 # TASK-013: Verify and hand off a REQ-13 release revision
 
-Status: Candidate verified and published; human gates pending; Delivery pending
+Status: Candidate merged to `main` in PR #10; human gates and Delivery decision pending
 Owner: Developer prepares evidence; project owner reviews changed gates; release owner decides handoff
 Requirement IDs: REQ-13 (required delivery package), REQ-05/AT-33 as a changed dependency
 Dependencies: [TASK-010](TASK-010-list-row-actions.md) review, [TASK-011](TASK-011-assignment-token.md) source-owner disposition or explicit limitation, [A-08](../../product/assumptions.md) handoff choice, TASK-007–009 evidence
@@ -65,3 +65,5 @@ Plan validation on 2026-09-26 (Windows PowerShell): `git diff --check` exit 0, l
 ## Deliver and learn, 2026-09-26
 
 The [delivery audit](../../quality/evidence/TASK-013.md) found a stale runbook statement that no candidate target or revision had been named. The runbook and README now point to the published branch and tested application revision while keeping the final immutable commit and Delivery decision with the release owner. No new P1 gap was found: the current Playwright run covers all 43 P1 cases, including AT-33. The changed Design/Implement/Verify gates remain in review, and the historical TASK-001–009 approval does not cover TASK-010. TASK-010, TASK-011 and this packet are the bounded follow-ups for the remaining decisions; manual P2 and rollback/restore rehearsal remain explicit release limitations.
+
+The candidate head `642dc12` was merged through [PR #10](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/10) into `main` commit `96acc6411133ecccd3261c53473dc59f2ba1d1fc`. GitHub reported no submitted reviews or CI checks for that PR. The merge establishes integration, not a recorded gate approval. The release owner must assess the exact merged revision, TASK-010 review status, H-1 residual history, and the unrun manual/recovery checks before marking Delivery approved.
