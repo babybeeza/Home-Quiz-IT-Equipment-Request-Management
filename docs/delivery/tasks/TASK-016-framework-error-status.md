@@ -63,4 +63,4 @@ Non-goals: no change to domain exceptions, existing codes, controllers, security
 - Changes: `ErrorResponse` 4xx mapping in `ApiExceptionHandler`, 3 controller tests, OpenAPI `ApiError.code` description, ADR-002 amendment
 - Evidence: [TASK-016 evidence](../../quality/evidence/TASK-016.md) — backend 135/135 after review fixes, frontend 32/32, Playwright 50/50, live 404/405/406/415
 - Decisions / open issues: Design D1–D3 approved; R1 (bodiless 406) and R2 (fallback tests) fixed on `codex/task-016-review-fixes`; R3 pre-existing candidate follow-up
-- Next action: none required; local `home-quiz-release` redeployed from `5392a55` ([evidence](../../quality/evidence/TASK-016.md)); R3 is a candidate follow-up
+- Next action: none required; local `home-quiz-release` redeployed from `5392a55` ([evidence](../../quality/evidence/TASK-016.md)); R3 investigation is [TASK-017](TASK-017-accept-before-mutation.md)
