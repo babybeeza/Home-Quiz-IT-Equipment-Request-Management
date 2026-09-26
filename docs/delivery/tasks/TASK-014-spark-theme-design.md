@@ -9,7 +9,7 @@ Dependencies: [REQ-14 Discover](../../product/req-14-theme-discovery.md), [A-09]
 
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
-| Requirements | Project owner | User supplied 12-color palette; formal REQ-14 baseline review pending | — |
+| Requirements | Project owner | Approved REQ-14 baseline | 2026-09-26 / `main` `5597476` |
 | Design | Project owner acting as technical owner | Approved | 2026-09-26 / `5a3b2e1` |
 | Implement | Project owner acting as code reviewer | Approved for TASK-015 | 2026-09-26 / `5a3b2e1` |
 | Verify | Project owner acting as QA / acceptance owner | Approved with stated limitations for TASK-015 | 2026-09-26 / `5a3b2e1` |
@@ -55,5 +55,5 @@ Design check results are recorded in [TASK-014 evidence](../../quality/evidence/
 
 - Changes: [ADR-008](../../architecture/decisions/ADR-008-spark-theme.md) proposes semantic mapping and derived shades
 - Evidence: [TASK-014 design evidence](../../quality/evidence/TASK-014-design.md)
-- Decisions / open issues: Design approval recorded in [governance](../../governance/approvals.md); formal REQ-14 Requirements baseline decision remains unrecorded
+- Decisions / open issues: Design approval recorded in [governance](../../governance/approvals.md); REQ-14 Requirements baseline approved 2026-09-26
 - Next action: preserve the approved application revision during PR review and integration

@@ -4,11 +4,11 @@
 
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
-| Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
+| Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved; REQ-14 baseline approved 2026-09-26 |
 | Design | Technical owner | architecture, ADRs, contract, data/test plan | TASK-010 approved on `77b56241`; REQ-14 ADR-008 approved on `5a3b2e1` |
 | Implement | Code reviewer | code diff, implementation tests and task evidence | TASK-010 approved on `77b56241`; REQ-14 approved on `5a3b2e1` |
 | Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | TASK-010 approved on `77b56241`; REQ-14 approved with limits on `5a3b2e1` |
-| Delivery | Release owner | release revision, runbook, rollback and limitations | `77b56241` approved with limits; REQ-14 candidate `5a3b2e1` approved with limits, integration pending |
+| Delivery | Release owner | release revision, runbook, rollback and limitations | `77b56241` approved with limits; REQ-14 candidate `5a3b2e1` approved with limits, merged, and redeployed to local `home-quiz-release` from `5597476` |
 
 ## Approval record
 
@@ -71,3 +71,12 @@ On 2026-09-26 the user requested Implement after supplying the Spark Deck palett
 | Delivery | Approved for reviewed candidate with stated limitations | Project owner acting as release owner | 2026-09-26 | `5a3b2e1`; [PR #12](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/12) | Candidate handoff approved; this does not assert merge, deployment or change to the separate running release stack |
 
 Post-merge integration, 2026-09-26: [PR #12](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/12) merged into `main` at `a69a9506f3b42472752e135e6c375ab971a1ffd7`. [Post-merge evidence](../quality/evidence/TASK-015-postmerge.md) confirms that approved application revision `5a3b2e1` and approval record `9056657` are ancestors of merged `main`, with no further theme source change. This records integration, not a new approval or deployment. The earlier `home-quiz-release` stack still serves the prior release at default ports.
+
+## REQ-14 Requirements baseline and local release redeploy
+
+On 2026-09-26 the user answered “Requirements baseline ของ REQ-14: อนุมัติ” and “Release stack re deploy” after being told that the REQ-14 baseline was not among the four approved gates and that the default-port `home-quiz-release` stack still served the pre-theme release. The user acts as product owner and release owner for this take-home project. The baseline approval covers [REQ-14 Discover](../product/req-14-theme-discovery.md) as merged in `main` `55974760a06db2f038ce7159592830ce36199f69`.
+
+| Phase | Decision | Approver | Date | Revision / evidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Requirements | Approved | Project owner acting as product owner | 2026-09-26 | `5597476`; [REQ-14 Discover](../product/req-14-theme-discovery.md) | Approves the REQ-14 baseline recorded as not yet approved in the earlier REQ-14 entry |
+| Delivery | Redeploy requested and performed | Project owner acting as release owner | 2026-09-26 | `5597476`; [release deploy evidence](../quality/evidence/TASK-015-release-deploy.md) | Local Docker stack only; frontend and backend images rebuilt, database and Redis volumes kept. Not a cloud deployment |
