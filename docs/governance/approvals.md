@@ -106,3 +106,11 @@ On 2026-09-26, after the [TASK-017 evidence](../quality/evidence/TASK-017.md) co
 | Phase | Decision | Approver | Date | Revision / evidence | Notes |
 | --- | --- | --- | --- | --- | --- |
 | Design | Approved | Project owner acting as technical owner | 2026-09-26 | [TASK-017 evidence](../quality/evidence/TASK-017.md) recommendation | Covers `EquipmentRequestController` and `ReferenceDataController`, plus regression tests at MockMvc and Testcontainers level; Implement, Verify and Delivery pending |
+
+On 2026-09-26, after the TASK-017 fix evidence was presented and [PR #20](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/20) merged into `main` at `cae008f99cf3009cc19e8bf56c0c40ad58d43adb`, the user answered “อนุมัติ” to the handoff that listed the TASK-017 Implement, Verify and Delivery gates. The approval covers the merged revision, whose application content matches reviewed head `1adcd71`. It accepts the stated limits: frontend unit/build not rerun (no frontend change) and the local `home-quiz-release` stack not redeployed.
+
+| Phase | Decision | Approver | Date | Revision / evidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-26 | `cae008f`; [TASK-017 evidence](../quality/evidence/TASK-017.md) | Class-level `produces` and regression tests |
+| Verify | Approved with stated limitations | Project owner acting as QA / acceptance owner | 2026-09-26 | `cae008f`; backend 142/142, Playwright 50/50, live rerun | Frontend unit/build NOT RUN (no change) |
+| Delivery | Approved with stated limitations | Project owner acting as release owner | 2026-09-26 | `cae008f` on GitHub `main` | Repository handoff; local release stack not redeployed |
