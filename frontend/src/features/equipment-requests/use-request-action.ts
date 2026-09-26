@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { EquipmentRequestApiError, equipmentRequestQueryKey, performRequestAction } from "./api";
 import { useIdentity } from "./identity";
-import type { ActorRole, EquipmentRequest, RequestActionName, RequestStatus } from "./types";
+import type { ActorRole, EquipmentRequestSummary, RequestActionName, RequestStatus } from "./types";
 
 /** Mirrors the ui-flow action table. Hiding is a convenience; the backend stays authoritative. */
 export function availableActions(role: ActorRole, status: RequestStatus): RequestActionName[] {
@@ -34,7 +34,7 @@ const errorMessages: Record<string, string> = {
 
 export type ActionError = { message: string; fieldErrors: Record<string, string> };
 
-export function useRequestAction(request: EquipmentRequest) {
+export function useRequestAction(request: EquipmentRequestSummary) {
   const { actor } = useIdentity();
   const queryClient = useQueryClient();
   const [error, setError] = useState<ActionError | null>(null);
@@ -51,6 +51,7 @@ export function useRequestAction(request: EquipmentRequest) {
       }),
     onSuccess: (saved, { action }) => {
       queryClient.setQueryData(queryKey, saved);
+      void queryClient.invalidateQueries({ queryKey: ["equipment-requests", actor.userId, actor.role] });
       setAnnouncement(successMessages[action]);
     },
     onError: (failure) => {
@@ -89,6 +90,7 @@ export function useRequestAction(request: EquipmentRequest) {
   const reloadLatest = () => {
     setHasConflict(false);
     void queryClient.invalidateQueries({ queryKey });
+    void queryClient.invalidateQueries({ queryKey: ["equipment-requests", actor.userId, actor.role] });
   };
 
   return {

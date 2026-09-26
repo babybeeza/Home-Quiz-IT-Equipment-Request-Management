@@ -148,9 +148,9 @@ Acceptance อย่างน้อยต้องพิสูจน์ว่า
 
 ### REQ-13 — Delivery
 
-Required: Git repository, frontend/backend source, README, migration/schema และ automated tests README ต้องมี prerequisites/runtime versions, run frontend/backend/database, tests/API docs, architecture/state decisions, assumptions และ known limitations
+Required: Git repository ที่ผู้อื่นติดตั้ง ทดสอบ และ run ได้, frontend/backend source, README, migration script **หรือ** schema และ automated tests. README ต้องมี prerequisites/runtime versions, วิธี install/run frontend/backend/เตรียม database, วิธี test และ API docs, architecture/state decisions, assumptions และ known limitations. รายละเอียด facts, acceptance criteria, current evidence และคำถามส่งมอบอยู่ใน [REQ-13 Discover](req-13-discovery.md)
 
-Bonus: API collection และ Docker Compose
+Bonus: API collection และ Docker Compose. ตัวอย่าง repository tree ไม่บังคับชื่อไฟล์/โฟลเดอร์; โจทย์ไม่กำหนด Git host, public visibility หรือ cloud deployment
 
 ## Explicit non-goals
 

@@ -5,9 +5,9 @@
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
-| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved through TASK-007 |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved through TASK-009 |
-| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Approved through TASK-009 (project owner acting as QA) |
+| Design | Technical owner | architecture, ADRs, contract, data/test plan | In review for TASK-010 ADR-005 amendment; earlier approvals retained |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | In review for TASK-010; approved through TASK-009 |
+| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | In review for TASK-010 revision; approved through TASK-009 |
 | Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
 
 ## Approval record
@@ -38,5 +38,8 @@
 | Design | Approved | Project owner acting as technical owner | 2026-09-25 | [TASK-009 packet](../delivery/tasks/TASK-009-docker-ui-test.md) | User approved the single compose.yaml (project home-quiz), Docker images, same-origin proxy and multi-origin CORS |
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-25 | [TASK-009 evidence](../quality/evidence/TASK-009.md) | User approved the Docker UI-test stack (Playwright 49/49 in containers), including the disclosed Dockerfile overwrite and the old-project volumes left in place |
 | Verify | Approved | Project owner acting as QA / acceptance owner | 2026-09-25 | [acceptance test cases](../quality/acceptance-test-cases.md), [TASK-008](../quality/evidence/TASK-008.md) and [TASK-009](../quality/evidence/TASK-009.md) evidence | User stated "QA Approved" for TASK-001 to TASK-009. No manual pass counts or G-1 decision were supplied; G-1 and H-1 remain open |
+| Design / Implement / Verify | In review | Pending human reviewers | 2026-09-25 | [TASK-010](../delivery/tasks/TASK-010-list-row-actions.md), [ADR-005 amendment](../architecture/decisions/ADR-005-search-list.md), [TASK-010 evidence](../quality/evidence/TASK-010.md) | List-row behavior changed after the earlier approval; AT-33 now passes automated acceptance. New revision awaits review; this entry is not an approval |
 
 หากแก้ artifact ที่ approved แล้วอย่างมีนัยสำคัญ ให้เปลี่ยน gate นั้นกลับเป็น In review และบันทึก approval ใหม่พร้อม revision/date ผู้อนุมัติคนเดียวรับหลายบทบาทได้ใน take-home project แต่ต้องระบุบทบาททุกครั้ง
+
+Delivery review on 2026-09-25 found that the recorded Verify approval did not include an AT-33 P1 result or an explicit owner decision for its known list-row deviation. The historical approval entry above remains unchanged; [TASK-012 audit](../quality/evidence/TASK-012-delivery-audit.md) records the mismatch. TASK-010 implements the source criterion, subject to new Design/Implement/Verify review. Delivery remains Pending until the release owner reviews that result, H-1 handling and the final revision.

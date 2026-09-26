@@ -18,4 +18,4 @@
 ตรวจ diff ของ `<task>` เทียบ requirements และ contract เน้น correctness, ownership, transitions, concurrent update, cache invalidation และ regression รายงาน severity, file/line, ผลกระทบ และวิธีพิสูจน์ อย่าอ้างว่า tests ผ่านโดยไม่มี output
 
 ## Deliver and learn
-อ่าน evidence ของ `<tasks>` ตรวจ definition of done และ runbook สรุป readiness กับ blockers จากหลักฐาน อัปเดต run instructions/limitations และสร้าง follow-up tasks จาก findings
+อ่าน evidence ของ `<tasks>` ตรวจ definition of done และ runbook สรุป readiness กับ blockers จากหลักฐาน ตรวจว่า P1 ทุกกรณีมีผล Pass หรือมี decision ของ owner ก่อนอ้าง Verify/Delivery readiness; หาก approval record ขัดกับเกณฑ์ให้รายงานความขัดแย้ง ไม่ตีความว่าอนุมัติ deviation โดยปริยาย อัปเดต run instructions/limitations และสร้าง follow-up tasks จาก findings โดยไม่ให้ AI ลงนาม gate แทน owner

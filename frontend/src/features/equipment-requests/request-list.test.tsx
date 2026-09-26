@@ -87,7 +87,7 @@ describe("RequestList", () => {
 
     expect(screen.getByRole("status")).toHaveTextContent("กำลังโหลดรายการ…");
     const table = await screen.findByRole("table");
-    ["เลขที่คำขอ", "หัวข้อ", "ผู้ขอ", "แผนก", "วันที่ต้องการใช้", "จำนวนรวม", "สถานะ", "สร้างเมื่อ"].forEach((name) =>
+    ["เลขที่คำขอ", "หัวข้อ", "ผู้ขอ", "แผนก", "วันที่ต้องการใช้", "จำนวนรวม", "สถานะ", "สร้างเมื่อ", "การดำเนินการ"].forEach((name) =>
       expect(within(table).getByRole("columnheader", { name })).toBeInTheDocument());
     const cells = within(table).getAllByRole("cell").map((cell) => cell.textContent);
     expect(cells.slice(0, 7)).toEqual(["REQ-2026-000001", "Notebook for new project", "Somchai Developer", "Software Engineering", "2099-10-15", "3", "PENDING"]);
@@ -95,6 +95,34 @@ describe("RequestList", () => {
     expect(screen.getByText("หน้า 1 จาก 3 · ทั้งหมด 25 รายการ")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "ก่อนหน้า" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "ถัดไป" })).toBeEnabled();
+  });
+
+  it("shows draft row actions, sends its version and refreshes the filtered list after submit", async () => {
+    let status: "DRAFT" | "PENDING" = "DRAFT";
+    const current = row({ status, version: 3 });
+    const fetchMock = vi.fn((url: string, init?: RequestInit) => {
+      if (init?.method === "POST") {
+        expect(url).toMatch(/\/equipment-requests\/.+\/submit$/);
+        expect(JSON.parse(init.body as string)).toEqual({ expectedVersion: 3 });
+        status = "PENDING";
+        return Promise.resolve({ ok: true, json: async () => ({ ...current, status, version: 4 }) } as Response);
+      }
+      return respond(page([{ ...current, status, version: status === "DRAFT" ? 3 : 4 }]));
+    });
+    stubApi(fetchMock);
+    navigate("keyword=Notebook");
+    renderList();
+
+    const table = await screen.findByRole("table");
+    expect(within(table).getByRole("link", { name: "แก้ไข Draft" })).toHaveAttribute("href", `/requests/${current.id}/edit`);
+    fireEvent.click(within(table).getByRole("button", { name: "ส่งคำขอ" }));
+
+    await waitFor(() => expect(within(table).getByRole("cell", { name: "PENDING" })).toBeInTheDocument());
+    expect(within(table).queryByRole("button", { name: "ส่งคำขอ" })).not.toBeInTheDocument();
+    expect(within(table).getByRole("button", { name: "ยกเลิกคำขอ" })).toBeInTheDocument();
+    expect(fetchMock.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1);
+    expect(requestedUrls(fetchMock).filter((url) => url.searchParams.get("keyword") === "Notebook")).toHaveLength(2);
+    expect(nav.push).not.toHaveBeenCalled();
   });
 
   it("restores every parameter from the URL and falls back to defaults for invalid values", async () => {

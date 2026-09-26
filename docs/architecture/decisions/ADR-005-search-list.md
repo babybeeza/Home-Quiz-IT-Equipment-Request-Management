@@ -1,6 +1,6 @@
 # ADR-005: Request list, search and pagination
 
-Status: Accepted
+Status: In review for TASK-010 list-row action amendment; original TASK-005 decision was accepted
 Date: 2026-09-25
 Owner: Technical owner
 Requirements/tasks: REQ-01, REQ-05, REQ-06, REQ-07, REQ-08, REQ-11 / TASK-005
@@ -56,7 +56,7 @@ State option 1.
 - Keyword and department inputs keep a local draft value, and a 300 ms `useDebouncedValue` commits it to the URL. The debounce clears its timer on unmount and on each keystroke.
 - `useQuery` keys on `["equipment-requests", userId, role, params]` and passes the `AbortSignal` to `fetch`. Old requests are cancelled or ignored because their key differs. `placeholderData` keeps the previous page visible only for the same actor, marked with a loading indicator. Actor changes already clear the query client (TASK-003).
 - The table has these columns: request number (a link to the detail page), title, employee, department, required date, total items, status (as text) and created at. The page also has loading, error, empty (with a "clear filters" action) and success states, plus "page N of M" with totals and previous/next buttons.
-- Rows link to the detail page, where the TASK-004 actions live. Inline row actions are not added. The contract summary lacks the item data that submit needs, and duplicating the action UI would add risk without meeting a requirement.
+- TASK-005 originally kept actions on the detail page. TASK-010 adds actions to the list to meet the original assignment §4.2 and AT-33. It reuses the TASK-004 action UI and sends each summary's `version`; the backend checks the full aggregate and submit rules. The Employee owner's DRAFT row shows Edit, Submit and Cancel; their PENDING row shows Cancel. The Approver's PENDING row shows Approve and Reject. This follows the approved role matrix: the assignment's PENDING action table includes Cancel, but an Approver cannot cancel. Terminal rows have no mutation controls. A success invalidates actor-scoped lists and a conflict offers an explicit reload.
 
 ## Consequences and verification
 

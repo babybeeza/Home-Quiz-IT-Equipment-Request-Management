@@ -88,6 +88,11 @@ button:disabled { cursor: wait; opacity: .6; }
 .item-list li { display: grid; grid-template-columns: 1fr .5fr 1.5fr; gap: 1rem; padding: .9rem 0; border-top: 1px solid #e1ebe7; }
 
 .request-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .75rem; margin: 0 0 1rem; }
+.row-actions-cell { min-width: 16rem; }
+.row-actions-cell .button { display: inline-flex; margin-right: .5rem; }
+.inline-actions { display: inline-flex; margin: 0; gap: .4rem; vertical-align: middle; }
+.inline-actions button, .row-actions-cell .button { padding: .5rem .65rem; font-size: .85rem; }
+.row-actions-cell .alert { white-space: normal; min-width: 16rem; }
 button.danger { background: var(--danger); border-color: var(--danger); }
 button.danger:hover { background: #862626; }
 .field-error { margin: .4rem 0 0; color: var(--danger); font-weight: 600; }
