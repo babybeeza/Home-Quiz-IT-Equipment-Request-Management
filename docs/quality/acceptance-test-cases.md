@@ -1,6 +1,6 @@
 # Acceptance test cases (Verify gate)
 
-Status: TASK-010 changed AT-33 behavior after the 2026-09-25 Verify approval; current revision awaits Implement/Verify review. Manual QA results are not recorded.
+Status: TASK-010 Design/Implement/Verify approved by the user on 2026-09-26 for merged `main` revision `77b56241`. Manual AT-44/AT-46 remain NOT RUN and were accepted as Delivery limitations.
 Revision under test: `main` at `d3ca981` (TASK-001–007 merged)
 Requirements: [REQ-01–REQ-13](../product/requirements.md). Source of truth: the [original assignment](../../Home-Quiz-IT-Equipment-Request-Management_revise_1.html)
 
@@ -77,7 +77,7 @@ Priority: **P1** = a mandatory assignment rule; its failure blocks the Verify ga
 | --- | --- | --- | --- | --- | --- |
 | AT-31 | P1 | There are requests | Open `/requests` | The table has all 8 columns: เลขที่คำขอ, หัวข้อ, ผู้ขอ, แผนก, วันที่ต้องการใช้, จำนวนรวม, สถานะ, สร้างเมื่อ. Status is shown as text | |
 | AT-32 | P1 | Same | Click a request number | You go to that request's detail page | |
-| AT-33 | P1 | DRAFT, PENDING and terminal requests | Look for actions in the list; submit as Employee, then try a stale Approve after an Employee cancellation | Employee owner: DRAFT Edit/Submit/Cancel, PENDING Cancel. Approver: PENDING Approve/Reject. Terminal: no mutations. Stale action returns 409 without overwrite; explicit reload shows the latest state. The PENDING Cancel entry in assignment §4.2 applies to the Employee owner under the approved role matrix | PASS automated in TASK-010; current revision awaits human Verify review |
+| AT-33 | P1 | DRAFT, PENDING and terminal requests | Look for actions in the list; submit as Employee, then try a stale Approve after an Employee cancellation | Employee owner: DRAFT Edit/Submit/Cancel, PENDING Cancel. Approver: PENDING Approve/Reject. Terminal: no mutations. Stale action returns 409 without overwrite; explicit reload shows the latest state. The PENDING Cancel entry in assignment §4.2 applies to the Employee owner under the approved role matrix | PASS automated in TASK-010; human Verify approved 2026-09-26 for `77b56241` |
 
 ## F. Search, filter and pagination (REQ-05, REQ-08); run the seed data first
 
@@ -149,4 +149,4 @@ The Verify gate may be approved only when every P1 case passes, or its failure h
 
 ### TASK-010 revision
 
-The historical sign-off above applies to TASK-001–009. TASK-010 implements the list-row criterion and the latest automated run passes all 50 Playwright tests, including AT-33. Its 43 P1 cases have automated coverage; AT-44 and AT-46 are the two P2 manual cases and remain NOT RUN in this revision. Implement and Verify review for this changed revision are pending; no new human gate decision is recorded here.
+The historical sign-off above applies to TASK-001–009. TASK-010 implements the list-row criterion and the latest automated run passes all 50 Playwright tests, including AT-33. Its 43 P1 cases have automated coverage; AT-44 and AT-46 are the two P2 manual cases and remain NOT RUN in this revision. On 2026-09-26, the user acting as QA / acceptance owner approved Verify for merged `main` revision `77b56241`, and acting as release owner accepted the unrun P2 cases as stated Delivery limitations. See [approvals](../governance/approvals.md).

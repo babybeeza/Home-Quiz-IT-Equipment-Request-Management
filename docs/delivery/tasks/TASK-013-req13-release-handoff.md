@@ -1,6 +1,6 @@
 # TASK-013: Verify and hand off a REQ-13 release revision
 
-Status: Candidate merged to `main` in PR #10; human gates and Delivery decision pending
+Status: Delivery approved 2026-09-26 for merged `main` revision `77b56241`, with recorded limitations
 Owner: Developer prepares evidence; project owner reviews changed gates; release owner decides handoff
 Requirement IDs: REQ-13 (required delivery package), REQ-05/AT-33 as a changed dependency
 Dependencies: [TASK-010](TASK-010-list-row-actions.md) review, [TASK-011](TASK-011-assignment-token.md) source-owner disposition or explicit limitation, [A-08](../../product/assumptions.md) handoff choice, TASK-007–009 evidence
@@ -10,10 +10,10 @@ Dependencies: [TASK-010](TASK-010-list-row-actions.md) review, [TASK-011](TASK-0
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
 | Requirements | Project owner | Existing REQ-13 baseline approved; 2026-09-26 [clarification](../../product/req-13-discovery.md) prepared for review | Earlier approval 2026-09-25 |
-| Design | Technical owner | TASK-010 ADR-005 amendment in review; no new application design in this handoff task | — |
-| Implement | Code reviewer | Pending for TASK-010 changes and final candidate | — |
-| Verify | QA / acceptance owner | Pending for changed revision | — |
-| Delivery | Release owner | Pending | — |
+| Design | Project owner acting as technical owner | Approved for TASK-010 | 2026-09-26 / `77b56241` |
+| Implement | Project owner acting as code reviewer | Approved for TASK-010 | 2026-09-26 / `77b56241` |
+| Verify | Project owner acting as QA / acceptance owner | Approved for TASK-010 | 2026-09-26 / `77b56241` |
+| Delivery | Project owner acting as release owner | Approved with stated limitations | 2026-09-26 / `77b56241` |
 
 ## Context
 
@@ -25,12 +25,12 @@ Prepare one identified repository revision for someone else to obtain, install, 
 
 ## Acceptance criteria
 
-- [ ] The candidate branch is published at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git`; an independent clone without stored credentials succeeded. The release owner still needs to accept the final immutable revision and handoff method; no reviewer sign-off has been recorded.
+- [x] The candidate was published and merged to GitHub `main` at `77b56241a9eef817c62e34d4e949bfc6ecfdc9f7`; an independent clone without stored credentials succeeded, and the release owner accepted this exact revision and handoff method.
 - [x] The application revision contains frontend/backend source, README, database migration or schema and automated tests. README covers environment, run, test/API, decisions and scope as listed in REQ-13 Discover.
 - [x] From an isolated clean checkout of the application revision, the documented setup starts the database and both applications, and a role-based create → submit → decision → list smoke succeeds. Port changes are recorded in [TASK-013 evidence](../../quality/evidence/TASK-013.md).
 - [x] Frontend lint, typecheck, tests and build; backend package/tests including the Testcontainers executed/skipped count; Compose validation; and Playwright acceptance are recorded with commands, exit codes and output in the evidence.
-- [ ] TASK-010 Design/Implement/Verify review and AT-33 disposition are recorded for the release revision. TASK-011/H-1 now has a source-owner revocation confirmation and post-confirmation HTTP 403; residual Git history is disclosed for release-owner assessment. Untested rollback/restore and the two manual P2 cases remain labelled as such unless actually checked.
-- [ ] README, runbook, traceability and release evidence all name the same revision and limitations; the release owner records the Delivery decision. If a required check fails or is missing, status remains pending with a concrete next action.
+- [x] TASK-010 Design/Implement/Verify approval and AT-33 disposition are recorded for the merged revision. TASK-011/H-1 has a source-owner revocation confirmation and post-confirmation HTTP 403; the release owner accepted residual Git history. Untested rollback/restore and the two manual P2 cases remain labelled NOT RUN.
+- [x] README, runbook, traceability and release evidence identify merged revision `77b56241` and its limitations; the release owner recorded the Delivery decision in [approvals](../../governance/approvals.md).
 
 ## Implementation plan
 
@@ -59,11 +59,13 @@ Plan validation on 2026-09-26 (Windows PowerShell): `git diff --check` exit 0, l
 
 - Changes: verified application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` on published branch `codex/req13-candidate-20260926`, followed by documentation-only handoff commits
 - Evidence: [TASK-013 evidence](../../quality/evidence/TASK-013.md)
-- Decisions / open issues: A-08 location/access/revision; TASK-010 gates; release-owner assessment of H-1 residual history; Delivery decision
-- Next action: obtain TASK-010 review, A-08 handoff acceptance and the release owner's Delivery decision, including assessment of H-1 residual history
+- Decisions / open issues: A-08, TASK-010 gates, H-1 residual history and Delivery were accepted by the user for `77b56241`; manual P2 and rollback/data restore remain unrun limitations
+- Next action: use accepted `main` revision `77b56241` for handoff; run manual P2 and rollback/data restore later if a stronger operational assurance is needed
 
 ## Deliver and learn, 2026-09-26
 
 The [delivery audit](../../quality/evidence/TASK-013.md) found a stale runbook statement that no candidate target or revision had been named. The runbook and README now point to the published branch and tested application revision while keeping the final immutable commit and Delivery decision with the release owner. No new P1 gap was found: the current Playwright run covers all 43 P1 cases, including AT-33. The changed Design/Implement/Verify gates remain in review, and the historical TASK-001–009 approval does not cover TASK-010. TASK-010, TASK-011 and this packet are the bounded follow-ups for the remaining decisions; manual P2 and rollback/restore rehearsal remain explicit release limitations.
 
 The candidate head `642dc12` was merged through [PR #10](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/10) into `main` commit `96acc6411133ecccd3261c53473dc59f2ba1d1fc`. GitHub reported no submitted reviews or CI checks for that PR. The merge establishes integration, not a recorded gate approval. The release owner must assess the exact merged revision, TASK-010 review status, H-1 residual history, and the unrun manual/recovery checks before marking Delivery approved.
+
+The user subsequently approved all listed Design/Implement/Verify and Delivery gates for the later merged `main` revision `77b56241a9eef817c62e34d4e949bfc6ecfdc9f7`, explicitly accepting the unrun manual P2 and rollback/data restore checks and revoked token text in Git history. [Approvals](../../governance/approvals.md) records the human decision; this documentation update does not add application behavior.

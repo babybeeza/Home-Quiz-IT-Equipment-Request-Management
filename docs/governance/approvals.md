@@ -5,10 +5,10 @@
 | Gate | Required approver | Artifact | Current status |
 | --- | --- | --- | --- |
 | Requirements | Product owner | requirements, scope, acceptance criteria, assumptions | Approved |
-| Design | Technical owner | architecture, ADRs, contract, data/test plan | In review for TASK-010 ADR-005 amendment; earlier approvals retained |
-| Implement | Code reviewer | code diff, implementation tests and task evidence | In review for TASK-010; approved through TASK-009 |
-| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | In review for TASK-010 revision; approved through TASK-009 |
-| Delivery | Release owner | release revision, runbook, rollback and limitations | Pending |
+| Design | Technical owner | architecture, ADRs, contract, data/test plan | Approved for TASK-010 on `77b56241` |
+| Implement | Code reviewer | code diff, implementation tests and task evidence | Approved for TASK-010 on `77b56241` |
+| Verify | QA / acceptance owner | traceability, functional/reliability/performance evidence | Approved for TASK-010 on `77b56241` |
+| Delivery | Release owner | release revision, runbook, rollback and limitations | Approved for `77b56241` with recorded limitations |
 
 ## Approval record
 
@@ -47,3 +47,14 @@ Delivery review on 2026-09-25 found that the recorded Verify approval did not in
 H-1 disposition, 2026-09-26: the source-storage owner (user) confirmed that the saved assignment download token is revoked. A subsequent workspace request to the saved link returned HTTP 403; [TASK-011 evidence](../quality/evidence/TASK-011.md) contains status-only observations. The original URL text remains in published Git history. This owner statement resolves the source-side status question but is not a Design, Implement, Verify or Delivery approval. The release owner still assesses the residual history and final candidate.
 
 PR #10 merged on 2026-09-26 at `main` revision `96acc6411133ecccd3261c53473dc59f2ba1d1fc` by the repository owner. GitHub reported no submitted PR review or CI checks. This records integration only; TASK-010 Design/Implement/Verify and release-owner Delivery decisions remain pending. See the [post-merge TASK-013 evidence](../quality/evidence/TASK-013.md).
+
+## Approval for merged REQ-13 revision
+
+On 2026-09-26, after the post-merge [TASK-013 evidence](../quality/evidence/TASK-013.md) and limitations were presented, the user explicitly answered “Approve all listed gates” for merged `main` revision `77b56241a9eef817c62e34d4e949bfc6ecfdc9f7`. The approval question named TASK-010 Design, Implement and Verify, plus Delivery, and disclosed that manual AT-44/AT-46 and application rollback/data restore were not run and revoked token text remains in Git history. The user acts as technical owner, code reviewer, QA/acceptance owner and release owner for this take-home project. This decision is recorded for that revision; the documentation-only approval record that follows does not change application behavior.
+
+| Phase | Decision | Approver | Date | Revision / evidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Design | Approved | Project owner acting as technical owner | 2026-09-26 | `77b56241`; [ADR-005](../architecture/decisions/ADR-005-search-list.md), [TASK-010](../delivery/tasks/TASK-010-list-row-actions.md) | Accepts list-row action design and the Employee-owner-only PENDING Cancel interpretation |
+| Implement | Approved | Project owner acting as code reviewer | 2026-09-26 | `77b56241`; [TASK-010 evidence](../quality/evidence/TASK-010.md) | Accepts merged UI implementation and recorded tests |
+| Verify | Approved | Project owner acting as QA / acceptance owner | 2026-09-26 | `77b56241`; [acceptance cases](../quality/acceptance-test-cases.md), [TASK-013 evidence](../quality/evidence/TASK-013.md) | AT-33 and all 43 P1 cases have automated coverage; manual P2 AT-44/AT-46 remain NOT RUN |
+| Delivery | Approved with stated limitations | Project owner acting as release owner | 2026-09-26 | `77b56241`; [TASK-013 evidence](../quality/evidence/TASK-013.md), [runbook](../operations/runbook.md) | Accepts GitHub `main` handoff, unrun manual P2 and rollback/data restore, and revoked token text remaining in Git history |

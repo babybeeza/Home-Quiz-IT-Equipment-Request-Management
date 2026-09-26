@@ -1,6 +1,6 @@
 # TASK-011: Resolve committed assignment download token (H-1)
 
-Status: Source owner confirmed token revoked 2026-09-26; saved link returned HTTP 403 again; Delivery decision pending
+Status: Source owner confirmed token revoked 2026-09-26; saved link returned HTTP 403 again; release owner accepted residual Git history for `77b56241`
 Owner: Project owner / source-storage owner
 Requirement IDs: REQ-13 (delivery hygiene)
 Dependencies: Access to the original file's storage controls
