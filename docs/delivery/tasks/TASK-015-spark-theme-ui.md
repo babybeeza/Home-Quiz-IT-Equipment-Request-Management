@@ -1,6 +1,6 @@
 # TASK-015: Apply approved Spark Deck theme to the UI
 
-Status: Planned — depends on TASK-014 Design approval
+Status: Implemented for review — Design, Implement and Verify approvals pending
 Owner: Frontend developer; code reviewer and QA / acceptance owner review the result
 Requirement IDs: REQ-14; regression coverage for REQ-01–REQ-08 and AT-33
 Dependencies: [TASK-014](TASK-014-spark-theme-design.md) approved ADR-008/token mapping; [REQ-14 Discover](../../product/req-14-theme-discovery.md)
@@ -10,9 +10,9 @@ Dependencies: [TASK-014](TASK-014-spark-theme-design.md) approved ADR-008/token 
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
 | Requirements | Project owner | REQ-14 palette supplied; formal review in TASK-014 | — |
-| Design | Technical owner | Pending TASK-014/ADR-008 | — |
-| Implement | Code reviewer | Not started | — |
-| Verify | QA / acceptance owner | Not started | — |
+| Design | Technical owner | ADR-008 proposed; review pending | — |
+| Implement | Code reviewer | Implementation and evidence in review | — |
+| Verify | QA / acceptance owner | Automated and visual evidence in review | — |
 | Delivery | Release owner | Not started | — |
 
 ## Context
@@ -50,13 +50,11 @@ No backend, API, schema, role/state workflow, logo, typography, layout redesign 
 | Visual and accessibility | Inspect screenshots at about 1440×900 and 390×844 for routes/states above; keyboard Tab/focus; calculate contrast for rendered text/controls | Screenshots or review notes and contrast table, with failures fixed or stated |
 | Scope and hygiene | `git diff --check`; `rg -n '#[0-9A-Fa-f]{3,8}|rgb\(|hsl\(' frontend/src --glob '*.css' --glob '*.tsx'`; review `git diff` | Remaining raw colors explained by ADR-008; no backend/contract edits |
 
-These are planned checks, **NOT RUN** in this planning pass. Backend tests are expected to be NOT RUN for a CSS-only patch unless implementation scope changes; the E2E runner still builds the backend image.
-
-Plan validation 2026-09-26 (Windows PowerShell, branch `codex/req14-spark-theme-discovery-20260926`): edited local Markdown links resolved (exit 0); `git diff --check` exited 0. Frontend, E2E, screenshot and contrast checks are NOT RUN because implementation has not started.
+Execution results are recorded in [TASK-015 evidence](../../quality/evidence/TASK-015.md). The user's Implement request authorized reversible work on an isolated branch; it is not recorded as formal Design, Implement or Verify approval.
 
 ## Handoff
 
-- Changes: approved theme applied to UI, after execution
-- Evidence: `docs/quality/evidence/TASK-015.md` when run
-- Decisions / open issues: Design approval and any contrast-driven derived shades from TASK-014; human Implement/Verify/Delivery gates
-- Next action: start TASK-015 only after TASK-014 Design approval
+- Changes: proposed theme applied to the shared UI stylesheet for review
+- Evidence: [TASK-015 evidence](../../quality/evidence/TASK-015.md)
+- Decisions / open issues: human Design/Implement/Verify/Delivery gates
+- Next action: review the exact revision and evidence before any release handoff

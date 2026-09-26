@@ -1,6 +1,6 @@
 # TASK-014: Design Spark Deck color theme
 
-Status: Planned — Design decision pending; no UI change
+Status: Design prepared and checked — technical-owner approval pending
 Owner: Frontend developer prepares design; project owner acting as technical owner reviews it
 Requirement IDs: REQ-14
 Dependencies: [REQ-14 Discover](../../product/req-14-theme-discovery.md), [A-09](../../product/assumptions.md), current [UI flow](../../architecture/ui-flow.md)
@@ -11,8 +11,8 @@ Dependencies: [REQ-14 Discover](../../product/req-14-theme-discovery.md), [A-09]
 | --- | --- | --- | --- |
 | Requirements | Project owner | User supplied 12-color palette; formal REQ-14 baseline review pending | — |
 | Design | Technical owner | Pending semantic mapping/contrast review | — |
-| Implement | Code reviewer | Not started | — |
-| Verify | QA / acceptance owner | Not started | — |
+| Implement | Code reviewer | TASK-015 implementation in review | — |
+| Verify | QA / acceptance owner | TASK-015 evidence in review | — |
 | Delivery | Release owner | Not started | — |
 
 ## Context
@@ -49,13 +49,11 @@ Do not change CSS, layout, typography, logo, application behavior, API or backen
 | Contrast | Reproducible sRGB relative-luminance calculation for each proposed foreground/background pair | Ratio and threshold recorded; failures corrected before Design approval |
 | Documentation | Local Markdown link check and `git diff --check` | Exit 0, with command/environment recorded in `docs/quality/evidence/TASK-014-design.md` |
 
-These are planned checks, **NOT RUN** in this planning pass. No application test result is claimed for this document-only design task.
-
-Plan validation 2026-09-26 (Windows PowerShell, branch `codex/req14-spark-theme-discovery-20260926`): edited local Markdown links resolved (exit 0); `git diff --check` exited 0. Contrast calculations for the full proposed token mapping are NOT RUN because ADR-008 does not yet exist.
+Design check results are recorded in [TASK-014 evidence](../../quality/evidence/TASK-014-design.md). This task does not claim application readiness or a human Design decision.
 
 ## Handoff
 
-- Changes: ADR-008 design and contrast evidence, after execution
-- Evidence: `docs/quality/evidence/TASK-014-design.md` when run
-- Decisions / open issues: exact semantic use of accent colors and any derived shades
-- Next action: execute TASK-014 Design, then request technical-owner review before TASK-015
+- Changes: [ADR-008](../../architecture/decisions/ADR-008-spark-theme.md) proposes semantic mapping and derived shades
+- Evidence: [TASK-014 design evidence](../../quality/evidence/TASK-014-design.md)
+- Decisions / open issues: technical-owner Design approval remains pending
+- Next action: review ADR-008 and the implemented UI together for an explicit Design decision

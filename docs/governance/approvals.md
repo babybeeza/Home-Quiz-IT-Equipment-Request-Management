@@ -58,3 +58,7 @@ On 2026-09-26, after the post-merge [TASK-013 evidence](../quality/evidence/TASK
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-26 | `77b56241`; [TASK-010 evidence](../quality/evidence/TASK-010.md) | Accepts merged UI implementation and recorded tests |
 | Verify | Approved | Project owner acting as QA / acceptance owner | 2026-09-26 | `77b56241`; [acceptance cases](../quality/acceptance-test-cases.md), [TASK-013 evidence](../quality/evidence/TASK-013.md) | AT-33 and all 43 P1 cases have automated coverage; manual P2 AT-44/AT-46 remain NOT RUN |
 | Delivery | Approved with stated limitations | Project owner acting as release owner | 2026-09-26 | `77b56241`; [TASK-013 evidence](../quality/evidence/TASK-013.md), [runbook](../operations/runbook.md) | Accepts GitHub `main` handoff, unrun manual P2 and rollback/data restore, and revoked token text remaining in Git history |
+
+## REQ-14 theme review
+
+On 2026-09-26 the user requested Implement after supplying the Spark Deck palette and planning TASK-014/TASK-015. This authorizes preparation of a reversible UI change on an isolated branch. [ADR-008](../architecture/decisions/ADR-008-spark-theme.md), [TASK-014 evidence](../quality/evidence/TASK-014-design.md) and [TASK-015 evidence](../quality/evidence/TASK-015.md) are submitted for review. No Requirements, Design, Implement, Verify or Delivery gate is recorded as approved for REQ-14; the earlier REQ-13 approvals remain scoped to `77b56241`.
