@@ -25,11 +25,11 @@ Prepare one identified repository revision for someone else to obtain, install, 
 
 ## Acceptance criteria
 
-- [ ] The candidate branch is published at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git` and an unauthenticated HTTPS read succeeded. The release owner still needs to accept the final immutable revision and handoff method; a reviewer clone has not been observed.
+- [ ] The candidate branch is published at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git`; an independent clone without stored credentials succeeded. The release owner still needs to accept the final immutable revision and handoff method; no reviewer sign-off has been recorded.
 - [x] The application revision contains frontend/backend source, README, database migration or schema and automated tests. README covers environment, run, test/API, decisions and scope as listed in REQ-13 Discover.
 - [x] From an isolated clean checkout of the application revision, the documented setup starts the database and both applications, and a role-based create → submit → decision → list smoke succeeds. Port changes are recorded in [TASK-013 evidence](../../quality/evidence/TASK-013.md).
 - [x] Frontend lint, typecheck, tests and build; backend package/tests including the Testcontainers executed/skipped count; Compose validation; and Playwright acceptance are recorded with commands, exit codes and output in the evidence.
-- [ ] TASK-010 Design/Implement/Verify review and AT-33 disposition are recorded for the release revision. TASK-011/H-1 has a source-owner decision or remains an explicit limitation for the release owner to assess. Untested rollback/restore and the two manual P2 cases remain labelled as such unless actually checked.
+- [ ] TASK-010 Design/Implement/Verify review and AT-33 disposition are recorded for the release revision. TASK-011/H-1 now has a source-owner revocation confirmation and post-confirmation HTTP 403; residual Git history is disclosed for release-owner assessment. Untested rollback/restore and the two manual P2 cases remain labelled as such unless actually checked.
 - [ ] README, runbook, traceability and release evidence all name the same revision and limitations; the release owner records the Delivery decision. If a required check fails or is missing, status remains pending with a concrete next action.
 
 ## Implementation plan
@@ -59,8 +59,8 @@ Plan validation on 2026-09-26 (Windows PowerShell): `git diff --check` exit 0, l
 
 - Changes: verified application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` on published branch `codex/req13-candidate-20260926`, followed by documentation-only handoff commits
 - Evidence: [TASK-013 evidence](../../quality/evidence/TASK-013.md)
-- Decisions / open issues: A-08 location/access/revision; TASK-010 gates; TASK-011/H-1; release owner Delivery decision
-- Next action: obtain TASK-010 review, H-1 source-owner disposition, A-08 handoff acceptance and the release owner's Delivery decision
+- Decisions / open issues: A-08 location/access/revision; TASK-010 gates; release-owner assessment of H-1 residual history; Delivery decision
+- Next action: obtain TASK-010 review, A-08 handoff acceptance and the release owner's Delivery decision, including assessment of H-1 residual history
 
 ## Deliver and learn, 2026-09-26
 
