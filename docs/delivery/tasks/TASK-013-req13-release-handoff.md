@@ -61,3 +61,7 @@ Plan validation on 2026-09-26 (Windows PowerShell): `git diff --check` exit 0, l
 - Evidence: [TASK-013 evidence](../../quality/evidence/TASK-013.md)
 - Decisions / open issues: A-08 location/access/revision; TASK-010 gates; TASK-011/H-1; release owner Delivery decision
 - Next action: obtain TASK-010 review, H-1 source-owner disposition, A-08 handoff acceptance and the release owner's Delivery decision
+
+## Deliver and learn, 2026-09-26
+
+The [delivery audit](../../quality/evidence/TASK-013.md) found a stale runbook statement that no candidate target or revision had been named. The runbook and README now point to the published branch and tested application revision while keeping the final immutable commit and Delivery decision with the release owner. No new P1 gap was found: the current Playwright run covers all 43 P1 cases, including AT-33. The changed Design/Implement/Verify gates remain in review, and the historical TASK-001–009 approval does not cover TASK-010. TASK-010, TASK-011 and this packet are the bounded follow-ups for the remaining decisions; manual P2 and rollback/restore rehearsal remain explicit release limitations.

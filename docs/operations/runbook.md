@@ -1,11 +1,11 @@
 # Delivery and operations runbook
 
-Status: local environment only; Delivery gate pending. The host-based clean-start and recovery steps were executed in TASK-007 ([evidence](../quality/evidence/TASK-007.md)); the single-Compose Docker UI path was exercised in [TASK-009](../quality/evidence/TASK-009.md). No cloud deployment exists or is claimed.
+Status: local environment only; Delivery gate pending. The published candidate branch is `codex/req13-candidate-20260926` at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git`; its application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` passed clean-checkout build, automated acceptance and smoke ([TASK-013 evidence](../quality/evidence/TASK-013.md)). The host-based recovery steps were executed in [TASK-007](../quality/evidence/TASK-007.md). No cloud deployment exists or is claimed.
 
 For the current Docker UI path, run `docker compose --profile app up -d --build --wait`, open `http://localhost:3000/requests`, and stop with `docker compose --profile app down`. Set `FRONTEND_PORT` and `BACKEND_PORT` before starting if the defaults are occupied; use the same values for `down`. `down -v` deletes the project database and Redis volumes. The isolated acceptance runner is `bash tests/e2e/run-e2e.sh`; it removes its own project and volumes unless `KEEP_STACK=1` is set.
 
 ## Before delivery
-- [x] Revision, environment and runtime versions: see the README Environment section and the TASK-007 evidence
+- [x] Candidate branch, tested application revision, environment and runtime versions: see the README Environment section and TASK-013 evidence; final handoff revision still requires release-owner acceptance
 - [x] README install/run/test works from a clean checkout (rehearsed; environment port conflicts noted)
 - [x] Build, automated acceptance and performance checks have recorded evidence; API, schema and limitations were audited in TASK-007–009
 - [x] Configuration variables documented without secret values (`.env.example` holds local-only defaults)
@@ -13,7 +13,9 @@ For the current Docker UI path, run `docker compose --profile app up -d --build 
 - [x] Smoke: create draft → submit → decision → list (rehearsal HTTP journey)
 - [ ] AT-33 / G-1: list-row actions are implemented and automated AT-33 passes; obtain Design/Implement/Verify review for the changed revision ([TASK-010](../delivery/tasks/TASK-010-list-row-actions.md))
 - [ ] H-1: the committed URL returned HTTP 403 twice from this workspace; the source-storage owner must confirm intended access and revoke/rotate at the source if needed ([TASK-011 evidence](../quality/evidence/TASK-011.md))
-- [ ] Release owner, target and revision: to be named at the Delivery gate
+- [ ] Release owner to accept the published GitHub branch/access method and final immutable commit at the Delivery gate; unauthenticated HTTPS remote read succeeded, but an actual reviewer clone is not recorded
+- [ ] Application rollback and data restore rehearsal; documented below but NOT RUN
+- [ ] Manual P2 acceptance AT-44 and AT-46; NOT RUN on this candidate
 
 ## Health
 - Liveness: `GET /actuator/health/liveness`. Use it for restart decisions; it stays UP while Redis is down.
