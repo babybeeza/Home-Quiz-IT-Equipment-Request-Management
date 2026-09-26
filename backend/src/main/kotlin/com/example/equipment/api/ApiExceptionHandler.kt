@@ -14,9 +14,12 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException
 import org.slf4j.LoggerFactory
 import org.springframework.dao.OptimisticLockingFailureException
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.ErrorResponse
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingRequestHeaderException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -99,8 +102,17 @@ class ApiExceptionHandler(
             exception.fieldErrors,
         )
 
+    // @ExceptionHandler cannot target the ErrorResponse interface, so Spring MVC client errors
+    // (unmatched route, wrong method or media type) are recognised here by their own 4xx status.
     @ExceptionHandler(Exception::class)
     fun unexpected(exception: Exception, request: HttpServletRequest): ResponseEntity<ApiErrorResponse> {
+        if (exception is ErrorResponse && exception.statusCode.is4xxClientError) {
+            val status = exception.statusCode
+            logger.debug("Client request rejected with status {}", status.value(), exception)
+            val (code, message) = frameworkClientErrors[status.value()]
+                ?: ("MALFORMED_REQUEST" to "Request format is invalid")
+            return error(status, code, message, request, headers = exception.headers)
+        }
         logger.error("Unexpected request failure", exception)
         return error(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "An unexpected error occurred", request)
     }
@@ -111,13 +123,21 @@ class ApiExceptionHandler(
         REJECTION_REASON_REQUIRED to "A rejection reason is required",
     )
 
+    private val frameworkClientErrors = mapOf(
+        404 to ("NOT_FOUND" to "The requested resource was not found"),
+        405 to ("METHOD_NOT_ALLOWED" to "The HTTP method is not supported for this resource"),
+        406 to ("NOT_ACCEPTABLE" to "The requested response format is not supported"),
+        415 to ("UNSUPPORTED_MEDIA_TYPE" to "The request content type is not supported"),
+    )
+
     private fun error(
-        status: HttpStatus,
+        status: HttpStatusCode,
         code: String,
         message: String,
         request: HttpServletRequest,
         fieldErrors: Map<String, String> = emptyMap(),
-    ): ResponseEntity<ApiErrorResponse> = ResponseEntity.status(status).body(
+        headers: HttpHeaders = HttpHeaders.EMPTY,
+    ): ResponseEntity<ApiErrorResponse> = ResponseEntity.status(status).headers(headers).body(
         ApiErrorResponse(Instant.now(clock), status.value(), code, message, request.requestURI, fieldErrors),
     )
 }
