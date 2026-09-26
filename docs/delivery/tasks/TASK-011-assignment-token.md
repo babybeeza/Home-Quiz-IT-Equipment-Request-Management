@@ -1,6 +1,6 @@
 # TASK-011: Resolve committed assignment download token (H-1)
 
-Status: Workspace check done (HTTP 403) — source-storage owner decision pending
+Status: Source owner confirmed token revoked 2026-09-26; saved link returned HTTP 403 again; Delivery decision pending
 Owner: Project owner / source-storage owner
 Requirement IDs: REQ-13 (delivery hygiene)
 Dependencies: Access to the original file's storage controls
@@ -16,10 +16,10 @@ Determine whether the token still grants access to the original file. If it does
 ## Acceptance criteria
 
 - [x] Workspace GET result is recorded without storing the token: HTTP 403 twice.
-- [ ] Source-storage owner confirms whether the token is active in any intended context and whether that access is intended.
-- [ ] If access is unintended, the storage owner revokes or rotates it and verifies that the old link no longer works.
-- [ ] Delivery handoff records the decision, date and a safe evidence reference; if source access is unavailable, retain H-1 as an explicit limitation.
+- [x] Source-storage owner (user) confirmed on 2026-09-26 that the token is revoked. The owner did not separately state the prior intended access policy.
+- [x] The saved link returned HTTP 403 again from this workspace after that confirmation; this is an external reachability observation, not independent access to storage administration.
+- [x] The delivery handoff records the owner statement, date and [safe evidence](../../quality/evidence/TASK-011.md) without copying the value. The release owner still decides the Delivery gate.
 
 ## Verification and handoff
 
-The workspace HTTP check is recorded in [evidence](../../quality/evidence/TASK-011.md). The storage owner must perform and record the source-side check. No local automated test can establish revocation. Any test not performed is NOT RUN with a reason.
+The workspace HTTP checks and the user's source-owner confirmation are recorded in [evidence](../../quality/evidence/TASK-011.md). The owner stated that the token is revoked; this task has no direct storage-admin inspection. Published Git history still contains the original HTML and saved URL text. No local HTTP test alone can establish global revocation.
