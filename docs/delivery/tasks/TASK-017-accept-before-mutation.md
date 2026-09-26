@@ -1,6 +1,6 @@
 # TASK-017: Check whether a non-JSON Accept header lets a mutation commit before 406 (R3)
 
-Status: Planned — investigation; Design review not yet needed
+Status: Investigation done — R3 confirmed on all six mutations; fix awaits Design review
 Owner: Backend developer investigates; project owner decides whether a fix is needed
 Requirement IDs: REQ-06 (error envelope / status), REQ-07 (data integrity), REQ-02 (state transitions)
 Dependencies: [TASK-016](TASK-016-framework-error-status.md) (bodiless 406 handler), finding R3 in [TASK-016 evidence](../../quality/evidence/TASK-016.md)
@@ -10,7 +10,7 @@ Dependencies: [TASK-016](TASK-016-framework-error-status.md) (bodiless 406 handl
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
 | Requirements | Project owner | Investigation requested 2026-09-26 (“R3 เปิดเป็น task ตรวจสอบ”) | 2026-09-26 |
-| Design | Project owner acting as technical owner | Pending — only if the investigation confirms R3 | — |
+| Design | Project owner acting as technical owner | Pending — fix option in [evidence](../../quality/evidence/TASK-017.md) | — |
 | Implement | Project owner acting as code reviewer | Pending | — |
 | Verify | Project owner acting as QA / acceptance owner | Pending | — |
 | Delivery | Project owner acting as release owner | Pending | — |
@@ -31,11 +31,11 @@ Out of scope until the owner decides: any change to controllers, the handler, th
 
 ## Acceptance criteria
 
-- [ ] For create, update and each action (submit, approve, reject, cancel), a reproduction with `Accept: text/csv` records the HTTP status and body, plus whether the database row, `version`, `status` and item rows changed.
-- [ ] For create, the result records whether a request number was consumed and whether a retry with a valid `Accept` creates a second DRAFT.
-- [ ] Controls: `Accept: application/json`, `*/*` and a missing `Accept` behave as today (201/200 with body).
-- [ ] The detail cache is checked after a confirmed silent change: whether a later `GET /{id}` returns the new or stale state.
-- [ ] Evidence records environment, commands, exit codes and observations. It ends with one of three recommendations: no action, document the limitation, or a fix option for Design review.
+- [x] For create, update and each action (submit, approve, reject, cancel), a reproduction with `Accept: text/csv` records the HTTP status and body, plus whether the database row, `version`, `status` and item rows changed.
+- [x] For create, the result records whether a request number was consumed and whether a retry with a valid `Accept` creates a second DRAFT.
+- [x] Controls: `Accept: application/json`, `*/*` and a missing `Accept` behave as today (201/200 with body).
+- [x] The detail cache is checked after a confirmed silent change: whether a later `GET /{id}` returns the new or stale state.
+- [x] Evidence records environment, commands, exit codes and observations. It ends with one of three recommendations: no action, document the limitation, or a fix option for Design review.
 
 ## Investigation plan
 
@@ -54,7 +54,7 @@ Out of scope until the owner decides: any change to controllers, the handler, th
 
 ## Handoff
 
-- Changes: pending
-- Evidence: pending (`docs/quality/evidence/TASK-017.md`)
-- Decisions / open issues: whether R3 is real; if so, the fix option goes to Design review
-- Next action: run the investigation plan
+- Changes: none to application code; investigation only
+- Evidence: [TASK-017 evidence](../../quality/evidence/TASK-017.md) — 406 returned while create, update, submit, approve, reject and cancel all commit; JSON retry duplicates a create or gets 409
+- Decisions / open issues: owner decides whether to fix; recommended option is class-level `produces = application/json`, which needs Design review
+- Next action: owner Design decision on the fix
