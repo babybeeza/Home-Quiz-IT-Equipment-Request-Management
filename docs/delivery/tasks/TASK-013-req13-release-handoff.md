@@ -25,7 +25,7 @@ Prepare one identified repository revision for someone else to obtain, install, 
 
 ## Acceptance criteria
 
-- [ ] The candidate branch is published at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git` and an unauthenticated HTTPS read succeeded. The release owner still needs to accept the final immutable revision and handoff method; a reviewer clone has not been observed.
+- [ ] The candidate branch is published at `https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management.git`; an independent clone without stored credentials succeeded. The release owner still needs to accept the final immutable revision and handoff method; no reviewer sign-off has been recorded.
 - [x] The application revision contains frontend/backend source, README, database migration or schema and automated tests. README covers environment, run, test/API, decisions and scope as listed in REQ-13 Discover.
 - [x] From an isolated clean checkout of the application revision, the documented setup starts the database and both applications, and a role-based create → submit → decision → list smoke succeeds. Port changes are recorded in [TASK-013 evidence](../../quality/evidence/TASK-013.md).
 - [x] Frontend lint, typecheck, tests and build; backend package/tests including the Testcontainers executed/skipped count; Compose validation; and Playwright acceptance are recorded with commands, exit codes and output in the evidence.

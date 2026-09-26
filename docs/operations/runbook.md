@@ -13,7 +13,7 @@ For the current Docker UI path, run `docker compose --profile app up -d --build 
 - [x] Smoke: create draft → submit → decision → list (rehearsal HTTP journey)
 - [ ] AT-33 / G-1: list-row actions are implemented and automated AT-33 passes; obtain Design/Implement/Verify review for the changed revision ([TASK-010](../delivery/tasks/TASK-010-list-row-actions.md))
 - [ ] H-1: the committed URL returned HTTP 403 twice from this workspace; the source-storage owner must confirm intended access and revoke/rotate at the source if needed ([TASK-011 evidence](../quality/evidence/TASK-011.md))
-- [ ] Release owner to accept the published GitHub branch/access method and final immutable commit at the Delivery gate; unauthenticated HTTPS remote read succeeded, but an actual reviewer clone is not recorded
+- [ ] Release owner to accept the published GitHub branch/access method and final immutable commit at the Delivery gate; an independent clone with credential helpers disabled succeeded, but no reviewer sign-off is recorded
 - [ ] Application rollback and data restore rehearsal; documented below but NOT RUN
 - [ ] Manual P2 acceptance AT-44 and AT-46; NOT RUN on this candidate
 
