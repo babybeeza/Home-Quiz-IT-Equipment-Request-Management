@@ -57,4 +57,4 @@ Execution results are recorded in [TASK-015 evidence](../../quality/evidence/TAS
 - Changes: approved theme mapping applied to the shared UI stylesheet at application revision `5a3b2e1`
 - Evidence: [TASK-015 evidence](../../quality/evidence/TASK-015.md)
 - Decisions / open issues: the four listed gates approved for the candidate with stated limitations; formal REQ-14 Requirements baseline decision remains unrecorded
-- Next action: integrate the reviewed candidate without changing its application behavior, then record the actual integration revision separately
+- Next action: [PR #12](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/12) merged at `a69a950`; see [post-merge evidence](../../quality/evidence/TASK-015-postmerge.md). Deployment to the default-port release stack remains separate and unperformed.
