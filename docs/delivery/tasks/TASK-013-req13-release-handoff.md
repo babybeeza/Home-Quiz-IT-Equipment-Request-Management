@@ -1,6 +1,6 @@
 # TASK-013: Verify and hand off a REQ-13 release revision
 
-Status: In progress — candidate preparation and verification; Delivery pending
+Status: Candidate verified; reviewer-access check and human gates pending; Delivery pending
 Owner: Developer prepares evidence; project owner reviews changed gates; release owner decides handoff
 Requirement IDs: REQ-13 (required delivery package), REQ-05/AT-33 as a changed dependency
 Dependencies: [TASK-010](TASK-010-list-row-actions.md) review, [TASK-011](TASK-011-assignment-token.md) source-owner disposition or explicit limitation, [A-08](../../product/assumptions.md) handoff choice, TASK-007–009 evidence
@@ -26,9 +26,9 @@ Prepare one identified repository revision for someone else to obtain, install, 
 ## Acceptance criteria
 
 - [ ] The release owner identifies the handoff Git remote/access method and immutable revision. A reviewer can fetch that revision; a configured `origin` alone does not establish reviewer access. If access fails, handoff remains pending.
-- [ ] The identified revision contains frontend/backend source, README, database migration or schema and automated tests. README covers environment, run, test/API, decisions and scope as listed in REQ-13 Discover.
-- [ ] From an isolated clean checkout of **that revision**, the documented setup starts the database and both applications, and a role-based create → submit → decision → list smoke succeeds. Any port or environment changes are recorded.
-- [ ] Frontend lint, typecheck, tests and build; backend package/tests including the Testcontainers executed/skipped count; Compose validation; and Playwright acceptance are recorded with commands, exit codes and output. Failures, skipped tests or inaccessible tooling are FAIL/NOT RUN with reasons, never inherited as a pass from an older revision.
+- [x] The application revision contains frontend/backend source, README, database migration or schema and automated tests. README covers environment, run, test/API, decisions and scope as listed in REQ-13 Discover.
+- [x] From an isolated clean checkout of the application revision, the documented setup starts the database and both applications, and a role-based create → submit → decision → list smoke succeeds. Port changes are recorded in [TASK-013 evidence](../../quality/evidence/TASK-013.md).
+- [x] Frontend lint, typecheck, tests and build; backend package/tests including the Testcontainers executed/skipped count; Compose validation; and Playwright acceptance are recorded with commands, exit codes and output in the evidence.
 - [ ] TASK-010 Design/Implement/Verify review and AT-33 disposition are recorded for the release revision. TASK-011/H-1 has a source-owner decision or remains an explicit limitation for the release owner to assess. Untested rollback/restore and the two manual P2 cases remain labelled as such unless actually checked.
 - [ ] README, runbook, traceability and release evidence all name the same revision and limitations; the release owner records the Delivery decision. If a required check fails or is missing, status remains pending with a concrete next action.
 
@@ -53,11 +53,11 @@ Prepare one identified repository revision for someone else to obtain, install, 
 
 If the reviewer cannot fetch the revision, a required check fails, a test is skipped, or the clean checkout cannot start, record the exact failure and leave Delivery pending. Do not delete existing project volumes while testing or roll back a shared environment as part of this task.
 
-Plan validation on 2026-09-26 (Windows PowerShell): `git diff --check` exit 0, local Markdown link check exit 0, and `git remote -v` showed a configured GitHub `origin`. Candidate fetch, clean-checkout rehearsal and application tests are **NOT RUN** in this planning pass.
+Plan validation on 2026-09-26 (Windows PowerShell): `git diff --check` exit 0, local Markdown link check exit 0, and `git remote -v` showed a configured GitHub `origin`. Execution results are recorded in [TASK-013 evidence](../../quality/evidence/TASK-013.md).
 
 ## Handoff
 
-- Changes: release revision and evidence package; no new product feature planned
-- Evidence: `docs/quality/evidence/TASK-013.md` when executed
+- Changes: verified application revision `bb888a94584d6e6f95f1b43a2064409021fa249f` on branch `codex/req13-candidate-20260926`, followed by a documentation-only handoff commit
+- Evidence: [TASK-013 evidence](../../quality/evidence/TASK-013.md)
 - Decisions / open issues: A-08 location/access/revision; TASK-010 gates; TASK-011/H-1; release owner Delivery decision
-- Next action: execute this packet after the candidate and required owner decisions are available
+- Next action: confirm published branch access, then obtain TASK-010 review, H-1 source-owner disposition and the release owner's Delivery decision
