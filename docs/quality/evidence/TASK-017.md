@@ -58,3 +58,16 @@ Regression tests:
 | Browser acceptance | Git Bash: `tests/e2e/run-e2e.sh` | 0 | PASS | 50/50 Chromium, including AT-33; browser requests unaffected |
 | Live rerun | Same reproduction script on a fresh `home-quiz-task017` | 0 | PASS | All six CSV mutations 406 with **no** change (create 0 rows; PUT, submit, approve, reject and cancel rows unchanged). JSON retries succeed (201/200) instead of duplicating or 409. First JSON create got `REQ-2026-000001`, so the CSV create consumed no number. Browser-like `Accept` via proxy 200; reference-data CSV 406; unmatched path 404; 0 handler WARN/ERROR lines. Stack removed with `down -v` |
 | Frontend unit/build | — | N/A | NOT RUN | No frontend change; UI behavior covered by Playwright above |
+
+## Local release redeploy
+
+On 2026-09-26 the user asked to redeploy `home-quiz-release`. It was rebuilt from `main` `446f4024fdada534831de44cddacdd5bb1cff404` (PR #21 merge), which has no backend, frontend or Compose difference from the approved `cae008f`.
+
+| Check | Command / method | Exit | Result | Observation |
+| --- | --- | ---: | --- | --- |
+| Redeploy | `docker compose -p home-quiz-release --profile app up -d --build --wait` from the `main` worktree | 0 | PASS | Backend and frontend recreated at 13:05; postgres and redis not recreated; all four healthy |
+| Fix active, write-safe | `curl` with `Accept: text/csv` on requests that could never be saved: `POST /` with `{}` and `POST /{unknown id}/submit` | 0 | PASS | 406 with an empty body for both. JSON controls reached the handler: 400 `MALFORMED_REQUEST` and 404 `REQUEST_NOT_FOUND`, which shows the 406 now happens before validation and lookup. Reference-data CSV 406 |
+| Regression | Browser-like `Accept` via proxy; TASK-016 unmatched path and 405; UI; health; theme CSS | 0 | PASS | List 200; 404 `NOT_FOUND`; 405 `METHOD_NOT_ALLOWED`; UI 200; health `UP`; Spark tokens served |
+| Logs and data | `docker logs` grep; `select count(*) from equipment_requests` | 0 | PASS | 0 handler WARN/ERROR lines; 0 rows before and after |
+
+Local Docker only. Previous images are not tagged; rollback means rebuilding from an earlier checkout.
