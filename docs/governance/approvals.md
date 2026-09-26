@@ -96,3 +96,5 @@ On 2026-09-26, after the R1/R2 fixes and their evidence were presented and [PR #
 | Implement | Approved | Project owner acting as code reviewer | 2026-09-26 | `c7cadf3`; [TASK-016 evidence](../quality/evidence/TASK-016.md) | Includes the D1 mechanism deviation and the R1 refinement that 406 has no body |
 | Verify | Approved with stated limitations | Project owner acting as QA / acceptance owner | 2026-09-26 | `c7cadf3`; backend 135/135, Playwright 50/50, live 404/405/406/415 | Frontend 32/32 from the pre-fix revision; no frontend change since |
 | Delivery | Approved with stated limitations | Project owner acting as release owner | 2026-09-26 | `c7cadf3` on GitHub `main` | Repository handoff only; local release stack not redeployed; R3 open |
+
+Local release redeploy, 2026-09-26: at the user's request, `home-quiz-release` was rebuilt from `main` `5392a55` so the running stack includes TASK-016. See [TASK-016 evidence](../quality/evidence/TASK-016.md). This records an operation, not a new approval.
