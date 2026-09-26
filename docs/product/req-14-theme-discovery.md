@@ -1,6 +1,6 @@
 # REQ-14 Discover: ปรับธีม UI ตามสีจาก Spark Deck
 
-Status: Discover updated — ผู้ใช้ระบุ palette แล้ว; รอ Design mapping และ human review ก่อน Implement
+Status: Requirements baseline approved by the project owner 2026-09-26 (`main` `5597476`); later gates are in the [approval record](../governance/approvals.md)
 Date: 2026-09-26
 Source: คำขอใหม่ของผู้ใช้ “Discover ปรับ UI เป็น ธีม อ้าง สีจาก spark deck” และตารางสีที่ผู้ใช้ส่งในบทสนทนา 2026-09-26; ไม่ใช่ข้อกำหนดใน assignment HTML เดิม
 

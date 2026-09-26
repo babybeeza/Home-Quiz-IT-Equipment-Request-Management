@@ -9,7 +9,7 @@ Dependencies: [TASK-014](TASK-014-spark-theme-design.md) approved ADR-008/token 
 
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
-| Requirements | Project owner | REQ-14 palette supplied; formal review in TASK-014 | — |
+| Requirements | Project owner | Approved REQ-14 baseline | 2026-09-26 / `main` `5597476` |
 | Design | Project owner acting as technical owner | Approved | 2026-09-26 / `5a3b2e1` |
 | Implement | Project owner acting as code reviewer | Approved | 2026-09-26 / `5a3b2e1` |
 | Verify | Project owner acting as QA / acceptance owner | Approved with stated limitations | 2026-09-26 / `5a3b2e1` |
@@ -56,5 +56,5 @@ Execution results are recorded in [TASK-015 evidence](../../quality/evidence/TAS
 
 - Changes: approved theme mapping applied to the shared UI stylesheet at application revision `5a3b2e1`
 - Evidence: [TASK-015 evidence](../../quality/evidence/TASK-015.md)
-- Decisions / open issues: the four listed gates approved for the candidate with stated limitations; formal REQ-14 Requirements baseline decision remains unrecorded
-- Next action: [PR #12](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/12) merged at `a69a950`; see [post-merge evidence](../../quality/evidence/TASK-015-postmerge.md). Deployment to the default-port release stack remains separate and unperformed.
+- Decisions / open issues: the four listed gates approved for the candidate with stated limitations; REQ-14 Requirements baseline approved 2026-09-26
+- Next action: [PR #12](https://github.com/babybeeza/Home-Quiz-IT-Equipment-Request-Management/pull/12) merged at `a69a950`; see [post-merge evidence](../../quality/evidence/TASK-015-postmerge.md). At the owner's request the local default-port `home-quiz-release` stack was redeployed from `main` `5597476`; see [release deploy evidence](../../quality/evidence/TASK-015-release-deploy.md).
