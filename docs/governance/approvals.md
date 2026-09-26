@@ -80,3 +80,11 @@ On 2026-09-26 the user answered “Requirements baseline ของ REQ-14: อ�
 | --- | --- | --- | --- | --- | --- |
 | Requirements | Approved | Project owner acting as product owner | 2026-09-26 | `5597476`; [REQ-14 Discover](../product/req-14-theme-discovery.md) | Approves the REQ-14 baseline recorded as not yet approved in the earlier REQ-14 entry |
 | Delivery | Redeploy requested and performed | Project owner acting as release owner | 2026-09-26 | `5597476`; [release deploy evidence](../quality/evidence/TASK-015-release-deploy.md) | Local Docker stack only; frontend and backend images rebuilt, database and Redis volumes kept. Not a cloud deployment |
+
+## TASK-016 framework error statuses
+
+On 2026-09-26 the user answered “อนุมัติ” to the TASK-016 handoff asking for approval of design decisions D1–D3 (one `ErrorResponse`-based path, the listed codes, `Allow` header and OpenAPI description).
+
+| Phase | Decision | Approver | Date | Revision / evidence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Design | Approved | Project owner acting as technical owner | 2026-09-26 | [TASK-016](../delivery/tasks/TASK-016-framework-error-status.md) D1–D3 | Implement, Verify and Delivery pending |

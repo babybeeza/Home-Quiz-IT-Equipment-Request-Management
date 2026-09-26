@@ -36,6 +36,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockHttpServletRequestDsl
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActionsDsl
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.options
 import org.springframework.test.web.servlet.post
@@ -282,6 +283,40 @@ class EquipmentRequestControllerTest {
             jsonPath("$.code") { value("INTERNAL_ERROR") }
             jsonPath("$.message") { value("An unexpected error occurred") }
         }
+    }
+
+    @Test
+    fun `an unmatched API path returns not found in the shared envelope`() {
+        mockMvc.get("/api/v1/nonexistent-resource") { identity() }.andExpect {
+            status { isNotFound() }
+            jsonPath("$.status") { value(404) }
+            jsonPath("$.code") { value("NOT_FOUND") }
+            jsonPath("$.path") { value("/api/v1/nonexistent-resource") }
+            jsonPath("$.fieldErrors") { isEmpty() }
+        }
+    }
+
+    @Test
+    fun `an unsupported method returns method not allowed with the Allow header`() {
+        mockMvc.delete("$BASE/${UUID.randomUUID()}") { identity() }.andExpect {
+            status { isMethodNotAllowed() }
+            jsonPath("$.code") { value("METHOD_NOT_ALLOWED") }
+            header { string(HttpHeaders.ALLOW, matchesPattern(".*GET.*")) }
+            header { string(HttpHeaders.ALLOW, matchesPattern(".*PUT.*")) }
+        }
+    }
+
+    @Test
+    fun `an unsupported content type returns unsupported media type and creates nothing`() {
+        mockMvc.post(BASE) {
+            identity()
+            contentType = MediaType.TEXT_PLAIN
+            content = validBody()
+        }.andExpect {
+            status { isUnsupportedMediaType() }
+            jsonPath("$.code") { value("UNSUPPORTED_MEDIA_TYPE") }
+        }
+        verify(exactly = 0) { repository.saveAndFlush(any()) }
     }
 
     @Test

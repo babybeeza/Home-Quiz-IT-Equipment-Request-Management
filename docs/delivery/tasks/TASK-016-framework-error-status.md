@@ -1,6 +1,6 @@
 # TASK-016: Return correct status for unmatched routes and framework HTTP errors
 
-Status: Planned — Design review pending
+Status: Implemented — Implement/Verify/Delivery review pending
 Owner: Backend developer; project owner reviews as technical owner, code reviewer and QA owner
 Requirement IDs: REQ-06 (consistent error envelope, 400/404/409/422/500), REQ-11 (backend error tests)
 Dependencies: none; found during the [release redeploy](../../quality/evidence/TASK-015-release-deploy.md)
@@ -10,7 +10,7 @@ Dependencies: none; found during the [release redeploy](../../quality/evidence/T
 | Gate | Approver | Decision | Date / revision |
 | --- | --- | --- | --- |
 | Requirements | Project owner | Covered by the approved REQ-06 baseline | 2026-09-25 |
-| Design | Project owner acting as technical owner | Pending — decisions D1–D3 below | — |
+| Design | Project owner acting as technical owner | Approved D1–D3 | 2026-09-26 |
 | Implement | Project owner acting as code reviewer | Pending | — |
 | Verify | Project owner acting as QA / acceptance owner | Pending | — |
 | Delivery | Project owner acting as release owner | Pending | — |
@@ -35,11 +35,11 @@ Non-goals: no change to domain exceptions, existing codes, controllers, security
 
 ## Acceptance criteria
 
-- [ ] Given any role, when calling an unmatched `/api/v1/...` path, then the response is 404 with `code: NOT_FOUND`, the request `path`, an empty `fieldErrors` and no ERROR log.
-- [ ] Given a valid path with an unsupported method (e.g. `DELETE /api/v1/equipment-requests/{id}`), then 405 `METHOD_NOT_ALLOWED` with an `Allow` header.
-- [ ] Given `POST /api/v1/equipment-requests` with `Content-Type: text/plain`, then 415 `UNSUPPORTED_MEDIA_TYPE`, and no request is created.
-- [ ] Existing responses are unchanged: `REQUEST_NOT_FOUND` 404, `MALFORMED_REQUEST` 400, `ACCESS_DENIED` 403, 409 conflicts, 422 rules, and 500 `INTERNAL_ERROR` for an unexpected exception (the existing `INTERNAL_ERROR` test in `EquipmentRequestControllerTest.kt`).
-- [ ] OpenAPI documents the added codes. The backend package passes with Testcontainers tests executed, and evidence records commands and counts.
+- [x] Given any role, when calling an unmatched `/api/v1/...` path, then the response is 404 with `code: NOT_FOUND`, the request `path`, an empty `fieldErrors` and no ERROR log.
+- [x] Given a valid path with an unsupported method (e.g. `DELETE /api/v1/equipment-requests/{id}`), then 405 `METHOD_NOT_ALLOWED` with an `Allow` header.
+- [x] Given `POST /api/v1/equipment-requests` with `Content-Type: text/plain`, then 415 `UNSUPPORTED_MEDIA_TYPE`, and no request is created.
+- [x] Existing responses are unchanged: `REQUEST_NOT_FOUND` 404, `MALFORMED_REQUEST` 400, `ACCESS_DENIED` 403, 409 conflicts, 422 rules, and 500 `INTERNAL_ERROR` for an unexpected exception (the existing `INTERNAL_ERROR` test in `EquipmentRequestControllerTest.kt`).
+- [x] OpenAPI documents the added codes. The backend package passes with Testcontainers tests executed, and evidence records commands and counts.
 
 ## Implementation plan
 
@@ -60,7 +60,7 @@ Non-goals: no change to domain exceptions, existing codes, controllers, security
 
 ## Handoff
 
-- Changes: pending
-- Evidence: pending
-- Decisions / open issues: D1–D3 need technical-owner approval before Implement
-- Next action: owner reviews D1–D3; then implement on a `codex/task-016-*` branch
+- Changes: `ErrorResponse` 4xx mapping in `ApiExceptionHandler`, 3 controller tests, OpenAPI `ApiError.code` description, ADR-002 amendment
+- Evidence: [TASK-016 evidence](../../quality/evidence/TASK-016.md) — backend 132/132, frontend 32/32, Playwright 50/50, live 404/405/415
+- Decisions / open issues: Design D1–D3 approved; review findings R1 (406 WARN log) and R2 (fallback test gap) open
+- Next action: owner decides R1/R2 and the Implement/Verify/Delivery gates; redeploy `home-quiz-release` only on request
