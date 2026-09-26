@@ -17,6 +17,7 @@ Source: [assignment](../../Home-Quiz-IT-Equipment-Request-Management_revise_1.ht
 | REQ-11 | Frontend tests ≥4 ด้วย Vitest หรือ Jest + React Testing Library; backend tests ≥6 ด้วย JUnit 5 + MockK หรือ Mockito; เน้น behavior, errors และ data integrity |
 | REQ-12 | รัน k6 performance tests และส่งผลพร้อม workload/environment; ไม่อ้างผลจาก script ที่ยังไม่ได้รัน |
 | REQ-13 | ส่ง Git repository ที่ผู้อื่นติดตั้ง ทดสอบ และ run ได้ พร้อม frontend/backend source, README (environment/run/test & API/decisions/scope), migration หรือ schema และ automated tests; ดู [Discover detail](req-13-discovery.md) |
+| REQ-14 (new request; Design pending) | ปรับสีธีม UI โดยอ้าง palette Spark Deck 12 สีที่ผู้ใช้ให้; semantic mapping และ contrast ต้องออกแบบก่อนแก้ UI ดู [Discover detail](req-14-theme-discovery.md) |
 
 Equipment types: NOTEBOOK, MONITOR, KEYBOARD, MOUSE, HEADSET, OTHER
 
